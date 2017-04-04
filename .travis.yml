@@ -1,0 +1,11 @@
+language: node_js
+node_js: node
+services:
+- mongodb
+deploy:
+  provider: heroku
+  api_key:
+    secure: TqdabrqbFY+XGyZj6EXEOAvX14/GXS2Tca1WMNF7tTzL51TWcmyPFiRqyiUctjO1UwJWPPINymUBv0sfNnccyR2F+OHs68XvWno6xXOqXVmdQM9aQ7Wsn2AO0InalyvUwiBeDVOMOlv0GB+AOBV2/aY41GJFMWHA/s7yNKSy1AZVLFHVhPeOlywwJ1EVoxneFF6rlwzqWHSjrnbulmehBIsKjA7klDn4x/SdUD4L3JCE7A7hEywd2KRw+rXi00aXHZfbczHY2+f3aBw9CgyEksRDfzrZveoKJlDOgZZ3p6tlwvcCUuX/yGG3I/S7yba8eKUXsM/1R2ejgqgVU8n5aIIWWBu0c/xC+D8JyutDvSGNswo6M6FmA6vRl+5Hx5csZz5RPR1QjuAZwjWTJ/SWU92c9MlMxWTjMHEIdrpTFFTod/2/FVNrNF0oeYv1+BIxN7cBHDf5hiCrmJriKuVkPQfnGtjprNROd2VT0gj2VM1T1J96uu9c9qq+U48zlwNY3ZTlQ90GyPeBjqSxLXsu8Gt4wzz5hK8XZWtggKqujMXq3pry4omhHkNCMcl8+NQhgsNYOSUmWYs3e0crtl7ghai3/VVmBuLhGtKhfn8RBaDiQzrzEM9TK7glu+Z0f3KaNFV4Mm8Rl8UapP4mTUFT5VmLoz3WioUE5MDo0OBCx3w=
+  app: gw-high-command
+  on:
+    repo: mgbrando/gw-high-command
