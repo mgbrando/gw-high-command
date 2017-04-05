@@ -1,6 +1,5 @@
 .App {
-  text-align: center;
-  background-image: url("./assets/banner.jpg");
+
 }
 
 .App-logo {
@@ -9,10 +8,12 @@
 }
 
 .App-header {
-  background-color: #222;
-  height: 150px;
+  height: 100px;
   padding: 20px;
-  color: white;
+  background-image: url("./assets/gw2-banner.jpg");
+  background-repeat: no-repeat;
+  background-position: right;
+  box-shadow: 0px 4px 4px black;
 }
 
 .App-intro {
