@@ -1,0 +1,74 @@
+.RankSelection{
+  width: 80%;
+  margin: 20px auto;
+  text-align: center;
+  max-width: 700px;
+  min-height: 472px;
+  border: 2px solid black;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.75);
+}
+.RankSelection h2{
+  color: white;
+  height: 71px;
+  background-color: #C92626;
+  border-bottom: 1px solid #979797;
+  line-height: 73px;
+  margin: 0;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.RankSelection h2 span{
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+.buttonContainer{
+  /*padding-top: 170px;
+  vertical-align: middle;*/
+  padding-top: 140px;
+}
+.buttonContainer button{
+  width: 45%;
+  height: 60px;
+  background-color: #B13E3E;
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  border: 1px solid white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.leaderButtonContainer{
+  margin-right: 5%;
+}
+/*.memberButtonContainer{
+
+}*/
+/*.buttonContainer button:first-child{
+  margin-right: 5%;
+}*/
+/*.App-header{
+  background-image: url("./assets/gw2-banner.jpg"));
+}*/
+/*.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}*/
+
+/*.App-header {
+  height: 100px;
+  padding: 20px;
+  background-image: url("./assets/gw2-banner.jpg");
+  background-repeat: no-repeat;
+  background-position: right;
+  box-shadow: 0px 4px 4px black;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}*/

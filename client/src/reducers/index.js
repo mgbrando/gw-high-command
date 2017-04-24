@@ -1,13 +1,19 @@
 import { combineReducers } from 'redux';
-import userAPI from './user-api';
-import userDatabase from './user-database';
+import guild from './guild';
+import registrationAndLogin from './registrationAndLogin';
+import activities from './activities';
+import navigation from './navigation';
+import members from './members';
+import teams from './teams';
 //import * as actions from '../actions/index';
 
 const rootReducer = combineReducers({
-  guildAPI,
-  guildDatabase,
-  taskOperations,
-  pageIndexing
+  guild,
+  registrationAndLogin,
+  activities,
+  navigation,
+  teams,
+  members
 });
 
-export default rootReducer
+export default rootReducer;
