@@ -65,7 +65,7 @@ class LeaderRegistration extends Component {
           <h2>Leader Registration</h2>
         </div>
         <form onSubmit={event => {event.preventDefault(); this.checkAPIKey;}}>
-          <label for="leaderApiKey">Enter your API Key:</label>
+          <label for="leaderApiKey">Enter your API Key</label>
           <input id="leaderApiKey" type="text" name="leaderApiKey" required />
           <button type="submit">Submit</button>
         </form>

@@ -1,4 +1,4 @@
-.RankSelection{
+.RankSelection, .MemberRegistration, .LeaderLogin{
   width: 80%;
   margin: 20px auto;
   text-align: center;
@@ -8,6 +8,30 @@
   border-radius: 8px;
   background-color: rgba(255, 255, 255, 0.75);
 }
+a.backButton{
+  text-align: left;
+  display: block;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+.MemberRegistration button, .LeaderLogin button, .MemberRegistration input, .LeaderLogin input{
+  font-size: 18px;
+}
+.MemberRegistration form, .LeaderLogin form{
+  margin: 0 auto;
+  width: 300px;
+}
+.MemberRegistration form label, .MemberRegistration form input, .MemberRegistration form button,
+.LeaderLogin form label, .LeaderLogin form input, .LeaderLogin form button{
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+
+.MemberRegistration form input{
+  width: 250px;
+}
+
 .RankSelection h2{
   color: white;
   height: 71px;

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import UserNameAndPasswordForm from './UserNameAndPasswordForm';
 import './RankSelection.css';
+import {Link} from 'react-router';
 import * as actions from '../../actions/registrationAndLoginActions';
 
 class LeaderRegistration extends Component {
@@ -31,24 +32,19 @@ class LeaderRegistration extends Component {
   authorizeGuildLeader(){
     this.props.dispatch(actions.authorizeGuildLeader(this.props.userNameInput, this.props.passwordInput));
   }
-  goBack(){
-    //Action to set isValidMember to false and memberGuilds to []
-    this.props.getPage('rankSelection');
-  }
 
 
 
   render() {
     return (
       <div className="LeaderLogin">
-        <button type="button" onclick={this.goBack()}>Back</button>
+        <Link to="/" className="backButton"><button type="button">Back</button></Link>
         <div className="LeaderRegistrationHeader">
           <h2>Login</h2>
         </div>
         <UserNameAndPasswordForm authorizeGuildLeader={this.authorizeGuildLeader} 
                                  getUsernameInput={this.getUsernameInput}
                                  getPasswordInput={this.getPasswordInput} 
-                                 getPage={this.props.getPage}
                                  currentPage="leaderLogin"
                                   />
       </div>

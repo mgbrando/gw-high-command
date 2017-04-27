@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
+import {Link} from 'react-router';
 import * as actions from '../../actions/registrationAndLoginActions';
 import './RankSelection.css';
 
@@ -8,7 +9,7 @@ class MemberRegistration extends Component {
   constructor(props) {
     super(props);
     //remember you have the method getPage as a prop
-    this.addMember = this.addMember.bind(this);
+    this.addMemberToGuilds = this.addMemberToGuilds.bind(this);
     this.showGuilds = this.showGuilds.bind(this);
   }
 
@@ -45,12 +46,12 @@ class MemberRegistration extends Component {
   render() {
     return (
       <div className="MemberRegistration">
-        <button type="button" onclick={this.goBack()}>Back</button>
+        <Link to="/" className="backButton"><button type="button">Back</button></Link>
         <div className="MemberRegistrationHeader">
           <h2>Member Registration</h2>
         </div>
         <form onSubmit={event => {event.preventDefault(); this.validateMemberAPIKey(event.target.value);}}>
-          <label for="memberApiKey">Enter your API Key:</label>
+          <label htmlFor="memberApiKey">Enter your API Key</label>
           <input id="memberApiKey" type="text" name="memberApiKey" required />
           <button type="submit">Submit</button>
           {this.showGuilds()}
