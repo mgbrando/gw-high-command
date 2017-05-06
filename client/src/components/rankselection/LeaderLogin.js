@@ -5,7 +5,7 @@ import './RankSelection.css';
 import {Link} from 'react-router';
 import * as actions from '../../actions/registrationAndLoginActions';
 
-class LeaderRegistration extends Component {
+class LeaderLogin extends Component {
 
   constructor(props) {
     super(props);
@@ -30,7 +30,7 @@ class LeaderRegistration extends Component {
     this.props.dispatch(actions.getPasswordInput(event.target.value));
   }
   authorizeGuildLeader(){
-    this.props.dispatch(actions.authorizeGuildLeader(this.props.userNameInput, this.props.passwordInput));
+    this.props.dispatch(actions.loginGuildLeader(this.props.userNameInput, this.props.passwordInput));
   }
 
 
@@ -42,21 +42,22 @@ class LeaderRegistration extends Component {
         <div className="LeaderRegistrationHeader">
           <h2>Login</h2>
         </div>
-        <UserNameAndPasswordForm authorizeGuildLeader={this.authorizeGuildLeader} 
-                                 getUsernameInput={this.getUsernameInput}
-                                 getPasswordInput={this.getPasswordInput} 
-                                 currentPage="leaderLogin"
-                                  />
+        <UserNameAndPasswordForm
+            type="login"
+            getUsernameInput = {this.getUsernameInput}
+            getPasswordInput = {this.getPasswordInput}
+            onSubmit = {this.authorizeGuildLeader}
+        />
       </div>
     );
   }
 }
 
 const mapStateToProps = (state, props) => ({
-    isValidLeader: state.isValidLeader,
-    guild: state.memberGuilds,
-    userNameInput: state.userNameInput,
-    passwordInput: state.passwordInput
+    isValidLeader: state.registrationAndLogin.isValidLeader,
+    guilds: state.registrationAndLogin.memberGuilds,
+    userNameInput: state.registrationAndLogin.userNameInput,
+    passwordInput: state.registrationAndLogin.passwordInput
 });
 
-export default connect(mapStateToProps)(LeaderRegistration);
+export default connect(mapStateToProps)(LeaderLogin);

@@ -1,9 +1,8 @@
-import * as actions from '../actions/registrationAndLoginActions';
+import * as actions from '../actions/leaderRegistrationAndLoginActions';
 
 const initialRepositoryState = {
 	guildId: "",
 	//members: [],
-	isLeader: false,
 	isValidMember: false,
 	memberGuildChoices: [],
 	selectedMemberGuilds: [],
@@ -28,9 +27,6 @@ const initialRepositoryState = {
 const registrationAndLogin = (state=initialRepositoryState, action) => {
 	if(action.type === actions.USERNAME_INPUT){
 		return Object.assign({}, state, {input: action.usernameInput});
-	}
-	else if(action.type === actions.SET_RANK){
-		return Object.assign({}, state, {isLeader: action.isLeader});
 	}
 	else if(action.type === actions.PASSWORD_INPUT){
 		return Object.assign({}, state, {input: action.passwordInput});
@@ -72,9 +68,6 @@ const registrationAndLogin = (state=initialRepositoryState, action) => {
 	else if(action.type === actions.SWITCH_TO_KEY_SUBMISSION){
 		return Object.assign({}, state, {memberRegistrationSection: "keySubmission", nextButtonDisabled: true, guilds: []});
 	}
-	else if(action.type === actions.SWITCH_TO_LOGIN_CREDENTIALS){
-		return Object.assign({}, state, {memberRegistrationSection: "loginCredentials", nextButtonDisabled: true, guilds: []});
-	}
 	else if(action.type === actions.GET_MEMBER_KEY_INPUT){
 		//console.log(action.apiKey);
 		return Object.assign({}, state, {memberApiKeyInput: action.apiKey});
@@ -89,7 +82,7 @@ const registrationAndLogin = (state=initialRepositoryState, action) => {
 	}
 	else if(action.type === actions.CHANGE_SELECTED_GUILDS){
 		//console.log(action.apiKey);
-		return Object.assign({}, state, {selectedMemberGuilds: action.selectedGuilds, nextButtonDisabled: action.nextArrowDisabled});
+		return Object.assign({}, state, {selectedMemberGuilds: action.selectedGuilds});
 	}
 	return state;
 };

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+/*import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import UserNameAndPasswordForm from './UserNameAndPasswordForm';
 import './RankSelection.css';
@@ -16,10 +16,7 @@ class LeaderRegistration extends Component {
   }
 
   checkAPIKey(APIKey){
-    /*action to check for an account with the apiKey and the store the api key
-    in the database if you get back an account and that account is in the guild 
-    Saves the account name and the API Key*/
-    /*Validate the user and that he is in a guild that is registered with the app*/
+
 
   }
   showUserNameAndPassword(){
@@ -47,9 +44,9 @@ class LeaderRegistration extends Component {
   }
   addMemberToGuilds(){
     //Action to add a member to the guild and then do the below
-    this.props.getPage('rankSelection'); /*rankSelection will need to have
+    this.props.getPage('rankSelection');*/ /*rankSelection will need to have
     a message of member being successfully added to a guild or guilds */
-  }
+ /* }
   goBack(){
     //Action to set isValidMember to false and memberGuilds to []
     this.props.getPage('rankSelection');
@@ -58,29 +55,59 @@ class LeaderRegistration extends Component {
 
 
   render() {
-    return (
-      <div className="LeaderRegistration">
-        <button type="button" onclick={this.goBack()}>Back</button>
-        <div className="LeaderRegistrationHeader">
-          <h2>Leader Registration</h2>
-        </div>
-        <form onSubmit={event => {event.preventDefault(); this.checkAPIKey;}}>
-          <label for="leaderApiKey">Enter your API Key</label>
-          <input id="leaderApiKey" type="text" name="leaderApiKey" required />
-          <button type="submit">Submit</button>
-        </form>
-        {this.showUserNameAndPassword()}
-      </div>
-    );
+    if(this.props.leaderRegistrationSection === "registrationSuccess"){
+      return(
+          <RegistrationSuccess type="member" guilds={this.props.selectedMemberGuilds} />
+      );
+    }
+    else if(this.props.leaderRegistrationSection === "guildSelection"){
+      return(
+        <div className="LeaderRegistration">
+          <div className="LeaderRegistrationHeader">
+            <h2>Leader Registration</h2>
+          </div>
+          <GuildList 
+            title="Registered Guilds" 
+            guildIds={this.props.memberGuildChoices} 
+            addMemberToGuilds={this.addMemberToGuilds}
+            />
+        <SectionNavigation 
+            previous={true} 
+            next={true} 
+            nextButtonDisabled={this.props.nextButtonDisabled}
+            changeSection={this.changeSection}
+            previousSection="keySubmission"
+            nextSection="registrationSuccess"
+          />
+        </div>  
+      );
+    }
+    else{
+      return(
+        <div className="LeaderRegistration">
+          <div className="LeaderRegistrationHeader">
+            <h2>Leader Registration</h2>
+          </div>
+          <KeySubmissionForm apiKey={this.props.memberApiKey} getAPIKeyInput={this.getAPIKeyInput} validateMemberAPIKey={this.validateMemberAPIKey}/>
+          <SectionNavigation 
+            previous={false} 
+            next={true} 
+            nextButtonDisabled={this.props.nextButtonDisabled}
+            changeSection={this.changeSection}
+            nextSection="guildSelection"
+          />
+        </div>  
+      );
+    }
   }
 }
 
 const mapStateToProps = (state, props) => ({
-    isValidLeader: state.isValidLeader,
-    guild: state.memberGuilds,
-    memberApiKey: state.memberApiKey,
-    userNameInput: state.userNameInput,
-    passwordInput: state.passwordInput,
+    isValidLeader: state.leaderRegistrationAndLoginisValidLeader,
+    guild: state.leaderRegistrationAndLoginmemberGuilds,
+    memberApiKey: state.leaderRegistrationAndLogin.memberApiKey,
+    userNameInput: state.leaderRegistrationAndLogin.userNameInput,
+    passwordInput: state.leaderRegistrationAndLogin.passwordInput
 });
 
-export default connect(mapStateToProps)(LeaderRegistration);
+export default connect(mapStateToProps)(LeaderRegistration);*/

@@ -4,6 +4,7 @@ import RankSelection from './rankselection/RankSelection';
 import MemberRegistration from './rankselection/MemberRegistration.js';
 import Guild from './guild/Guild';
 import GuildMembers from './members/GuildMembers';
+import { Provider } from 'react-redux';
 //import GuildTeams from './members/GuildTeams';
 import './App.css';
 

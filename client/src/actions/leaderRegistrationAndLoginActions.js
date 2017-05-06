@@ -1,22 +1,6 @@
 //import 'whatwg-fetch';
 import 'isomorphic-fetch';
 
-//Set Rank
-export const SET_RANK = 'SET_RANK';
-export const setRank = isLeader => ({
-  type: SET_RANK,
-  isLeader
-});
-
-export const getMemberRank = rank => {
-  return dispatch => {
-    if(rank === 'leader')
-      return dispatch(setRank(true));
-    else
-      return dispatch(setRank(false));
-  }
-};
-
 //User Name Input
 export const USERNAME_INPUT = 'USERNAME_INPUT';
 export const getUserNameInput = (usernameInput) => ({
@@ -80,51 +64,6 @@ export const validateMemberAPIKey = access_token => {
   }	
 };
 
-//Leader Key Validation
-/*export const VALIDATE_LEADER_KEY_FAILURE = 'VALIDATE_LEADER_KEY_FAILURE';
-export const validateLeaderKeyError = (errorResponse) => ({
-  type: VALIDATE_LEADER_KEY_FAILURE,
-  errorResponse
-});*/
-
-/*export const VALIDATE_LEADER_KEY_SUCCESS = 'VALIDATE_LEADER_KEY_SUCCESS';
-export const validateLeaderKeySuccess = (memberName, memberApiKey, memberGuildChoices) => ({
-  type: VALIDATE_MEMBER_KEY_SUCCESS,
-  memberName,
-  memberApiKey,
-  memberGuildChoices
-});*/
-
-export const validateLeaderAPIKey = access_token => {
-  return dispatch => {
-    let memberGuilds; 
-    fetch('https://api.guildwars2.com/v2/account?access_token='+access_token)
-    .then(response => response.json())
-    .then(responseObject => {
-      memberGuilds = responseObject.guilds;
-      if(Object.keys(responseObject) === 1 || !responseObject.guild_leader)
-        return dispatch(validateMemberKeyError(responseObject));
-      else{
-        let guildsQuery="";
-        for(let i=0; i < responseObject.guild_leader.length; i++){
-          guildsQuery+="guildids="+responseObject.guild_leader[i]+"&";
-        }
-        guildsQuery+="membername="+responseObject.name;
-        fetch('http://localhost:8080/api/guilds?'+guildsQuery)
-        .then(response => response.json())
-        .then(_response => {
-          /*if(_response.status === 500){
-            const errorMessage = _response.message;
-          }*/
-          //memberGuilds = memberGuilds.diff(_response.guilds);
-          return dispatch(validateMemberKeySuccess(responseObject.name, access_token, _response.guilds));//memberGuilds));
-        });
-        //.catch(error => { const errorMessage = error;});
-      }
-    });
-  } 
-};
-
 //Add Member Key to guilds - (change localhost:8080 dependent on config file)
 export const ADD_MEMBER_SUCCESS = 'ADD_MEMBER_SUCCESS';
 export const addMemberSuccess = (message) => ({
@@ -164,7 +103,7 @@ export const addMemberToGuilds = (member, guilds) => {
 
 
 //Leader Key Validation
-/*export const VALIDATE_LEADER_KEY_FAILURE = 'VALIDATE_LEADER_KEY_FAILURE';
+export const VALIDATE_LEADER_KEY_FAILURE = 'VALIDATE_LEADER_KEY_FAILURE';
 export const validateLeaderKeyError = error => ({
 	type: VALIDATE_LEADER_KEY_FAILURE,
 	error
@@ -198,7 +137,7 @@ export const validateLeaderAPIKey = access_token => {
     	}
     });
   }	
-};*/
+};
 
 //Add Member Key to guilds - (change localhost:8080 dependent on config file)
 export const REGISTER_GUILD_LEADER_SUCCESS = 'REGISTER_GUILD_LEADER_SUCCESS';
@@ -244,7 +183,7 @@ export const loginGuildLeaderFailure = error => ({
 
 export const loginGuildLeader = (userName, password) => {
   return dispatch => {
-    fetch('http://localhost:8080/api/leaders', {
+    fetch('http://localhost:8080/login/authorization', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -276,12 +215,7 @@ export const switchToKeySubmissionSection = () => ({
 	type: SWITCH_TO_KEY_SUBMISSION
 });
 
-export const SWITCH_TO_LOGIN_CREDENTIALS = 'SWITCH_TO_LOGIN_CREDENTIALS';
-export const switchToLoginCredentialsSection = () => ({
-  type: SWITCH_TO_LOGIN_CREDENTIALS
-});
-
-export const changeMemberRegistrationSection = (section, leader=false) => {
+export const changeMemberRegistrationSection = section => {
   return dispatch => {
     if(section==="keySubmission"){
 		return dispatch(switchToKeySubmissionSection());
@@ -289,27 +223,8 @@ export const changeMemberRegistrationSection = (section, leader=false) => {
     else if(section==="guildSelection"){
 		return dispatch(switchToGuildSelectionSection());
     }
-    else if(section==="loginCredentials"){
-    return dispatch(switchToLoginCredentialsSection());
-    }
     else{
-      if(leader){
-
-      }
-      else{
-        //queryParameters
-        /*fetch('/api/guilds/members', {
-          method: 'PUT',
-          headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          apiKey,
-          memberName
-        })
-      });*/
-		    return dispatch(switchToRegistrationSuccessSection());
-      }
+		return dispatch(switchToRegistrationSuccessSection());
     }
   }	
 };
@@ -365,59 +280,19 @@ export const getGuilds = guildId => {
   }	
 };
 export const CHANGE_SELECTED_GUILDS = 'CHANGE_SELECTED_GUILDS';
-export const changeSelectedGuilds = (selectedGuilds, nextArrowDisabled) => ({
+export const changeSelectedGuilds = selectedGuilds => ({
   type: CHANGE_SELECTED_GUILDS,
-  selectedGuilds,
-  nextArrowDisabled
+  selectedGuilds
 });
 
-/*export const selectGuild = (selectedGuilds, guild) => {
-  return dispatch => dispatch(changeSelectedGuilds([...selectedGuilds, guild], false));
+export const selectGuild = (selectedGuilds, guildId) => {
+  return dispatch => dispatch(changeSelectedGuilds([...selectedGuilds, guildId]));
 };
 
-export const deselectGuild = (selectedGuilds, guild) => {
+export const deselectGuild = (selectedGuilds, guildId) => {
   return dispatch => {
-    for(let i=0; i < selectedGuilds.length; i++){
-      if(selectedGuilds[i].guildId === guild.guildId){
-        selectedGuilds.splice(i, 1);
-        break;
-      }
-    }*/
-    /*const index = selectedGuilds.indexOf(guildId);
-    selectedGuilds.splice(index, 1);*/
-   /* if(selectedGuilds.length === 0)
-      return dispatch(changeSelectedGuilds(selectedGuilds, true));
-    else
-      return dispatch(changeSelectedGuilds(selectedGuilds, false));
-  } 
-};*/
-
-export const toggleGuild = (selectedGuilds, guilds, guildId) => {
-  return dispatch => {
-    for(let i=0; i < selectedGuilds.length; i++){
-      if(selectedGuilds[i].guildId === guildId){
-        selectedGuilds.splice(i, 1);
-
-        if(selectedGuilds.length === 0)
-          return dispatch(changeSelectedGuilds(selectedGuilds, true));
-        else
-          return dispatch(changeSelectedGuilds(selectedGuilds, false));
-        break;
-      }
-    }
-    let guild;
-    for(let j=0; j < guilds.length; j++){
-      if(guilds[j].guildId === guildId){
-        guild = guilds[j];
-        break;
-      }
-    }
-    /*const index = selectedGuilds.indexOf(guildId);
-    selectedGuilds.splice(index, 1);*/
-    /*if(selectedGuilds.length === 0)
-      return dispatch(changeSelectedGuilds(selectedGuilds, true));
-    else
-      return dispatch(changeSelectedGuilds(selectedGuilds, false));*/
-    return dispatch(changeSelectedGuilds([...selectedGuilds, guild], false));
+    const index = selectedGuilds.indexOf(guildId);
+    selectedGuilds.splice(index, 1);
+    return dispatch(changeSelectedGuilds(selectedGuilds));
   } 
 };

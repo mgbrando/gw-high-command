@@ -65,6 +65,14 @@ a.backButton{
 .leaderButtonContainer{
   margin-right: 5%;
 }
+.guildList:nth-child(2){
+  width: 100%;
+}
+.guildList div label.guildChoice{
+  width: 200px;
+  margin: 0 auto;
+  margin-left: auto !important;
+}
 /*.memberButtonContainer{
 
 }*/

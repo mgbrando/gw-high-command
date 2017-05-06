@@ -10,10 +10,10 @@ function RankSelection(props){
       <div className="RankSelection">
         <h2><span>What is your Rank?</span></h2>
         <div className="buttonContainer">
-          <Link to='login' className="leaderButtonContainer">
+          <Link to='/login' className="leaderButtonContainer">
             <button>Guild Leader</button>
           </Link>
-          <Link to='member-registration' className="memberButtonContainer">
+          <Link to='/registration/member' className="memberButtonContainer">
             <button>Guild Member</button>
           </Link>
         </div>
