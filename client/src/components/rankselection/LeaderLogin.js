@@ -24,30 +24,29 @@ class LeaderLogin extends Component {
 
   }
   getUsernameInput(event){
-    this.props.dispatch(actions.getUserNameInput(event.target.value));
+    this.props.dispatch(actions.getUsernameInput(event.target.value));
   }
   getPasswordInput(event){
     this.props.dispatch(actions.getPasswordInput(event.target.value));
   }
   authorizeGuildLeader(){
-    this.props.dispatch(actions.loginGuildLeader(this.props.userNameInput, this.props.passwordInput));
+    this.props.dispatch(actions.loginGuildLeader(this.props.usernameInput, this.props.passwordInput));
   }
 
-
+ /*       <div className="LeaderRegistrationHeader">
+          <h2>Login</h2>
+        </div>*/
 
   render() {
     return (
       <div className="LeaderLogin">
-        <Link to="/" className="backButton"><button type="button">Back</button></Link>
-        <div className="LeaderRegistrationHeader">
-          <h2>Login</h2>
-        </div>
         <UserNameAndPasswordForm
             type="login"
             getUsernameInput = {this.getUsernameInput}
             getPasswordInput = {this.getPasswordInput}
             onSubmit = {this.authorizeGuildLeader}
         />
+        <Link to="/registration/leader" className="leaderRegistrationButton">Register Leader</Link>
       </div>
     );
   }
@@ -56,7 +55,7 @@ class LeaderLogin extends Component {
 const mapStateToProps = (state, props) => ({
     isValidLeader: state.registrationAndLogin.isValidLeader,
     guilds: state.registrationAndLogin.memberGuilds,
-    userNameInput: state.registrationAndLogin.userNameInput,
+    usernameInput: state.registrationAndLogin.usernameInput,
     passwordInput: state.registrationAndLogin.passwordInput
 });
 

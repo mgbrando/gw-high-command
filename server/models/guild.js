@@ -9,16 +9,17 @@ const GuildSchema = mongoose.Schema({
     required: true,
     unique: true
   },
-  tasks: {
-    type: String,
-    required: true
-  },
+  name: {type: String, required: true},
+  tag: {type: String, required: true},
+  tasks: [{type: String, required: true}],
   members: [{handleName: {type: String, required: true}, apiKey: {type: String, required: true}}],
 });
 
 GuildSchema.methods.apiRepr = function() {
   return {
     id: this.id,
+    name: this.name,
+    tag: this.tag,
     tasks: this.tasks,
     members: this.members
   };

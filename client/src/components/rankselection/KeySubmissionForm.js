@@ -6,6 +6,7 @@ function KeySubmissionForm(props){
         <form onSubmit={event => {event.preventDefault(); props.validateAPIKey();}}>
           <div className="leftSide">
             <label htmlFor="memberApiKey">Enter your API Key</label>
+            <div className="error">{props.memberValidationMessage}</div>
             <input 
               id="memberApiKey" 
               type="text" 

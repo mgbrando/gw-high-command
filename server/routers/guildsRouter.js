@@ -27,8 +27,9 @@ router.get('/', jsonParser, (req, res) => {
 		Guild
 			//.find({id: {$in: { guildIds }}, members: { $elemMatch: {handleName: {$in: guildIds}}}})
 			.find({
-				id: {$in: guildIds}, 
-				members: { $elemMatch: {handleName: {$ne: memberName}}}
+					id: {$in: guildIds}, 
+					'members.handleName': {$ne: memberName}
+					//members: { $elemMatch: {handleName: {$ne: memberName}}}
 				},
 				{
     				"id": 1,
@@ -42,8 +43,8 @@ router.get('/', jsonParser, (req, res) => {
 					gIDs.push(guilds[i].id);
 				}
 				res.json({guilds: gIDs});
-			});
-			//.catch(error => res.status(500).json({message: 'Internal server error - '+error}));
+			})
+			.catch(error => res.status(500).json({message: 'Internal server error - '+error}));
 	}
 	else{
 		Guild
@@ -54,6 +55,21 @@ router.get('/', jsonParser, (req, res) => {
 			});
 	}
 
+});
+router.put('/bulk-update', jsonParser, (req, res) => {
+	if(!(req.body.memberName && req.body.apiKey && req.body.guildIds)){
+		const message = 'Request must contain the member handleName, the member API Key, and the guildIds to add the player to.';
+		console.error(message);
+		return res.status(400).json({message: message});
+ 	}
+	Guild
+		.update(
+			{id: {$in: req.body.guildIds}},
+		 	{ $push: { members: {handleName: req.body.memberName, apiKey: req.body.apiKey} } }
+		)
+		.exec()
+		.then(() => res.status(200).json({message: `Successfully added ${req.body.memberName} to guilds.`}))
+		.catch(err => res.status(500).json({message: err.message}));
 });
 router.post('/create-guilds', (req, res) => {
 

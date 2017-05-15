@@ -24,7 +24,15 @@ function RegistrationSuccess(props){
           <div className="leaderLoginCredentials">
             <p>{props.memberName} has been added to the list of registered leaders and can now view the details of the following guilds: </p>
             {guilds}
+          <div className="buttonContainer">
+            <Link to='/' className="memberButtonContainer">
+              <button>Return to Front Page</button>
+            </Link>
+            <Link to='/login' className="memberButtonContainer">
+              <button>Login as Leader</button>
+            </Link>
           </div>
+        </div>
         );
     }
     else{
@@ -32,6 +40,11 @@ function RegistrationSuccess(props){
           <div className="leaderLogin">
             <p>{props.memberName} has been added to the following guilds: {props.guilds[0].guildName}</p>
             {guilds}
+          <div className="buttonContainer">
+            <Link to='/' className="memberButtonContainer">
+              <button>Return to Front Page</button>
+            </Link>
+          </div>
           </div>
         );
     }

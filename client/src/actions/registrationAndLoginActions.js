@@ -19,23 +19,107 @@ export const getMemberRank = rank => {
 
 //User Name Input
 export const USERNAME_INPUT = 'USERNAME_INPUT';
-export const getUserNameInput = (usernameInput) => ({
+export const getUsernameInput = (usernameInput, invalidMessage = "", passwordDisabled = true, confirmPasswordDisabled = true, credentialsSubmitDisabled = true) => ({
 	type: USERNAME_INPUT,
-	usernameInput
+	usernameInput,
+  invalidMessage,
+  passwordDisabled,
+  confirmPasswordDisabled,
+  credentialsSubmitDisabled
 });
 
 //Password Input
 export const PASSWORD_INPUT = 'PASSWORD_INPUT';
-export const getPasswordInput = (passwordInput) => ({
+export const getPasswordInput = (passwordInput, invalidMessage = "", confirmPasswordDisabled = true) => ({
 	type: PASSWORD_INPUT,
-	passwordInput
+	passwordInput,
+  invalidMessage,
+  confirmPasswordDisabled
 });
+
+export const CONFIRM_PASSWORD_INPUT = 'CONFIRM_PASSWORD_INPUT';
+export const getConfirmPasswordInput = (confirmPasswordInput, invalidMessage = "", credentialsSubmitDisabled = true) => ({
+  type: CONFIRM_PASSWORD_INPUT,
+  confirmPasswordInput,
+  invalidMessage,
+  credentialsSubmitDisabled
+});
+
+export const SET_VALID_CREDENTIALS = 'SET_VALID_CREDENTIALS';
+export const setValidCredentials = (username, password, confirmPassword) => ({
+  type: SET_VALID_CREDENTIALS,
+  username,
+  password,
+  confirmPassword
+});
+
+export const SET_INVALID_CREDENTIALS = 'SET_INVALID_CREDENTIALS';
+export const setInvalidCredentials = () => ({
+  type: SET_INVALID_CREDENTIALS
+});
+
+export const registerGuildLeader = (username, password, confirmPassword, handleName, apiKey, guilds) => {
+  return dispatch => {
+    const validationErrors = ["", "", ""];
+    if(username.length >= 8 && password.length >= 8 && confirmPassword === password){
+      /*fetch('/api/leaders?username='+username)
+      .then(response => response.json())
+      .then(_response => {
+        if(_response.unique){*/
+          console.log(guilds);
+          fetch('/api/register', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            username,
+            password,
+            handleName,
+            apiKey,
+            guilds
+          })
+        })
+        .then((response) => {
+            if(!response.ok)
+              throw Error('Username already exists');
+            //if(response.status === 500){
+              //validationErrors[]
+            //  return dispatch(setInvalidCredentials());
+           // }
+            else
+              return dispatch(switchToRegistrationSuccessSection());
+            //console.log(message);
+            //return dispatch(setValidCredentials(username, password, confirmPassword));
+        })
+        .catch(err =>{
+          return dispatch(setInvalidCredentials());
+        //}
+        //validationErrors[0] = 'Username already exists';
+        //return dispatch(setInvalidCredentials(validationErrors));
+      });
+      //});      
+    }
+    else{
+      if(username.length <= 8){
+        validationErrors[0] = 'Invalid Username: must be at least 8 characters long';
+      }
+      if(password.length <= 8){
+        validationErrors[1] = 'Invalid password: must be at least 8 characters long';
+      }
+      if(confirmPassword <= 8 || confirmPassword !== password){
+        validationErrors[2] = 'Invalid confirmation: must be equal to the password field and be at least 8 characters long';
+      }
+      return dispatch(setInvalidCredentials(validationErrors));
+    }
+  }
+};
 
 //Member Key Validation
 export const VALIDATE_MEMBER_KEY_FAILURE = 'VALIDATE_MEMBER_KEY_FAILURE';
-export const validateMemberKeyError = (errorResponse) => ({
+export const validateMemberKeyError = (errorMessage) => ({
 	type: VALIDATE_MEMBER_KEY_FAILURE,
-	errorResponse
+	errorMessage
 });
 
 export const VALIDATE_MEMBER_KEY_SUCCESS = 'VALIDATE_MEMBER_KEY_SUCCESS';
@@ -46,9 +130,9 @@ export const validateMemberKeySuccess = (memberName, memberApiKey, memberGuildCh
 	memberGuildChoices
 });
 
-/*Array.prototype.diff = function(a) {
+Array.prototype.diff = function(a) {
     return this.filter(function(i) {return a.indexOf(i) < 0;});
-};*/
+};
 
 export const validateMemberAPIKey = access_token => {
   return dispatch => {
@@ -57,26 +141,32 @@ export const validateMemberAPIKey = access_token => {
     .then(response => response.json())
     .then(responseObject => {
     	memberGuilds = responseObject.guilds;
-    	if(Object.keys(responseObject) === 1)
-    		return dispatch(validateMemberKeyError(responseObject));
+      //if(responseObject.text === 'invalid key')
+      if(Object.keys(responseObject).length === 1)
+        return dispatch(validateMemberKeyError(responseObject.text));
+        //throw new Error(responseObject.text);
     	else{
     		let guildsQuery="";
     		for(let i=0; i < responseObject.guilds.length; i++){
     			guildsQuery+="guildids="+responseObject.guilds[i]+"&";
     		}
     		guildsQuery+="membername="+responseObject.name;
-    		fetch('http://localhost:8080/api/guilds?'+guildsQuery)
+    		fetch('/api/guilds?'+guildsQuery)
     		.then(response => response.json())
     		.then(_response => {
+          if(_response.guilds.length === 0){
+            return dispatch(validateMemberKeyError('This API Key is already associated with all of the registered guilds it is allowed.'));
+            //throw new Error('This API Key is already associated with all of the registered guilds it is allowed.');
+          }
     			/*if(_response.status === 500){
     				const errorMessage = _response.message;
     			}*/
     			//memberGuilds = memberGuilds.diff(_response.guilds);
     			return dispatch(validateMemberKeySuccess(responseObject.name, access_token, _response.guilds));//memberGuilds));
     		});
-    		//.catch(error => { const errorMessage = error;});
     	}
     });
+    //.catch(errorMessage => dispatch(validateMemberKeyError(errorMessage)));
   }	
 };
 
@@ -97,27 +187,34 @@ export const validateLeaderKeySuccess = (memberName, memberApiKey, memberGuildCh
 
 export const validateLeaderAPIKey = access_token => {
   return dispatch => {
-    let memberGuilds; 
+    let leaderGuilds; 
     fetch('https://api.guildwars2.com/v2/account?access_token='+access_token)
     .then(response => response.json())
     .then(responseObject => {
-      memberGuilds = responseObject.guilds;
-      if(Object.keys(responseObject) === 1 || !responseObject.guild_leader)
-        return dispatch(validateMemberKeyError(responseObject));
+      leaderGuilds = responseObject.guild_leader;
+      if(Object.keys(responseObject).length === 1)
+        return dispatch(validateMemberKeyError(responseObject.text));
+      else if(!responseObject.guild_leader){
+        return dispatch(validateMemberKeyError("API Key provided is not a Leader's API Key"));
+      }
       else{
-        let guildsQuery="";
+        let leadersQuery="";
         for(let i=0; i < responseObject.guild_leader.length; i++){
-          guildsQuery+="guildids="+responseObject.guild_leader[i]+"&";
+          leadersQuery+="guildids="+responseObject.guild_leader[i]+"&";
         }
-        guildsQuery+="membername="+responseObject.name;
-        fetch('http://localhost:8080/api/guilds?'+guildsQuery)
+        leadersQuery+="apikey="+access_token;
+        fetch('/api/leaders?'+leadersQuery)
         .then(response => response.json())
         .then(_response => {
+          leaderGuilds = leaderGuilds.diff(_response.guilds);
+          if(leaderGuilds.length === 0){
+            return dispatch(validateMemberKeyError('This API Key is already associated with all of the registered guilds it is allowed.'));
+            //throw new Error('This API Key is already associated with all of the registered guilds it is allowed.');
+          }
           /*if(_response.status === 500){
             const errorMessage = _response.message;
           }*/
-          //memberGuilds = memberGuilds.diff(_response.guilds);
-          return dispatch(validateMemberKeySuccess(responseObject.name, access_token, _response.guilds));//memberGuilds));
+          return dispatch(validateMemberKeySuccess(responseObject.name, access_token, leaderGuilds));//memberGuilds));
         });
         //.catch(error => { const errorMessage = error;});
       }
@@ -211,7 +308,7 @@ export const registerGuildLeaderFailure = error => ({
 	type: REGISTER_GUILD_LEADER_FAILURE
 });
 
-export const registerGuildLeader = (apiKey, userName, password) => {
+/*export const registerGuildLeader = (apiKey, userName, password) => {
   return dispatch => {
     fetch('http://localhost:8080/leaders', {
       method: 'POST',
@@ -230,36 +327,41 @@ export const registerGuildLeader = (apiKey, userName, password) => {
     })
     .catch(error => dispatch(registerGuildLeaderFailure(error)))
   }	
-};
+};*/
 
-export const LOGIN_GUILD_LEADER_SUCCESS = 'REGISTER_GUILD_LEADER_SUCCESS';
-export const loginGuildLeaderSuccess = (message) => ({
-	type: REGISTER_GUILD_LEADER_SUCCESS,
-	message
+export const LOGIN_GUILD_LEADER_SUCCESS = 'LOGIN_GUILD_LEADER_SUCCESS';
+export const loginGuildLeaderSuccess = data => ({
+	type: LOGIN_GUILD_LEADER_SUCCESS,
+	data
 });
 export const LOGIN_GUILD_LEADER_FAILURE = 'REGISTER_GUILD_LEADER_FAILURE';
-export const loginGuildLeaderFailure = error => ({
-	type: REGISTER_GUILD_LEADER_FAILURE
+export const loginGuildLeaderFailure = errorMessage => ({
+	type: LOGIN_GUILD_LEADER_FAILURE,
+  errorMessage
 });
 
-export const loginGuildLeader = (userName, password) => {
+export const loginGuildLeader = (username, password) => {
   return dispatch => {
-    fetch('http://localhost:8080/api/leaders', {
+    let formData = new FormData();
+    formData.append('username', username);
+    formData.append('password', password);
+    fetch('/api/login', {
       method: 'POST',
-      headers: {
+   /*   headers: {
         'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-      	//apiKey,
-        userName,
+      },*/
+     // credentials: 'include',
+     /* body: JSON.stringify({
+        username,
         password
-      })
+      })*/
+      body: formData
     })
     .then(response => response.json())
-    .then(() => {
-    	return dispatch(registerGuildLeaderSuccess('Successfully registered as a guild leader.'));
+    .then((_response) => {
+    	return dispatch(loginGuildLeaderSuccess('Successfully registered as a guild leader.'));
     })
-    .catch(error => dispatch(registerGuildLeaderFailure(error)))
+    .catch(error => dispatch(loginGuildLeaderFailure(error.message)))
   }	
 };
 
@@ -281,6 +383,31 @@ export const switchToLoginCredentialsSection = () => ({
   type: SWITCH_TO_LOGIN_CREDENTIALS
 });
 
+export const completeLeaderRegistration = (userName, password, leaderName, apiKey, guilds) => {
+
+}
+export const completeMemberRegistration = (memberName, apiKey, guilds) => {
+  return dispatch => {
+    let guildIds = [];
+    for(let i=0; i < guilds.length; i++)
+      guildIds.push(guilds[i].guildId);
+
+    fetch('/api/guilds/bulk-update', 
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          memberName,
+          apiKey,
+          guildIds
+        })
+      }
+    )
+    .then(reponseMessage => dispatch(switchToRegistrationSuccessSection()));
+  }
+}
 export const changeMemberRegistrationSection = (section, leader=false) => {
   return dispatch => {
     if(section==="keySubmission"){

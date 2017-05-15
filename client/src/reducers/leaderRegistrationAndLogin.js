@@ -1,4 +1,4 @@
-import * as actions from '../actions/leaderRegistrationAndLoginActions';
+/*import * as actions from '../actions/leaderRegistrationAndLoginActions';
 
 const initialRepositoryState = {
 	guildId: "",
@@ -87,4 +87,4 @@ const registrationAndLogin = (state=initialRepositoryState, action) => {
 	return state;
 };
 
-export default registrationAndLogin;
+export default registrationAndLogin;*/

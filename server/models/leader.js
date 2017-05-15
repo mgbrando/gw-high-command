@@ -19,14 +19,14 @@ const LeaderSchema = mongoose.Schema({
     required: true
   },
   apiKey: {type: String, required: true},
-  guildsIds: [{type: String, required: true}]
+  guildIds: [{type: String, required: true}]
 });
 
 LeaderSchema.methods.apiRepr = function() {
   return {
     handleName: this.handleName,
     apiKey: this.apiKey,
-    guildsIds: this.guildIds
+    guildIds: this.guildIds
   };
 }
 

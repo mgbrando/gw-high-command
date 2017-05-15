@@ -16,6 +16,9 @@ import './RankSelection.css';
 
 const previousIconButton = <FontIcon className="material-icons">Previous</FontIcon>;
 const nextIconButton = <FontIcon className="material-icons">Next</FontIcon>;
+const usernameRegex = "[a-zA-Z0-9]{8,}";
+//const passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$";
+const passwordRegex = "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$";
 
 class MemberRegistration extends Component {
 
@@ -43,20 +46,37 @@ class MemberRegistration extends Component {
     console.log(this.props.memberApiKeyInput);
     const apiKey = this.props.memberApiKeyInput.trim();
     if(this.props.isLeader)
-      this.props.validateLeaderAPIKey(apiKey);
+      this.props.dispatch(actions.validateLeaderAPIKey(apiKey));
     else
       this.props.dispatch(actions.validateMemberAPIKey(apiKey));
   }
   //New 3 things
-  getUsernameInput(event){
-    this.props.dispatch(actions.getUserNameInput(event.target.value));
+  getUsernameInput(event){ 
+    if (event.target.value.match(usernameRegex)) {
+      //this.setState({ errorText: '' })
+      this.props.dispatch(actions.getUsernameInput(event.target.value, "", false, false, false));
+    } 
+    else {
+      this.props.dispatch(actions.getUsernameInput(event.target.value, 'Username must be at least 8 characters long and be made of letters and digits only'));
+    }
   }
   getPasswordInput(event){
-    this.props.dispatch(actions.getPasswordInput(event.target.value));
+    if (event.target.value.match(passwordRegex)) {
+      this.props.dispatch(actions.getPasswordInput(event.target.value, "", false));
+    } 
+    else {
+      this.props.dispatch(actions.getPasswordInput(event.target.value, 'Password must be at least 8 characters long and contain 1 Uppercase letter, 1 lowercase letter, and 1 digit'));
+    }
   }
   getConfirmPasswordInput(event){
-    this.props.dispatch(actions.getConfirmPasswordInput(event.target.value));
+    if (event.target.value.match(passwordRegex) && event.target.value === this.props.passwordInput) {
+      this.props.dispatch(actions.getConfirmPasswordInput(event.target.value, "", false));
+    } 
+    else {
+      this.props.dispatch(actions.getConfirmPasswordInput(event.target.value, 'Confirm password does not currently match the password field.'));
+    }
   }
+  //passwordClick
   /*showGuilds(){
     if(this.props.isValidMember){
       this.props.dispatch(actions.memberGuildChoices(this.props.memberGuildIds))
@@ -78,19 +98,27 @@ class MemberRegistration extends Component {
   changeSection(section){
     //this.props.dispatch(actions.changeMemberRegistrationSection(this.props.memberRegistrationSection, section));
     if(section === "registrationSuccess"){
-      if(this.props.isLeader){
-        this.props.dispatch(actions.completeLeaderRegistration(section, true));
+      if(!this.props.isLeader){
+        this.props.dispatch(actions.completeMemberRegistration(this.props.memberName, this.props.memberApiKey, this.props.selectedMemberGuilds));
       }
       else{
-        this.props.dispatch(actions.completeMemberRegistration(section, true));
+        this.props.dispatch(actions.registerGuildLeader(this.props.usernameInput, this.props.passwordInput, this.props.confirmPasswordInput,
+        this.props.memberName, this.props.memberApiKey, this.props.selectedMemberGuilds));
+        /*this.props.dispatch(actions.completeLeaderRegistration(this.props.username, this.props.password, this.props.memberName, 
+                                                                          this.props.memberApiKey, this.props.selectedMemberGuilds));*/  
       }
+      /*else{
+     
+      }*/
       //this.props.dispatch(actions.changeMemberRegistrationSection(section, true));
     }
     else
       this.props.dispatch(actions.changeMemberRegistrationSection(section));
   }
-  registerGuildLeader(){
-    this.props.dispatch(actions.registerGuildLeader(this.props.userNameInput, this.props.passwordInput));
+  registerGuildLeader(event){
+    event.preventDefault();
+    this.props.dispatch(actions.registerGuildLeader(this.props.usernameInput, this.props.passwordInput, this.props.confirmPasswordInput,
+        this.props.memberName, this.props.memberApiKey, this.props.selectedMemberGuilds));
   }
   /*backToMain(){
     this.props.dispatch(actions.backToMain());
@@ -153,7 +181,7 @@ class MemberRegistration extends Component {
         </div>  
       );
     }
-    else if(this.props.memberRegistrationSection === "loginCredentials"){
+/*    else if(this.props.memberRegistrationSection === "loginCredentials"){
       return(
         <div className="MemberRegistration">
           <div className="MemberRegistrationHeader">
@@ -173,7 +201,7 @@ class MemberRegistration extends Component {
           />
         </div>  
       );
-    }
+    }*/
     else if(this.props.memberRegistrationSection === "loginCredentials"){
       return(
         <div className="MemberRegistration">
@@ -185,14 +213,23 @@ class MemberRegistration extends Component {
             getUsernameInput = {this.getUsernameInput}
             getPasswordInput = {this.getPasswordInput}
             getConfirmPasswordInput = {this.getConfirmPasswordInput}
-            onSubmit={this.registerGuildLeader}
+            usernameErrorMessage={this.props.usernameErrorMessage}
+            passwordErrorMessage={this.props.passwordErrorMessage}
+            confirmPasswordErrorMessage={this.props.confirmPasswordErrorMessage}
+            registerGuildLeader={this.registerGuildLeader}
+            passwordDisabled={this.props.passwordDisabled}
+            confirmPasswordDisabled={this.props.confirmPasswordDisabled}
+            credentialsSubmitDisabled={this.props.credentialsSubmitDisabled}
+            usernameValue={this.props.usernameInput}
+            passwordValue={this.props.passwordInput}
+            confirmPasswordValue={this.props.confirmPasswordInput}
           />
         <SectionNavigation 
             previous={true} 
             next={true} 
             nextButtonDisabled={this.props.nextButtonDisabled}
             changeSection={this.changeSection}
-            previousSection="keySubmission"
+            previousSection="guildSelection"
             nextSection="registrationSuccess"
           />
         </div>  
@@ -204,7 +241,12 @@ class MemberRegistration extends Component {
           <div className="MemberRegistrationHeader">
             <h2>Registration</h2>
           </div>
-          <KeySubmissionForm apiKey={this.props.memberApiKey} getAPIKeyInput={this.getAPIKeyInput} validateAPIKey={this.validateAPIKey}/>
+          <KeySubmissionForm 
+            apiKey={this.props.memberApiKey} 
+            getAPIKeyInput={this.getAPIKeyInput} 
+            validateAPIKey={this.validateAPIKey}
+            memberValidationMessage={this.props.memberValidationMessage}
+          />
           <SectionNavigation 
             previous={false} 
             next={true} 
@@ -271,12 +313,22 @@ const mapStateToProps = (state, props) => ({
     memberApiKeyInput: state.registrationAndLogin.memberApiKeyInput,
     //memberRegistrationComplete: state.memberRegistrationComplete,
     nextButtonDisabled: state.registrationAndLogin.nextButtonDisabled,
-    userNameInput: state.registrationAndLogin.userNameInput,
+    usernameInput: state.registrationAndLogin.usernameInput,
     passwordInput: state.registrationAndLogin.passwordInput,
-    confirmPasswordInput: state. registrationAndLogin.confirmPasswordInput,
+    confirmPasswordInput: state.registrationAndLogin.confirmPasswordInput,
     memberName: state.registrationAndLogin.memberName,
-    guilds: state.registrationAndLogin.guilds
+    guilds: state.registrationAndLogin.guilds,
+    memberValidationMessage: state.registrationAndLogin.memberValidationMessage,
+    //credentialsSubmitDisabled: state.registrationAndLogin.credentialsSubmitDisabled,
+    validationErrors: state.registrationAndLogin.validationErrors,
     //previousButtonDisabled: state.previousButtonDisabled
+    passwordDisabled: state.registrationAndLogin.passwordDisabled,
+    confirmPasswordDisabled: state.registrationAndLogin.confirmPasswordDisabled,
+    credentialsSubmitDisabled: state.registrationAndLogin.credentialsSubmitDisabled,
+    usernameErrorMessage: state.registrationAndLogin.usernameErrorMessage,
+    passwordErrorMessage: state.registrationAndLogin.passwordErrorMessage,
+    confirmPasswordErrorMessage: state.registrationAndLogin.confirmPasswordErrorMessage
+    //passwordValue: state.registrationAndLogin.passwordValue
 });
 
 export default connect(mapStateToProps)(MemberRegistration);

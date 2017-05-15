@@ -13,34 +13,59 @@ const initialRepositoryState = {
 	memberName: "",
 	isValidLeader: false,
 	leaderApiKey: "",
-	userInput: "",
-	userPassword: "",
-	memberValidationMessage: {},
+	usernameInput: "",
+	passwordInput: "",
+	confirmPasswordInput: "",
+	memberValidationMessage: "",
 	addMemberMessage: {},
 	leaderValidationMessage: {},
 	registerGuildLeaderMessage: {},
 	nextButtonDisabled: true,
 	memberRegistrationSection: "keySubmission",
 	guilds: [],
-	getGuildErrorMessage: ""
+	getGuildErrorMessage: "",
+	//credentialsSubmitDisabled: true,
+	usernameErrorMessage: "",
+	passwordErrorMessage: "",
+	confirmPasswordErrorMessage: "",
+	//validationErrors: ["", "", ""],
+	passwordDisabled: true,
+    confirmPasswordDisabled: true,
+    credentialsSubmitDisabled: true,
+    //usernameTakenError: ""
+    //passwordValue: "", 
+    //confirmPasswordValue: ""
 };
 
 const registrationAndLogin = (state=initialRepositoryState, action) => {
 	if(action.type === actions.USERNAME_INPUT){
-		return Object.assign({}, state, {input: action.usernameInput});
+		return Object.assign({}, state, {usernameInput: action.usernameInput, usernameErrorMessage: action.invalidMessage,
+		 passwordDisabled: action.passwordDisabled, passwordInput: "", confirmPasswordInput: "", confirmPasswordDisabled: true, nextButtonDisabled: true});
 	}
 	else if(action.type === actions.SET_RANK){
 		return Object.assign({}, state, {isLeader: action.isLeader});
 	}
 	else if(action.type === actions.PASSWORD_INPUT){
-		return Object.assign({}, state, {input: action.passwordInput});
+		return Object.assign({}, state, {passwordInput: action.passwordInput, passwordErrorMessage: action.invalidMessage, 
+			confirmPasswordDisabled: action.confirmPasswordDisabled, nextButtonDisabled: true, confirmPasswordInput: ""});
+	}
+	else if(action.type === actions.CONFIRM_PASSWORD_INPUT){
+		return Object.assign({}, state, {confirmPasswordInput: action.confirmPasswordInput, confirmPasswordErrorMessage: action.invalidMessage, 
+			nextButtonDisabled: action.credentialsSubmitDisabled});
 	}
 	else if(action.type === actions.VALIDATE_MEMBER_KEY_SUCCESS){
 		return Object.assign({}, state, {memberName: action.memberName, memberApiKey: action.memberApiKey, memberValidationMessage: 'API key is Valid', 
 			isValidMember: true, memberGuildChoices: action.memberGuildChoices, nextButtonDisabled: false});
 	}
 	else if(action.type === actions.VALIDATE_MEMBER_KEY_FAILURE){
-		return Object.assign({}, state, {memberValidationMessage: action.errorResponse.error, isValidMember: false});
+		return Object.assign({}, state, {memberValidationMessage: action.errorMessage, isValidMember: false});
+	}
+	else if(action.type === actions.SET_VALID_CREDENTIALS){
+		return Object.assign({}, state, {usernameInput: action.username, passwordInput: action.password, confirmPasswordInput: action.confirmPassword, nextButtonDisabled: false});
+	}
+	else if(action.type === actions.SET_INVALID_CREDENTIALS){
+		return Object.assign({}, state, {usernameInput: "", usernameErrorMessage: 'Username: '+state.usernameInput+' is already taken',
+		 passwordDisabled: true, passwordInput: "", confirmPasswordInput: "", confirmPasswordDisabled: true, nextButtonDisabled: true});
 	}
 	else if(action.type === actions.ADD_MEMBER_SUCCESS){
 		return Object.assign({}, state, {addMemberMessage: {type: 'success', message:action.message}});
