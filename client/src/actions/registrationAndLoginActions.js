@@ -330,9 +330,9 @@ export const registerGuildLeaderFailure = error => ({
 };*/
 
 export const LOGIN_GUILD_LEADER_SUCCESS = 'LOGIN_GUILD_LEADER_SUCCESS';
-export const loginGuildLeaderSuccess = data => ({
+export const loginGuildLeaderSuccess = user => ({
 	type: LOGIN_GUILD_LEADER_SUCCESS,
-	data
+	user
 });
 export const LOGIN_GUILD_LEADER_FAILURE = 'REGISTER_GUILD_LEADER_FAILURE';
 export const loginGuildLeaderFailure = errorMessage => ({
@@ -342,28 +342,51 @@ export const loginGuildLeaderFailure = errorMessage => ({
 
 export const loginGuildLeader = (username, password) => {
   return dispatch => {
-    let formData = new FormData();
+    /*let formData = new FormData();
     formData.append('username', username);
-    formData.append('password', password);
+    formData.append('password', password);*/
     fetch('/api/login', {
       method: 'POST',
-   /*   headers: {
+      headers: {
         'Content-Type': 'application/json'
-      },*/
-     // credentials: 'include',
-     /* body: JSON.stringify({
+      },
+     credentials: 'same-origin',
+     body: JSON.stringify({
         username,
         password
-      })*/
-      body: formData
+      })
+      //body: formData
     })
     .then(response => response.json())
-    .then((_response) => {
-    	return dispatch(loginGuildLeaderSuccess('Successfully registered as a guild leader.'));
-    })
-    .catch(error => dispatch(loginGuildLeaderFailure(error.message)))
+    .then((_response) => dispatch(authenticationCleared(_response.user, _response.message)))
+    .catch(error => dispatch(authenticationFailed(error.message)))
   }	
 };
+
+export const AUTHENTICATION_CLEARED = 'AUTHENTICATION_CLEARED';
+export const authenticationCleared = (user, welcomeMessage) => ({
+  type: AUTHENTICATION_CLEARED,
+  welcomeMessage
+});
+
+export const AUTHENTICATION_FAILED = 'AUTHENTICATION_FAILED';
+export const authenticationFailed = (errorMessage) => ({
+  type: AUTHENTICATION_FAILED,
+  errorMessage
+});
+
+export const checkAuthentication = () => {
+  return dispatch => {
+    fetch('/api/authorization', {credentials: 'same-origin'})
+    .then(response => {
+      if(response.status === 200){
+        return dispatch(authenticationCleared(response.user, response.message));
+      }
+      else
+        return dispatch(authenticationFailed(response.errorMessage));
+    });
+  }
+}
 
 export const SWITCH_TO_REGISTRATION_SUCCESS = 'SWITCH_TO_REGISTRATION_SUCCESS';
 export const switchToRegistrationSuccessSection = () => ({

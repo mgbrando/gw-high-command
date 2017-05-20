@@ -4,6 +4,8 @@ import UserNameAndPasswordForm from './UserNameAndPasswordForm';
 import './RankSelection.css';
 import {Link} from 'react-router';
 import * as actions from '../../actions/registrationAndLoginActions';
+import { browserHistory, Redirect } from 'react-router';
+
 
 class LeaderLogin extends Component {
 
@@ -32,12 +34,22 @@ class LeaderLogin extends Component {
   authorizeGuildLeader(){
     this.props.dispatch(actions.loginGuildLeader(this.props.usernameInput, this.props.passwordInput));
   }
-
+  componentWillReceiveProps(nextProps){
+    console.log(nextProps);
+    if(nextProps.isAuthenticated){
+      //browserHistory.push('/dashboard');
+      this.props.history.push('/dashboard');
+    }
+  }
  /*       <div className="LeaderRegistrationHeader">
           <h2>Login</h2>
         </div>*/
 
   render() {
+    if (this.props.isAuthenticated) {
+      return (<Redirect to="/dashboard" push />);
+    }
+    else{
     return (
       <div className="LeaderLogin">
         <UserNameAndPasswordForm
@@ -50,10 +62,11 @@ class LeaderLogin extends Component {
       </div>
     );
   }
+  }
 }
 
 const mapStateToProps = (state, props) => ({
-    isValidLeader: state.registrationAndLogin.isValidLeader,
+    isAuthenticated: state.registrationAndLogin.isAuthenticated,
     guilds: state.registrationAndLogin.memberGuilds,
     usernameInput: state.registrationAndLogin.usernameInput,
     passwordInput: state.registrationAndLogin.passwordInput

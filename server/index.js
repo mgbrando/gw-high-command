@@ -11,38 +11,50 @@ passport.use(new LocalStrategy(
   function(username, password, done) {
     Leader.findOne({ username: username }, function (err, user) {
       if (err) { return done(err); }
-      if (!leader) {
+      if (!user) {
         return done(null, false, { message: 'Incorrect username.' });
       }
-      if (!leader.validatePassword(password)) {
+      if (!user.validatePassword(password)) {
         return done(null, false, { message: 'Incorrect password.' });
       }
-      return done(null, leader);
+      console.log('User: '+user);
+      console.log('Repr: '+user);
+      return done(null, user);
     });
   }
 ));
 
-passport.serializeUser(function(leader, done) {
-  done(null, leader.id);
+passport.serializeUser(function(user, done) {
+  console.log('line 26: serialize '+ user._id);
+  done(null, user._id);
 });
 
 passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, leader) {
-    done(err, leader);
+  console.log('Line 30, id: '+ id);
+  Leader.findById(id, function(err, user) {
+    done(err, user);
   });
 });
 
 const app = express();
-app.use(cookieParser());
+app.use(cookieParser('keyboard cat'));
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(bodyParser.json());
+
+const cookieExpirationDate = new Date();
+const cookieExpirationDays = 365;
+cookieExpirationDate.setDate(cookieExpirationDate.getDate() + cookieExpirationDays);
 app.use(session({ secret: 'keyboard cat',
                  saveUninitialized: true,
-                 resave: true}));
-app.use(passport.initialize());
-app.use(passport.session());
+                 resave: true,
+                 cookie: {
+                    httpOnly: true,
+                    expires: cookieExpirationDate, // use expires instead of maxAge
+                    secure: false
+                }
+             }));
 app.use(passport.initialize());
 app.use(passport.session());
 //
@@ -74,6 +86,7 @@ const membersRouter = require('./routers/membersRouter');
 const teamsRouter = require('./routers/teamsRouter');
 const leadersRouter = require('./routers/leadersRouter');
 const loginRouter = require('./routers/loginRouter');
+const authorizationRouter = require('./routers/authorizationRouter');
 const memberRegistrationRouter = require('./routers/memberRegistrationRouter');
 const leaderRegistrationRouter = require('./routers/leaderRegistrationRouter');
 const registrationRouter = require('./routers/registrationRouter');
@@ -85,6 +98,7 @@ const mongoose = require('mongoose');
 // API endpoints go here!
 app.use('/api/member-registration', memberRegistrationRouter);
 app.use('/api/leader-registration', leaderRegistrationRouter);
+app.use('/api/authorization', authorizationRouter(passport));
 /*app.use('/api/login', loginRouter);
 app.use('/api/tasks', tasksRouter);*/
 app.use('/api/login', loginRouter(passport));

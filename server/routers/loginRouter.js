@@ -74,29 +74,35 @@ router.use(jsonParser);
   });*/
 
 module.exports = function(passport){
-
+try{
   router.post('/', passport.authenticate('local'), function(req, res, next) {
-    passport.authenticate('local', function(err, leader, info) {
-      console.log('Line 80 '+err);
-      if (err) {
+      console.log('Line 80 ');
+      /*if (err) {
         return next(err);
-      }
-      if (!leader) {
+      }*/
+      console.log('Req.user line 83' + req.user);
+      if (!req.user) {
+        console.log('Req.user line 85' + req.user);
         return res.status(401).json({error: info.message});
       }
-      req.login(leader, loginErr => {
+      req.login(req.user, loginErr => {
         if (loginErr) {
+          console.log('Req.user line 90' + req.user);
           return res.status(401).json({error: loginErr});
         }
         return res.status(200).json({
-          leader: req.leader.apiRepr(),
+          user: req.user.apiRepr(),
           message: `Welcome ${req.user.username}!`
         });
       });
-    })(req, res, next);
   });
 
   return router;
+}
+catch(error){
+  console.log(error);
+  throw error;
+}
 }
 
 //module.exports = router;

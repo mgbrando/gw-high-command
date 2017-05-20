@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import {routerReducer} from 'react-router-redux';
 import guild from './guild';
 import registrationAndLogin from './registrationAndLogin';
 import leaderRegistrationAndLogin from './leaderRegistrationAndLogin';
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
   activities,
   navigation,
   teams,
-  members
+  members,
+  router: routerReducer
 });
 
 export default rootReducer;

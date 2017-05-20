@@ -35,6 +35,10 @@ const initialRepositoryState = {
     //usernameTakenError: ""
     //passwordValue: "", 
     //confirmPasswordValue: ""
+    activeUser: {},
+    authorizationErrorMessage: "",
+    isAuthenticated: false,
+    authorizationChecked: false
 };
 
 const registrationAndLogin = (state=initialRepositoryState, action) => {
@@ -115,6 +119,18 @@ const registrationAndLogin = (state=initialRepositoryState, action) => {
 	else if(action.type === actions.CHANGE_SELECTED_GUILDS){
 		//console.log(action.apiKey);
 		return Object.assign({}, state, {selectedMemberGuilds: action.selectedGuilds, nextButtonDisabled: action.nextArrowDisabled});
+	}
+	/*else if(action.type=== actions.LOGIN_GUILD_LEADER_SUCCESS){
+		return Object.assign({}, state, {selectedMemberGuilds: action.selectedGuilds, nextButtonDisabled: action.nextArrowDisabled});
+	}
+	else if(action.type=== actions.LOGIN_GUILD_LEADER_FAILURE){
+		return Object.assign({}, state, {selectedMemberGuilds: action.selectedGuilds, nextButtonDisabled: action.nextArrowDisabled});
+	}*/
+	else if(action.type=== actions.AUTHENTICATION_CLEARED){
+		return Object.assign({}, state, {isAuthenticated: true, authorizationChecked: true, activeUser: action.user, welcomeMessage: action.welcomeMessage});
+	}
+	else if(action.type=== actions.AUTHENTICATION_FAILED){
+		return Object.assign({}, state, {isAuthenticated: false, authorizationChecked: true, authorizationErrorMessage: action.errorMessage});
 	}
 	return state;
 };
