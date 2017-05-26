@@ -13,7 +13,9 @@ import GuildMembers from './private/members/GuildMembers';
 import GuildTeams from './private/teams/GuildTeams';
 import Authorization from './Authorization';
 import {ConnectedRouter} from 'react-router-redux';
+//import {withRouter} from 'react-router';
 
+//{ /* ConnectedRouter will use the store from Provider automatically */ }
 const Root = ({store, history}) => (
 	<MuiThemeProvider>
   		<Provider store={store}>

@@ -14,6 +14,7 @@ import 'typeface-roboto';
 //import { browserHistory } from 'react-router';
 //export const history = browserHistory;
 console.log('index.js: '+history);
+
 injectTapEventPlugin();
 //hashHistory vs browserHistory
 //import ContactListContainer from './components/contact-list-container';

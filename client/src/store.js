@@ -9,5 +9,5 @@ import {routerMiddleware} from 'react-router-redux';
 export const history = createHistory();
 console.log('store.js: '+history);
 const middleWare=[routerMiddleware(history), thunk];
-
-export default createStore(rootReducer, applyMiddleware(...middleWare));
+const store = createStore(rootReducer, applyMiddleware(...middleWare));
+export default store;
