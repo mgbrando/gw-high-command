@@ -17,13 +17,13 @@ class Authorization extends Component {
 
 	render(){
     if(this.props.isAuthenticated){
-        return (<Redirect to="/dashboard"/>);
+        return (<Redirect to="/dashboard" />);
     }
     else if(!this.props.authorizationChecked){
       this.props.dispatch(actions.checkAuthentication());
     }
     else{
-        return(<Redirect to="/login"/>);
+        return (<Redirect to="/login" />);
     }
 	}
 }

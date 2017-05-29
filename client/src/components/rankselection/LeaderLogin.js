@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import UserNameAndPasswordForm from './UserNameAndPasswordForm';
 import './RankSelection.css';
-import {Link} from 'react-router';
+import {Link} from 'react-router-dom';
 import * as actions from '../../actions/registrationAndLoginActions';
 import { browserHistory, Redirect } from 'react-router';
 
@@ -34,13 +34,13 @@ class LeaderLogin extends Component {
   authorizeGuildLeader(){
     this.props.dispatch(actions.loginGuildLeader(this.props.usernameInput, this.props.passwordInput));
   }
-  componentWillReceiveProps(nextProps){
+  /*componentWillReceiveProps(nextProps){
     console.log(nextProps);
     if(nextProps.isAuthenticated){
       //browserHistory.push('/dashboard');
-      this.props.history.push('/dashboard');
+      this.props.history.push('/authorization');
     }
-  }
+  }*/
  /*       <div className="LeaderRegistrationHeader">
           <h2>Login</h2>
         </div>*/

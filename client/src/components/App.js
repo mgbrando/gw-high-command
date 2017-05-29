@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
+import {BrowserRouter, Route} from 'react-router-dom';
+import { Switch } from 'react-router';
 import {connect} from 'react-redux';
 import RankSelection from './rankselection/RankSelection';
 import MemberRegistration from './rankselection/MemberRegistration.js';
 import Guild from './private/guild/Guild';
 import GuildMembers from './private/members/GuildMembers';
 import { Provider } from 'react-redux';
+import LeaderLogin from './rankselection/LeaderLogin';
+import Dashboard from './private/Dashboard';
+import Authorization from './private/Authorization';
 //import GuildTeams from './members/GuildTeams';
 import './App.css';
 
@@ -28,7 +33,7 @@ class App extends Component {
       case "rankSelection":
         return (<RankSelection getPage={this.getPage()} />);
         break;
-/*      case "guild":
+/*    case "guild":
         return (<Guild getPage={this.getPage} />);
         break;
       case "guildMembers":
@@ -64,7 +69,13 @@ class App extends Component {
           <h2>GW2 High Command</h2>
         </div>
         <main>
-          {this.props.children}
+          <Switch>
+            <Route exact path='/' component={RankSelection}/>
+            <Route exact path='/registration/:rank' component={MemberRegistration}/>
+            <Route exact path='/login' component={LeaderLogin}/>
+            <Route path='/authorization' component={Authorization} />
+            <Route path='/dashboard' component={Dashboard} />
+          </Switch>
         </main>
       </div>
     );

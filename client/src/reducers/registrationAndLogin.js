@@ -127,10 +127,14 @@ const registrationAndLogin = (state=initialRepositoryState, action) => {
 		return Object.assign({}, state, {selectedMemberGuilds: action.selectedGuilds, nextButtonDisabled: action.nextArrowDisabled});
 	}*/
 	else if(action.type=== actions.AUTHENTICATION_CLEARED){
-		return Object.assign({}, state, {isAuthenticated: true, authorizationChecked: true, activeUser: action.user, welcomeMessage: action.welcomeMessage});
+		console.log(action.user.username);
+		return Object.assign({}, state, {isAuthenticated: true, authorizationChecked: true, activeUser: action.user});
 	}
 	else if(action.type=== actions.AUTHENTICATION_FAILED){
 		return Object.assign({}, state, {isAuthenticated: false, authorizationChecked: true, authorizationErrorMessage: action.errorMessage});
+	}
+	else if(action.type === actions.LOGOUT_USER){
+		return Object.assign({}, state, {isAuthenticated: false, authorizationChecked: true, activeUser: {}});
 	}
 	return state;
 };

@@ -67,10 +67,22 @@ function UserNameAndPasswordForm(props){
           <div className="leaderLogin">
             <h2>Login</h2>
             <form className="userNameAndPasswordForm" onSubmit={(event) => {event.preventDefault(); props.onSubmit();}}>
-          		<label htmlFor="loginUserName">Username</label>
-          		<input id="loginUserName" type="text" name="loginUserName" onChange={props.getUsernameInput} required />
-          		<label htmlFor="loginPassword">Password</label>
-          		<input id="loginPassword" type="password" name="loginPassword" onChange={props.getPasswordInput} required />
+                <TextField
+                  floatingLabelText="Username"
+                  floatingLabelFixed={true}
+                  errorText={props.usernameErrorMessage}
+                  onChange={props.getUsernameInput}
+                  value={props.usernameValue}
+                />
+                <TextField
+                  type="password"
+                  floatingLabelText="Password"
+                  floatingLabelFixed={true}
+                  errorText={props.passwordErrorMessage}
+                  onChange={props.getPasswordInput}
+                  disabled={props.passwordDisabled}
+                  value={props.passwordValue}
+                />
           		<button type="submit">Submit</button>
             </form>
           </div>

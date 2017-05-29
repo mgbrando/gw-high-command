@@ -1,6 +1,8 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import {BrowserRouter, Route} from 'react-router-dom';
+import { Switch } from 'react-router';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import App from './App';
 import RankSelection from './rankselection/RankSelection';
@@ -12,29 +14,31 @@ import Guild from './private/guild/Guild';
 import GuildMembers from './private/members/GuildMembers';
 import GuildTeams from './private/teams/GuildTeams';
 import Authorization from './Authorization';
-import {ConnectedRouter} from 'react-router-redux';
+//import {ConnectedRouter} from 'react-router-redux';
 //import {withRouter} from 'react-router';
 
 //{ /* ConnectedRouter will use the store from Provider automatically */ }
 const Root = ({store, history}) => (
-	<MuiThemeProvider>
-  		<Provider store={store}>
-  			<ConnectedRouter history={history}>
-    			<Route path="/" component={App}>
-    				<IndexRoute component={RankSelection}/>
-    				<Route path='/registration/:rank' component={MemberRegistration}></Route>
-    				<Route path="/login" component={LeaderLogin}></Route>
-            <Route component={Authorization}>
-              <Route path='/dashboard' component={Dashboard}>
-                <Route path="/guild" component={Guild}></Route>
-                <Route path="/members" component={GuildMembers}></Route>
-                <Route path="/teams" component={GuildTeams}></Route>
+  <Provider store={store}>
+	  <MuiThemeProvider>
+        <BrowserRouter history={history}>
+          <div>
+            <Route path="/" component={App}>
+              <Route component={RankSelection}/>
+              <Route path='/registration/:rank' component={MemberRegistration}></Route>
+              <Route path="/login" component={LeaderLogin}></Route>
+              <Route component={Authorization}>
+                <Route path='/dashboard' component={Dashboard}>
+                  <Route path="/guild" component={Guild}></Route>
+                  <Route path="/members" component={GuildMembers}></Route>
+                  <Route path="/teams" component={GuildTeams}></Route>
+                </Route>
               </Route>
             </Route>
-    			</Route>
-  			</ConnectedRouter>
-  		</Provider>
+          </div>
+        </BrowserRouter>
   	</MuiThemeProvider>
+  </Provider>
 );
 /*<Route path="/leader-registration" component={LeaderRegistration}></Route>*/
 /*    					<Route path="/apikey-submission" component={KeySubmissionForm}></Route>

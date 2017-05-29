@@ -36,7 +36,7 @@ class MemberRegistration extends Component {
     this.registerGuildLeader = this.registerGuildLeader.bind(this);
   }
   componentWillMount(){
-    this.props.dispatch(actions.getMemberRank(this.props.params.rank));
+    this.props.dispatch(actions.getMemberRank(this.props.match.params.rank));
   }
   validateAPIKey(){
     /*action to check for an account with the apiKey and the store the api key

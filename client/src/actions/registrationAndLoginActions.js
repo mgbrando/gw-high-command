@@ -328,7 +328,17 @@ export const registerGuildLeaderFailure = error => ({
     .catch(error => dispatch(registerGuildLeaderFailure(error)))
   }	
 };*/
+export const LOGOUT_USER = 'LOGOUT_USER';
+export const logOutUser = () => ({
+  type: LOGOUT_USER
+});
 
+export const userLogOut = () => {
+  return dispatch => {
+    fetch('/api/logout')
+    .then(() => dispatch(logOutUser()));
+  }
+}
 export const LOGIN_GUILD_LEADER_SUCCESS = 'LOGIN_GUILD_LEADER_SUCCESS';
 export const loginGuildLeaderSuccess = user => ({
 	type: LOGIN_GUILD_LEADER_SUCCESS,
@@ -358,15 +368,16 @@ export const loginGuildLeader = (username, password) => {
       //body: formData
     })
     .then(response => response.json())
-    .then((_response) => dispatch(authenticationCleared(_response.user, _response.message)))
+    .then((_response) => dispatch(authenticationCleared(_response.user)))
     .catch(error => dispatch(authenticationFailed(error.message)))
   }	
 };
 
 export const AUTHENTICATION_CLEARED = 'AUTHENTICATION_CLEARED';
-export const authenticationCleared = (user, welcomeMessage) => ({
+export const authenticationCleared = (user) => ({
   type: AUTHENTICATION_CLEARED,
-  welcomeMessage
+  user
+  //welcomeMessage
 });
 
 export const AUTHENTICATION_FAILED = 'AUTHENTICATION_FAILED';
@@ -379,11 +390,20 @@ export const checkAuthentication = () => {
   return dispatch => {
     fetch('/api/authorization', {credentials: 'same-origin'})
     .then(response => {
-      if(response.status === 200){
-        return dispatch(authenticationCleared(response.user, response.message));
-      }
+      if(response.status === 401)
+        throw new Error('User not authenticated');
+      else if(response.status !== 200)
+        throw new Error('Internal service error');
       else
-        return dispatch(authenticationFailed(response.errorMessage));
+        return response.json();
+    })
+    .then(_response => {
+      console.log("CHECKED: "+_response.user.username);
+      return dispatch(authenticationCleared(_response.user));        
+    })
+    .catch((error) => {
+      console.log(error.message);
+      return dispatch(authenticationFailed(error.message));
     });
   }
 }

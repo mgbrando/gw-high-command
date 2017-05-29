@@ -7,7 +7,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const {Leader} = require('./models/leader');
 
-passport.use(new LocalStrategy(
+passport.use('local', new LocalStrategy(
   function(username, password, done) {
     Leader.findOne({ username: username }, function (err, user) {
       if (err) { return done(err); }
@@ -46,13 +46,16 @@ app.use(bodyParser.json());
 const cookieExpirationDate = new Date();
 const cookieExpirationDays = 365;
 cookieExpirationDate.setDate(cookieExpirationDate.getDate() + cookieExpirationDays);
-app.use(session({ secret: 'keyboard cat',
-                 saveUninitialized: true,
-                 resave: true,
+app.use(session({ name: 'gw2highcommand',
+                 secret: 'keyboard cat',
+                 saveUninitialized: false,
+                 resave: false,
                  cookie: {
-                    httpOnly: true,
-                    expires: cookieExpirationDate, // use expires instead of maxAge
-                    secure: false
+ //                     httpOnly: ,
+//                    expires: cookieExpirationDate, // use expires instead of maxAge
+//                    secure: false
+                      secure: false,
+                      maxAge: (4 * 60 * 60 * 1000)
                 }
              }));
 app.use(passport.initialize());
@@ -86,6 +89,7 @@ const membersRouter = require('./routers/membersRouter');
 const teamsRouter = require('./routers/teamsRouter');
 const leadersRouter = require('./routers/leadersRouter');
 const loginRouter = require('./routers/loginRouter');
+const logoutRouter = require('./routers/logoutRouter');
 const authorizationRouter = require('./routers/authorizationRouter');
 const memberRegistrationRouter = require('./routers/memberRegistrationRouter');
 const leaderRegistrationRouter = require('./routers/leaderRegistrationRouter');
@@ -102,59 +106,12 @@ app.use('/api/authorization', authorizationRouter(passport));
 /*app.use('/api/login', loginRouter);
 app.use('/api/tasks', tasksRouter);*/
 app.use('/api/login', loginRouter(passport));
+app.use('/api/logout', logoutRouter(passport));
 app.use('/api/leaders', leadersRouter);
 app.use('/api/guilds', guildsRouter);
 app.use('/api/register', registrationRouter);
 /*app.use('/api/members', membersRouter);
 app.use('/api/teams', teamsRouter);*/
-/*app.use('*', (req, res) => {
-    res.status(404).json({message: 'Not Found'});
-});*/
-
-//app.use(bodyParser.urlencoded({extended: false}));
-/*app.use(session({secret: 'anystringoftext',
-                 saveUninitialized: true,
-                 resave: true}));*/
-//app.use(cookieParser());
-
-
-/*app.use(passport.initialize());
-app.use(passport.session());
-
-const localStrategy = new LocalStrategy(function(username, password, callback) {
-  console.log('strategy start', username, password);
-  let user;
-  Leader
-    .findOne({username: username})
-    .exec()
-    .then(_user => {
-      user = _user;
-      if (!user) {
-        return callback(null, false, {message: 'Incorrect username or password'});
-      }
-      return user.validatePassword(password);
-    })
-    .then(isValid => {
-      if (!isValid) {
-        return callback(null, false, {message: 'Incorrect username or password'});
-      }
-      else {
-        return callback(null, user)
-      }
-    });
-});
-
-passport.use(localStrategy);
-
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
-});
-
-passport.deserializeUser(function(id, done) {
-  Leader.findById(id, function(err, user) {
-    done(err, user);
-  });
-});*/
 
 // Serve the built client
 app.use(express.static(path.resolve(__dirname, '../client/build')));
@@ -165,6 +122,7 @@ app.get(/^(?!\/api(\/|$))/, (req, res) => {
     const index = path.resolve(__dirname, '../client/build', 'index.html');
     res.sendFile(index);
 });
+
 /* ORIGINAL
 let server;
 function runServer(port=3001) {

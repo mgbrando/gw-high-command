@@ -38,7 +38,7 @@ class Guild extends Component {
   render() {
     return (
       <div className="Guild">
-
+        <h1>Guild</h1>
       </div>
     );
   }
