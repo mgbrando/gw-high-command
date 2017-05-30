@@ -47,7 +47,7 @@ class Dashboard extends Component {
       return (<Authorization />);
     }
     else{
-      return (<Redirect to="/login" push/>);
+      return (<Redirect to="/login" />);
     }
   }
 }

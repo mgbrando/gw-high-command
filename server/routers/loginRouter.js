@@ -15,7 +15,7 @@ router.use(jsonParser);
 
 module.exports = function(passport){
 try{
-  router.post('/', passport.authenticate('local'), function(req, res, next) {
+  router.post('/', passport.authenticate('local-login'), function(req, res, next) {
       console.log('Line 80 ');
       /*if (err) {
         return next(err);

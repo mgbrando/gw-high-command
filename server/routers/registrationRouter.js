@@ -30,31 +30,39 @@ router.post('/', jsonParser, (req, res) => {
       		guildIds.push(guilds[i].guildId);
       		guildDocuments.push({id: guilds[i].guildId, name: guilds[i].guildName, tag: guilds[i].guildTag,  tasks: [], members: [{handleName:req.body.handleName, apiKey: req.body.apiKey}]});
     	}
-
+    	console.log('hit line 33');
+    	//console.log(Leader.hashPassword(req.body.password));
+    	return Leader.hashPassword(req.body.password)
+    	.then(hash => { 
+    		console.log(hash);
 		return Leader
 			.create({
 				username: req.body.username,
-				password: req.body.password,
+				password: hash,
 				handleName: req.body.handleName,
 				apiKey: req.body.apiKey,
 				guildIds: guildIds
 			})
 			.then(leader => {
+				console.log(leader.apiRepr());
 				//res.status(201).json(leader.apiRepr());
 				console.log('Hit line 43');
+				console.log(guildDocuments);
 				Guild
 					.insertMany(guildDocuments)
-					.exec()
 					.then(response => {
-						const newGuildsAmount = response._id.length;
+						console.log(response);
+						const newGuildsAmount = response.length;
+						console.log(newGuildsAmount);
 						res.status(201).json({message: `Added ${newGuildsAmount} guilds and 1 leader to the database.`});
 					});
 			})
 			.catch(err => {
 				console.log('Hit line 54');
-				//console.error(err);
+				console.error(err);
 				res.status(500).json({message: 'Internal server error'});
 			});
+		});
 });
 
 module.exports = router;

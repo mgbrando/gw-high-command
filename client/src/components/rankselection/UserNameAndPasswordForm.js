@@ -1,5 +1,6 @@
 import React from 'react';
 import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 //import React, { Component } from 'react';
 //import {connect} from 'react-redux';
 //import {Link} from 'react-router';
@@ -83,11 +84,12 @@ function UserNameAndPasswordForm(props){
                   disabled={props.passwordDisabled}
                   value={props.passwordValue}
                 />
-          		<button type="submit">Submit</button>
+              <RaisedButton className="loginButton" type="submit" primary={true} label="Submit" />
             </form>
           </div>
         );
     }
 }
+//<button type="submit">Submit</button>
 
 export default UserNameAndPasswordForm;

@@ -3,45 +3,19 @@ const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const {BasicStrategy} = require('passport-http');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const jsonParser = bodyParser.json();
 const {Leader} = require('./models/leader');
 
-passport.use('local', new LocalStrategy(
-  function(username, password, done) {
-    Leader.findOne({ username: username }, function (err, user) {
-      if (err) { return done(err); }
-      if (!user) {
-        return done(null, false, { message: 'Incorrect username.' });
-      }
-      if (!user.validatePassword(password)) {
-        return done(null, false, { message: 'Incorrect password.' });
-      }
-      console.log('User: '+user);
-      console.log('Repr: '+user);
-      return done(null, user);
-    });
-  }
-));
-
-passport.serializeUser(function(user, done) {
-  console.log('line 26: serialize '+ user._id);
-  done(null, user._id);
-});
-
-passport.deserializeUser(function(id, done) {
-  console.log('Line 30, id: '+ id);
-  Leader.findById(id, function(err, user) {
-    done(err, user);
-  });
-});
 
 const app = express();
-app.use(cookieParser('keyboard cat'));
+/*app.use(cookieParser('keyboard cat'));
 app.use(bodyParser.urlencoded({
   extended: true
-}));
-app.use(bodyParser.json());
+}));*/
+app.use(jsonParser);
 
 const cookieExpirationDate = new Date();
 const cookieExpirationDays = 365;
@@ -76,13 +50,13 @@ passport.deserializeUser(function(id, done) {
 app.use(passport.initialize());
 app.use(passport.session());*/
 //
-function loggedIn(req, res, next) {
+/*function loggedIn(req, res, next) {
     if (req.user) {
         next();
     } else {
         res.redirect('/login');
     }
-}
+}*/
 
 const guildsRouter = require('./routers/guildsRouter');
 const membersRouter = require('./routers/membersRouter');
@@ -144,6 +118,62 @@ function closeServer() {
     });
 }*/
 //MINE
+
+passport.serializeUser(function(user, done) {
+  console.log('line 26: serialize '+ user._id);
+  done(null, user._id);
+});
+
+passport.deserializeUser(function(id, done) {
+  console.log('Line 30, id: '+ id);
+  Leader.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
+
+/*passport.use('local-register', new LocalStrategy(function(username, password, done) {
+    //process.nextTick(function() {
+    //username = username.toLowerCase()
+    Leader.findOne({username: username})
+        .exec()
+        .then(_user => {
+            let user = _user;
+            if (user) {
+                console.error('User already exists');
+                return done(null, false);
+            }
+            // console.log('Creating user');
+            return Leader.hashPassword(password)
+
+        })
+        .then(hash => {
+            return User.create({username: username, password: hash})
+                .then(user => {
+                    done(null, user);
+                });
+            });
+        .catch(function () {
+            console.error("Signup Rejected");
+        });
+    }));*/
+
+passport.use('local-login', new LocalStrategy(
+  function(username, password, done) {
+    Leader.findOne({ username: username }, function (err, user) {
+      if (err) { return done(err); }
+      if (!user) {
+        return done(null, false, { message: 'Incorrect username.' });
+      }
+      if (!user.validatePassword(password)) {
+        return done(null, false, { message: 'Incorrect password.' });
+      }
+      console.log('User: '+user);
+      console.log('Repr: '+user);
+      return done(null, user);
+    });
+  }
+));
+
 let server;
 
 function runServer(databaseUrl=DATABASE_URL, port=3001){

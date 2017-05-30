@@ -91,8 +91,11 @@ router.get('/', jsonParser, (req, res) => {
 			.exec()
 			.then(leader => {
 				console.log('line 39'+leader);
-				console.log(leader["guildIds"]);
-				res.json({guilds: leader.guildIds || []});
+				if(leader)
+					res.json({guilds: leader.guildIds || []});
+				else
+					res.json({guilds: []});
+				//console.log(leader["guildIds"]);
 			})
 			.catch(error => res.status(500).json({message: 'Internal server error - '+error}));
 	}

@@ -38,9 +38,8 @@ LeaderSchema.methods.validatePassword = function(password) {
 }
 
 LeaderSchema.statics.hashPassword = function(password) {
-  return bcrypt
-    .hash(password, 10)
-    .then(hash => hash);
+  return bcrypt.hash(password, 10);
+    //.then(hash => hash);
 }
 
 const Leader = mongoose.model('Leader', LeaderSchema);

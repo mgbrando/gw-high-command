@@ -16,9 +16,9 @@ import './RankSelection.css';
 
 const previousIconButton = <FontIcon className="material-icons">Previous</FontIcon>;
 const nextIconButton = <FontIcon className="material-icons">Next</FontIcon>;
-const usernameRegex = "[a-zA-Z0-9]{8,}";
+//const usernameRegex = "[a-zA-Z0-9]{8,}";
 //const passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$";
-const passwordRegex = "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$";
+//const passwordRegex = "^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$";
 
 class MemberRegistration extends Component {
 
@@ -52,7 +52,7 @@ class MemberRegistration extends Component {
   }
   //New 3 things
   getUsernameInput(event){ 
-    if (event.target.value.match(usernameRegex)) {
+    if (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(event.target.value)) {
       //this.setState({ errorText: '' })
       this.props.dispatch(actions.getUsernameInput(event.target.value, "", false, false, false));
     } 
@@ -61,7 +61,7 @@ class MemberRegistration extends Component {
     }
   }
   getPasswordInput(event){
-    if (event.target.value.match(passwordRegex)) {
+    if (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(event.target.value)) {
       this.props.dispatch(actions.getPasswordInput(event.target.value, "", false));
     } 
     else {
@@ -69,7 +69,7 @@ class MemberRegistration extends Component {
     }
   }
   getConfirmPasswordInput(event){
-    if (event.target.value.match(passwordRegex) && event.target.value === this.props.passwordInput) {
+    if (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(event.target.value) && event.target.value === this.props.passwordInput) {
       this.props.dispatch(actions.getConfirmPasswordInput(event.target.value, "", false));
     } 
     else {

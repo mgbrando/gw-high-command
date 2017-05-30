@@ -73,6 +73,18 @@ a.backButton{
   margin: 0 auto;
   margin-left: auto !important;
 }
+.userNameAndPasswordForm, .leaderLogin{
+  margin-bottom: 10px;
+}
+.userNameAndPasswordForm{
+  background-color: white;
+  border: 1px solid black;
+  padding: 20px;
+  border-radius: 50px;
+}
+.loginButton{
+  margin-top: 15px;
+}
 /*.memberButtonContainer{
 
 }*/

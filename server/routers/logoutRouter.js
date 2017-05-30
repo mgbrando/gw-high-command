@@ -17,9 +17,18 @@ module.exports = function(passport){
   	/*req.logout();
   	req.session.destroy();
   	res.redirect('/');*/
-  	req.logout();
-    req.session.destroy();
-    res.json({redirectURI: '/'});
+    req.logout();
+    req.session.destroy(function (err) {
+        if (err) {
+            return next(err);
+        }
+
+        // destroy session data
+        req.session = null;
+
+        // redirect to homepage
+        res.redirect('/');
+    });
  	/*req.session.destroy(function (err) {
     	res.cookie('gw2highcommand', "", { expires: new Date() });
   		console.log("LINE 25"+req.session);
@@ -33,4 +42,4 @@ module.exports = function(passport){
   });
 
   return router;
-}
+};
