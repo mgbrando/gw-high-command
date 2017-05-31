@@ -18,6 +18,8 @@ module.exports = function(passport){
   	req.session.destroy();
   	res.redirect('/');*/
     req.logout();
+    console.log("ISAUTHENTICATED?: "+req.isAuthenticated());
+    req.session.reset();
     req.session.destroy(function (err) {
         if (err) {
             return next(err);
@@ -25,9 +27,11 @@ module.exports = function(passport){
 
         // destroy session data
         req.session = null;
-
+        res.clearCookie('gw2highcommand', {path:'/'});
+        res.cookie('gw2highcommand', '', {expires: new Date(0)});
         // redirect to homepage
-        res.redirect('/');
+        res.json({redirect: '/'});
+        //res.redirect('/');
     });
  	/*req.session.destroy(function (err) {
     	res.cookie('gw2highcommand', "", { expires: new Date() });

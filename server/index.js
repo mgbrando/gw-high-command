@@ -11,8 +11,8 @@ const {Leader} = require('./models/leader');
 
 
 const app = express();
-/*app.use(cookieParser('keyboard cat'));
-app.use(bodyParser.urlencoded({
+app.use(cookieParser('keyboard cat'));
+/*app.use(bodyParser.urlencoded({
   extended: true
 }));*/
 app.use(jsonParser);
@@ -21,6 +21,7 @@ const cookieExpirationDate = new Date();
 const cookieExpirationDays = 365;
 cookieExpirationDate.setDate(cookieExpirationDate.getDate() + cookieExpirationDays);
 app.use(session({ name: 'gw2highcommand',
+                  path: '/',
                  secret: 'keyboard cat',
                  saveUninitialized: false,
                  resave: false,

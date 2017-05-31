@@ -16,6 +16,8 @@ import GuildMembers from './members/GuildMembers';
 import GuildTeams from './teams/GuildTeams';
 import Authorization from './Authorization';
 import WelcomeBar from './WelcomeBar';
+import TabNavigation from './TabNavigation';
+import './Dashboard.css';
 //import '../RankSelection.css';
 //<Route exact path='dashboard/guild' component={Guild}/>
 //<h2>Welcome, {this.props.activeUser.username}!</h2>
@@ -33,13 +35,31 @@ class Dashboard extends Component {
 
   render() {
     if(this.props.isAuthenticated){
-      return(<div>
-        <WelcomeBar user={this.props.activeUser.username} logOut={this.logOut}/>
+      return (<div className="dashboard">
+        <WelcomeBar user={this.props.activeUser.username} logOut={this.logOut} />
+        <TabNavigation currentTab={} />
+        <main className="main-content">
+                <SwipeableViews
+          index={props.slideIndex}
+          onChangeIndex={props.tabChange}
+        >
+          <div>
+            <h2 style={styles.headline}>Tabs with slide effect</h2>
+            Swipe to see the next slide.<br />
+          </div>
+          <div style={styles.slide}>
+            slide n°2
+          </div>
+          <div style={styles.slide}>
+            slide n°3
+          </div>
+        </SwipeableViews>
         <Switch>
-          <Route exact path='dashboard/members' component={GuildMembers}/>
-          <Route exact path='dashboard/teams' component={GuildTeams}/>
+          <Route exact path='dashboard/members' component={GuildMembers} />
+          <Route exact path='dashboard/teams' component={GuildTeams} />
           <Route path='/dashboard' component={Guild} />
         </Switch>
+        </main>
       </div>
       );
     }

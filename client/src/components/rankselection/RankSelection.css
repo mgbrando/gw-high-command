@@ -76,13 +76,13 @@ a.backButton{
 .userNameAndPasswordForm, .leaderLogin{
   margin-bottom: 10px;
 }
-.userNameAndPasswordForm{
+.userNameAndPasswordForm, .keySubmissionForm{
   background-color: white;
   border: 1px solid black;
   padding: 20px;
   border-radius: 50px;
 }
-.loginButton{
+.loginButton, .validateButton{
   margin-top: 15px;
 }
 /*.memberButtonContainer{

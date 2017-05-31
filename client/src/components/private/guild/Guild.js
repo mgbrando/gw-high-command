@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 //import GuildDetails from './GuildDetails';
 //import GuildUpgrades from './GuildUpgrades';
+import SectionBar from '../SectionBar';
+import GuildDetails from './GuildDetails';
+import GuildUpgrades from './GuildUpgrades';
 import './Guild.css';
 
 
@@ -37,9 +40,12 @@ class Guild extends Component {
   }*/
   render() {
     return (
-      <div className="Guild">
-        <h1>Guild</h1>
-      </div>
+      <section className="guild">
+        <SectionBar title="Guild Details" />
+        <GuildDetails content={this.props.guildDetails} visible={this.props.displayGuildDetails} />
+        <SectionBar title="Upgrades" />
+        <GuildUpgrades content={this.props.guildUpgrades} visible={this.props.displayGuildUpgrades} />
+      </section>
     );
   }
 }
@@ -48,8 +54,10 @@ class Guild extends Component {
 //        <GuildUpgrades upgrades={this.props.upgrades} />
 
 const mapStateToProps = (state, props) => ({
-    details: state.details,
-    upgrades: state.upgrades
+    guildDetails: state.guild.guildDetails,
+    guildUpgrades: state.guild.guildUpgrades,
+    displayGuildDetails: state.guild.displayGuildDetails,
+    displayGuildUpgrades: state.guild.displayGuildUpgrades
 });
 
 export default connect(mapStateToProps)(Guild);

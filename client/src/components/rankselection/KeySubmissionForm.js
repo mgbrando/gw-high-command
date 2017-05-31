@@ -1,9 +1,10 @@
 import React from 'react';
 import IconButton from 'material-ui/IconButton';
+import RaisedButton from 'material-ui/RaisedButton';
 
 function KeySubmissionForm(props){
   return (
-        <form onSubmit={event => {event.preventDefault(); props.validateAPIKey();}}>
+        <form className="keySubmissionForm" onSubmit={event => {event.preventDefault(); props.validateAPIKey();}}>
           <div className="leftSide">
             <label htmlFor="memberApiKey">Enter your API Key</label>
             <div className="error">{props.memberValidationMessage}</div>
@@ -16,7 +17,7 @@ function KeySubmissionForm(props){
               required />
           </div>
           <div className="rightSide">
-            <button type="submit">Validate</button>
+            <RaisedButton className="validateButton" type="submit" primary={true} label="Validate" />
           </div>
         </form>
   );

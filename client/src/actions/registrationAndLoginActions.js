@@ -388,14 +388,27 @@ export const authenticationFailed = (errorMessage) => ({
 
 export const checkAuthentication = () => {
   return dispatch => {
-    fetch('/api/authorization', {credentials: 'same-origin'})
+    let myHeaders = new Headers();
+    myHeaders.append('pragma', 'no-cache');
+    myHeaders.append('cache-control', 'no-cache');
+
+    const myInit = {
+      method: 'GET',
+      headers: myHeaders,
+      credentials: 'same-origin'
+    };
+    //{credentials: 'same-origin'}
+    fetch('/api/authorization', myInit)
     .then(response => {
       if(response.status === 401)
         throw new Error('User not authenticated');
-      else if(response.status !== 200)
-        throw new Error('Internal service error');
+      else if(response.status === 200 || response.status === 304){
+        console.log("RESPUSER: "+response.user);
+        return response.json();//dispatch(authenticationCleared(response.user));
+      }
       else
-        return response.json();
+        throw new Error('Internal service error');
+        //return response.json();
     })
     .then(_response => {
       console.log("CHECKED: "+_response.user.username);
@@ -406,7 +419,7 @@ export const checkAuthentication = () => {
       return dispatch(authenticationFailed(error.message));
     });
   }
-}
+};
 
 export const SWITCH_TO_REGISTRATION_SUCCESS = 'SWITCH_TO_REGISTRATION_SUCCESS';
 export const switchToRegistrationSuccessSection = () => ({
