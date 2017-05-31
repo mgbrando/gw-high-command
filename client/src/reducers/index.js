@@ -7,6 +7,7 @@ import activities from './activities';
 import navigation from './navigation';
 import members from './members';
 import teams from './teams';
+import dashboard from './dashboard';
 //import * as actions from '../actions/index';
 
 const rootReducer = combineReducers({
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   navigation,
   teams,
   members,
+  dashboard,
   router: routerReducer
 });
 

@@ -3,62 +3,10 @@ const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const {BasicStrategy} = require('passport-http');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 const {Leader} = require('./models/leader');
-
-
-const app = express();
-app.use(cookieParser('keyboard cat'));
-/*app.use(bodyParser.urlencoded({
-  extended: true
-}));*/
-app.use(jsonParser);
-
-const cookieExpirationDate = new Date();
-const cookieExpirationDays = 365;
-cookieExpirationDate.setDate(cookieExpirationDate.getDate() + cookieExpirationDays);
-app.use(session({ name: 'gw2highcommand',
-                  path: '/',
-                 secret: 'keyboard cat',
-                 saveUninitialized: false,
-                 resave: false,
-                 cookie: {
- //                     httpOnly: ,
-//                    expires: cookieExpirationDate, // use expires instead of maxAge
-//                    secure: false
-                      secure: false,
-                      maxAge: (4 * 60 * 60 * 1000)
-                }
-             }));
-app.use(passport.initialize());
-app.use(passport.session());
-//
-/*var passport = require('passport');
-var expressSession = require('express-session');
-app.use(expressSession({secret: 'mySecretKey'}));
-passport.serializeUser(function(user, done) {
-  done(null, user._id);
-});
- 
-passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, user) {
-    done(err, user);
-  });
-});
-app.use(passport.initialize());
-app.use(passport.session());*/
-//
-/*function loggedIn(req, res, next) {
-    if (req.user) {
-        next();
-    } else {
-        res.redirect('/login');
-    }
-}*/
-
 const guildsRouter = require('./routers/guildsRouter');
 const membersRouter = require('./routers/membersRouter');
 const teamsRouter = require('./routers/teamsRouter');
@@ -74,91 +22,18 @@ const {DATABASE_URL, PORT} = require('./config');
 const mongoose = require('mongoose');
 
 
-// API endpoints go here!
-app.use('/api/member-registration', memberRegistrationRouter);
-app.use('/api/leader-registration', leaderRegistrationRouter);
-app.use('/api/authorization', authorizationRouter(passport));
-/*app.use('/api/login', loginRouter);
-app.use('/api/tasks', tasksRouter);*/
-app.use('/api/login', loginRouter(passport));
-app.use('/api/logout', logoutRouter(passport));
-app.use('/api/leaders', leadersRouter);
-app.use('/api/guilds', guildsRouter);
-app.use('/api/register', registrationRouter);
-/*app.use('/api/members', membersRouter);
-app.use('/api/teams', teamsRouter);*/
+const app = express();
+app.use(cookieParser('keyboard cat'));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(jsonParser);
 
-// Serve the built client
-app.use(express.static(path.resolve(__dirname, '../client/build')));
+const cookieExpirationDate = new Date();
+const cookieExpirationDays = 365;
+cookieExpirationDate.setDate(cookieExpirationDate.getDate() + cookieExpirationDays);
 
-// Unhandled requests which aren't for the API should serve index.html so
-// client-side routing using browserHistory can function
-app.get(/^(?!\/api(\/|$))/, (req, res) => {
-    const index = path.resolve(__dirname, '../client/build', 'index.html');
-    res.sendFile(index);
-});
-
-/* ORIGINAL
-let server;
-function runServer(port=3001) {
-    return new Promise((resolve, reject) => {
-        server = app.listen(port, () => {
-            resolve();
-        }).on('error', reject);
-    });
-}
-
-function closeServer() {
-    return new Promise((resolve, reject) => {
-        server.close(err => {
-            if (err) {
-                return reject(err);
-            }
-            resolve();
-        });
-    });
-}*/
-//MINE
-
-passport.serializeUser(function(user, done) {
-  console.log('line 26: serialize '+ user._id);
-  done(null, user._id);
-});
-
-passport.deserializeUser(function(id, done) {
-  console.log('Line 30, id: '+ id);
-  Leader.findById(id, function(err, user) {
-    done(err, user);
-  });
-});
-
-/*passport.use('local-register', new LocalStrategy(function(username, password, done) {
-    //process.nextTick(function() {
-    //username = username.toLowerCase()
-    Leader.findOne({username: username})
-        .exec()
-        .then(_user => {
-            let user = _user;
-            if (user) {
-                console.error('User already exists');
-                return done(null, false);
-            }
-            // console.log('Creating user');
-            return Leader.hashPassword(password)
-
-        })
-        .then(hash => {
-            return User.create({username: username, password: hash})
-                .then(user => {
-                    done(null, user);
-                });
-            });
-        .catch(function () {
-            console.error("Signup Rejected");
-        });
-    }));*/
-
-passport.use('local-login', new LocalStrategy(
+passport.use(new LocalStrategy(
   function(username, password, done) {
     Leader.findOne({ username: username }, function (err, user) {
       if (err) { return done(err); }
@@ -174,6 +49,47 @@ passport.use('local-login', new LocalStrategy(
     });
   }
 ));
+
+app.use(session({ name: 'gw2highcommand',
+                 secret: 'keyboard cat',
+                 saveUninitialized: true,
+                 resave: true
+             }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(function(user, done) {
+  console.log('line 26: serialize '+ user._id);
+  done(null, user._id);
+});
+
+passport.deserializeUser(function(id, done) {
+  console.log('Line 30, id: '+ id);
+  Leader.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
+
+// API endpoints go here!
+app.use('/api/member-registration', memberRegistrationRouter);
+app.use('/api/leader-registration', leaderRegistrationRouter);
+app.use('/api/authorization', authorizationRouter(passport));
+app.use('/api/login', loginRouter(passport));
+app.use('/api/logout', logoutRouter);
+app.use('/api/leaders', leadersRouter);
+app.use('/api/guilds', guildsRouter);
+app.use('/api/register', registrationRouter);
+
+// Serve the built client
+app.use(express.static(path.resolve(__dirname, '../client/build')));
+//app.use(express.static(path.resolve(__dirname, '../client/public')));
+
+// Unhandled requests which aren't for the API should serve index.html so
+// client-side routing using browserHistory can function
+app.get(/^(?!\/api(\/|$))/, (req, res) => {
+    const index = path.resolve(__dirname, '../client/build', 'index.html');
+    res.sendFile(index);
+});
 
 let server;
 

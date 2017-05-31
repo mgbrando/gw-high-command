@@ -1,11 +1,17 @@
 import * as actions from '../actions/teamsActions';
 
 const initialRepositoryState = {
-	teams: [],
-	currentTeam: null
+	guildTeams: [],
+    teamDetails: {},
+    teamPVPStats: {},
+    teamRecentMatches: [],
+    displayTeamDetails: true,
+    displayTeamPVPStats: true,
+    displayTeamRecentMatches:true
 };
 
 const teams = (state=initialRepositoryState, action) => {
+
 	return state;
 };
 

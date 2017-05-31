@@ -6,14 +6,13 @@ import FlatButton from 'material-ui/FlatButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Paper from 'material-ui/Paper';
 
-//{props.guildDetails.guildName}
-function GuildDetails(props){
+function MemberPVPStats(props){
   return (
-    <div className="guildDetails">
+    <div className="memberPVPStats">
       <Paper className="infoSection" zDepth={2}>
-        <h1>Guild Name</h1>
-        <h2></h2>
-
+        <h1>Player Handle</h1>
+        <h2>{props.memberDetails.handleName}</h2>
+        
       </Paper>
     </div>
   );
@@ -27,4 +26,4 @@ function GuildDetails(props){
                             <ContentAdd />
                           </FloatingActionButton>}
       />*/
-export default GuildDetails; 
+export default MemberPVPStats; 

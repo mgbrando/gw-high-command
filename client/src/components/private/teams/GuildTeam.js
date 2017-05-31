@@ -3,9 +3,11 @@ import {connect} from 'react-redux';
 //import GuildDetails from './GuildDetails';
 //import GuildUpgrades from './GuildUpgrades';
 import SectionBar from '../SectionBar';
-import './GuildMembers.css';
+import GuildDetails from './GuildDetails';
+import GuildUpgrades from './GuildUpgrades';
+//import './GuildMembers.css';
 
-class GuildMembers extends Component {
+class GuildTeam extends Component {
 
   constructor(props) {
     super(props);
@@ -36,9 +38,13 @@ class GuildMembers extends Component {
   }*/
   render() {
     return (
-      <section className="guildMembers">
-        <SectionBar title="Guild Members" />
-
+      <section className="guildTeam">
+        <SectionBar title="Team Details" />
+        <MemberDetails content={this.props.memberDetails} visible={this.props.displayMemberDetails} />
+        <SectionBar title="PvP Stats" />
+        <MemberPVPStats content={this.props.memberPVPStats} visible={this.props.displayPVPStats} />
+        <SectionBar title="Recent Matches" />
+        <MemberPVEStats content={this.props.memberPVEStats} visible={this.props.displayPVEStats} />
       </section>
     );
   }
@@ -48,7 +54,12 @@ class GuildMembers extends Component {
 //        <GuildUpgrades upgrades={this.props.upgrades} />
 
 const mapStateToProps = (state, props) => ({
-  guildMembers: state.members.guildMembers,
+    teamDetails: state.teams.teamDetails,
+    teamPVPStats: state.teams.teamPVPStats,
+    teamRecentMatches: state.teams.teamRecentMatches,
+    displayTeamDetails: state.teams.displayTeamDetails,
+    displayTeamPVPStats: state.teams.displayTeamPVPStats,
+    displayTeamRecentMatches:state.teams.displayTeamRecentMatches
 });
 
-export default connect(mapStateToProps)(GuildMembers);
+export default connect(mapStateToProps)(GuildTeam);

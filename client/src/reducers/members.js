@@ -1,11 +1,17 @@
 import * as actions from '../actions/membersActions';
 
 const initialRepositoryState = {
-	members: [],
-	currentMember: null
+	guildMembers: [],
+    memberDetails: {},
+    memberPVPStats: {},
+    memberPVEStats: {},
+    displayMemberDetails: true,
+    displayMemberPVPStats: true,
+    displayMemberPVEStats: true
 };
 
 const members = (state=initialRepositoryState, action) => {
+
 	return state;
 };
 

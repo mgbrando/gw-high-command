@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import Guild from '../guild/Guild';
-import GuildMembers from '../members/GuildMembers';
+import SectionBar from '../SectionBar';
 //import './App.css';
+import './GuildTeams.css';
 
 class GuildTeams extends Component {
 
@@ -12,16 +12,16 @@ class GuildTeams extends Component {
 
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <h2>GW2 High Command</h2>
-        </div>
-      </div>
+      <section className="guildTeams">
+        <SectionBar title="Guild Teams" />
+    
+      </section>
     );
   }
 }
 
 const mapStateToProps = (state, props) => ({
+  guildTeams: state.teams.guildTeams
 });
 
 export default connect(mapStateToProps)(GuildTeams);
