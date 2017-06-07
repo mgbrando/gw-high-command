@@ -58,9 +58,12 @@ class TabNavigation extends React.Component {
           <Tab label="Members" value="members" />
           <Tab label="Teams" value="teams" />
         </Tabs>
-        <Switch>
+        <SwipeableRoutes
+          index={this.state.slideIndex}
+          onChangeIndex={this.handleChange}
+        >
           {this.props.routes}
-        </Switch>
+        </SwipeableRoutes>
       </div>
     );
   }
