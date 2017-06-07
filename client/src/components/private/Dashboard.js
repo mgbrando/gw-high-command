@@ -11,6 +11,7 @@ import GuildTeams from './teams/GuildTeams';
 import Authorization from './Authorization';
 import WelcomeBar from './WelcomeBar';
 import TabNavigation from './TabNavigation';
+//import {Tabs, Tab} from 'material-ui/Tabs';
 import './Dashboard.css';
 
 class Dashboard extends Component {
@@ -36,18 +37,14 @@ class Dashboard extends Component {
         //  <SwipeableRoutes></SwipeableRoutes>
   render() {
     if(this.props.isAuthenticated){
+      const routes = [(<Route exact path='/dashboard/guild' component={Guild} key={0} />),
+                      (<Route exact path='/dashboard/members' component={GuildMembers} key={1} />),
+                      (<Route exact path='/dashboard/teams' component={GuildTeams} key={2} />)];
       return (<div className="dashboard">
         <WelcomeBar user={this.props.activeUser.username} logOut={this.logOut} />
-
         <main className="main-content">
-
-            <Switch>
-              <Route exact path='/dashboard/members' component={GuildMembers} />
-              <Route exact path='/dashboard/teams' component={GuildTeams} />
-              <Route exact path='/dashboard/guild' component={Guild} />
-              <Route path='/dashboard' render={() => (<Redirect to="/dashboard/guild" />)} />
-            </Switch>
-          
+          <Route exact path='/dashboard' render={() => (<Redirect to="/dashboard/guild" />)} />
+          <TabNavigation routes={routes} />
         </main>
       </div>
       );

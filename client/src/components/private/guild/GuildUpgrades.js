@@ -10,6 +10,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import {List, ListItem, makeSelectable} from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 import Subheader from 'material-ui/Subheader';
+import Divider from 'material-ui/Divider';
 import './Guild.css';
 
 let SelectableList = List;
@@ -118,8 +119,9 @@ function GuildUpgrades(props){
     return (
       <div className="guildUpgrades">
         <Paper className="infoSection" zDepth={2}>
-          <h1>Complete</h1>
           <Paper className="upgrades completedUpgrades" zDepth={5}>
+            <h1 className="sectionHeader">Complete</h1>
+            <div className="upgradesLists">
             <div className="upgradeList">
               <SelectableList defaultValue={3}>
                 {completedUpgradeComponentsOne}
@@ -130,9 +132,11 @@ function GuildUpgrades(props){
                 {completedUpgradeComponentsTwo}
               </SelectableList>
             </div>
+            </div>
           </Paper>
-          <h1>Incomplete</h1>
           <Paper className="upgrades incompleteUpgrades" zDepth={5}>
+            <h1 className="sectionHeader">Incomplete</h1>
+            <div className="upgradesLists">
             <div className="upgradeList">
               <SelectableList defaultValue={3}>
                 {upgradeComponentsOne}
@@ -142,6 +146,7 @@ function GuildUpgrades(props){
               <SelectableList defaultValue={3}>
                 {upgradeComponentsTwo}
               </SelectableList>
+            </div>
             </div>
           </Paper>
         </Paper>

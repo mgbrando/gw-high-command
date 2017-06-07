@@ -24,10 +24,18 @@ function GuildDetails(props){
     return (
       <div className="guildDetails">
         <Paper className="infoSection" zDepth={2}>
-          <h1>Guild Name</h1>
-          <Subheader>{props.guildDetails.name}</Subheader>
-          Level: {props.guildDetails.level}  Aetherium: {props.guildDetails.aetherium}
-          Influence: {props.guildDetails.influence} Favor: {props.guildDetails.favor}
+          <Paper className="guildDetailsInfo" zDepth={5}>
+          <h1 className="sectionHeader">Guild Name</h1>
+          <h2 className="guildName">{props.guildDetails.name}</h2>
+          <List className="guildDetailsList">
+            <ListItem primaryText="Level" secondaryText={props.guildDetails.level} disabled={true}/>
+            <ListItem primaryText="Influence" secondaryText={props.guildDetails.influence} disabled={true}/>
+          </List>
+          <List className="guildDetailsList">
+            <ListItem primaryText="Favor" secondaryText={props.guildDetails.favor} disabled={true}/>
+            <ListItem primaryText="Aetherium" secondaryText={props.guildDetails.aetherium} disabled={true}/>
+          </List>
+          </Paper>
         </Paper>
       </div>
     );

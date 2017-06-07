@@ -28,6 +28,30 @@
   text-align: center;
 }
 
+.sectionHeader{
+  margin: 5px;
+  text-decoration: underline;
+  margin-top: 0px;
+}
+
+.guildName{
+  text-align: center;
+  margin: 5px;
+  font-style: italic;
+  font-weight: normal;
+}
+.guildDetails{
+  margin-bottom: 10px;
+}
+.infoSection{
+  padding: 15px;
+}
+.guildDetailsList{
+  box-sizing: border-box;
+  display: inline-block;
+  width: 50%;
+  text-align: center;
+}
 /*.upgrades, .upgrades > div{
   width: 100%;
 }*/
@@ -44,10 +68,16 @@
   top: 0;
   height: 100%;
 }*/
-.upgrades{
+.upgradesLists{
   display: -ms-flex;
   display: -webkit-flex;
   display: flex;
+  margin: 5px;
+  margin-bottom: 15px;
+}
+.upgrades h1{
+  display: block;
+  width: 100%;
 }
 .upgradeList{
   box-sizing: border-box;
@@ -62,4 +92,10 @@
 .upgrade, .completedUpgrade{
   width: 100%;
   height: 100%;
+}
+.muidocs-icon-custom-github:before {
+    content: "\e625";
+}
+.expandIcon{
+  vertical-align: middle;
 }

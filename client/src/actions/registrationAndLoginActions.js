@@ -1,5 +1,8 @@
 //import 'whatwg-fetch';
 import 'isomorphic-fetch';
+//import { CookiesProvider, withCookies, Cookies } from 'react-cookie';
+//import Cookies from 'universal-cookie';
+
 
 //Set Rank
 export const SET_RANK = 'SET_RANK';
@@ -336,7 +339,9 @@ export const logOutUser = () => ({
 export const userLogOut = () => {
   return dispatch => {
     fetch('/api/logout')
-    .then(() => dispatch(logOutUser()));
+    .then(() => {
+      return dispatch(logOutUser())
+    });
   }
 }
 export const LOGIN_GUILD_LEADER_SUCCESS = 'LOGIN_GUILD_LEADER_SUCCESS';
