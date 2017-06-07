@@ -29,6 +29,9 @@ class Dashboard extends Component {
   logOut(){
     this.props.dispatch(userLogOut());
   }
+/*  componentDidMount(){
+    if(this)
+  }*/
 //<TabNavigation currentTab={} />
         //  <SwipeableRoutes></SwipeableRoutes>
   render() {
@@ -41,7 +44,8 @@ class Dashboard extends Component {
             <Switch>
               <Route exact path='/dashboard/members' component={GuildMembers} />
               <Route exact path='/dashboard/teams' component={GuildTeams} />
-              <Route path='/dashboard' component={Guild} />
+              <Route exact path='/dashboard/guild' component={Guild} />
+              <Route path='/dashboard' render={() => (<Redirect to="/dashboard/guild" />)} />
             </Switch>
           
         </main>

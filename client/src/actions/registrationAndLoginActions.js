@@ -355,6 +355,9 @@ export const loginGuildLeader = (username, password) => {
     /*let formData = new FormData();
     formData.append('username', username);
     formData.append('password', password);*/
+    let user;
+    let guildDetails;
+    let guildUpgrades;
     fetch('/api/login', {
       method: 'POST',
       headers: {
@@ -368,7 +371,13 @@ export const loginGuildLeader = (username, password) => {
       //body: formData
     })
     .then(response => response.json())
-    .then((_response) => dispatch(authenticationCleared(_response.user)))
+    .then(async _response => {
+      /*user = _response.user;
+      guildDetails = await fetch('https://api.guildwars2.com/v2/guild/'+user.guildIds[0]);
+      guildUpgrades = await fetch('https://api.guildwars2.com/v2/guild/'+user.guildIds[0]);*/
+      //fetch()
+      return dispatch(authenticationCleared(_response.user))
+    })
     .catch(error => dispatch(authenticationFailed(error.message)))
   }	
 };

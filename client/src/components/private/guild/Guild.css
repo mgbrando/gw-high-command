@@ -27,3 +27,39 @@
 .infoSection h1{
   text-align: center;
 }
+
+/*.upgrades, .upgrades > div{
+  width: 100%;
+}*/
+.upgrades > div{
+  position: relative;
+}
+/*
+.upgrades > div > div{
+  box-sizing: border-box;
+  display: inline-block;
+  width: 50%;
+  border: 4px solid white;
+  position: relative;
+  top: 0;
+  height: 100%;
+}*/
+.upgrades{
+  display: -ms-flex;
+  display: -webkit-flex;
+  display: flex;
+}
+.upgradeList{
+  box-sizing: border-box;
+  display: inline-block;
+  width: 50%;
+  border: 4px solid white;
+  /*height: 100%;*/
+  /*position: absolute;
+  top: 0;*/
+  /*float: top;*/
+}
+.upgrade, .completedUpgrade{
+  width: 100%;
+  height: 100%;
+}
