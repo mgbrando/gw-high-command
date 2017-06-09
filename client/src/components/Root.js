@@ -14,6 +14,8 @@ import Guild from './private/guild/Guild';
 import GuildMembers from './private/members/GuildMembers';
 import GuildTeams from './private/teams/GuildTeams';
 import Authorization from './Authorization';
+import { instanceOf } from 'prop-types';
+import { CookiesProvider, withCookies, Cookies } from 'react-cookie';
 //import {ConnectedRouter} from 'react-router-redux';
 //import {withRouter} from 'react-router';
 
@@ -46,6 +48,7 @@ const Root = ({store, history}) => (
 Root.propTypes = {
   store: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired
+  //cookies: instanceOf(Cookies).isRequired
 };
 
 export default Root;

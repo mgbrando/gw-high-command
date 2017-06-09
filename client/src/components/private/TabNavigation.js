@@ -25,22 +25,50 @@ class TabNavigation extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      slideIndex: 0,
+      value: "guild",
     };
   }
 
   handleChange = (value) => {
     console.log(this.props.location.pathname);
-    if("dashboard/"+value === this.props.location.pathname){return;}
-    else if(value === "guild"){
-      this.props.history.push('/dashboard/guild');
-    }
-    else if(value === "members"){
-      this.props.history.push('/dashboard/members');
-    }
+    if("dashboard/"+value === this.props.location.pathname)
+      return;
     else{
-      this.props.history.push('/dashboard/teams');
+      this.setState({
+          value: value,
+      });
+
+      if(value === "guild")
+        this.props.history.push('/dashboard/guild');
+      else if(value === "members")
+        this.props.history.push('/dashboard/members');
+      else if(value === "teams")
+        this.props.history.push('/dashboard/teams');
     }
+/*this.setState({
+          slideIndex: value,
+        });
+    if(value === 0){
+      if("dashboard/guild" === this.props.location.pathname)
+        return;
+      else{
+        this.props.history.push('/dashboard/guild');
+      }
+    }
+    else if(value === 1){
+      if("dashboard/members" === this.props.location.pathname)
+        return;
+      else{
+        this.props.history.push('/dashboard/members');
+      }
+    }
+    else if(value === 2){
+      if("dashboard/teams" === this.props.location.pathname)
+        return;
+      else{
+        this.props.history.push('/dashboard/teams');
+      }
+    }*/
     /*this.setState({
       slideIndex: value,
     });*/
@@ -51,7 +79,7 @@ class TabNavigation extends React.Component {
       <div>
         <Tabs
           onChange={this.handleChange}
-          value={this.state.slideIndex}
+          value={this.state.value}
           className="tabNavigation"
         >
           <Tab label="Guild" value="guild" />

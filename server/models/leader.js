@@ -24,6 +24,7 @@ const LeaderSchema = mongoose.Schema({
 
 LeaderSchema.methods.apiRepr = function() {
   return {
+    id: this._id,
     handleName: this.handleName,
     username: this.username,
     apiKey: this.apiKey,

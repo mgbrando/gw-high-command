@@ -8,8 +8,10 @@
   "dependencies": {
     "babel-polyfill": "^6.23.0",
     "connected-react-router": "^4.1.0",
+    "cookies-js": "^1.2.3",
     "history": "^4.6.1",
     "isomorphic-fetch": "^2.2.1",
+    "js-cookie": "^2.1.4",
     "material-ui": "^0.18.1",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
@@ -22,6 +24,8 @@
     "react-swipeable-routes": "^0.1.2",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.6.0",
+    "redux-cookie": "^0.5.9",
+    "redux-cookies": "^1.0.1",
     "redux-thunk": "^2.2.0",
     "typeface-roboto": "0.0.22",
     "whatwg-fetch": "^2.0.3"

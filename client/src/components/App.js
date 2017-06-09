@@ -27,7 +27,9 @@ class App extends Component {
   getPage(page){
     //action to change the page state on the backend
   }
-
+  componentDidMount(){
+   // this.props.dispatch();
+  }
   displayPage(){
     switch(this.props.page){
       case "rankSelection":

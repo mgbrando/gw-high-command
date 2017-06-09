@@ -23,7 +23,8 @@ const mongoose = require('mongoose');
 
 
 const app = express();
-app.use(cookieParser('keyboard cat'));
+app.use(express.static(path.resolve(__dirname, '../client/build')));
+//app.use(cookieParser('keyboard cat'));
 app.use(bodyParser.urlencoded({
   extended: true
 }));
@@ -52,8 +53,8 @@ passport.use(new LocalStrategy(
 
 app.use(session({ name: 'gw2highcommand',
                  secret: 'keyboard cat',
-                 saveUninitialized: true,
-                 resave: true
+                 saveUninitialized: false,
+                 resave: false
              }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -81,7 +82,7 @@ app.use('/api/guilds', guildsRouter);
 app.use('/api/register', registrationRouter);
 
 // Serve the built client
-app.use(express.static(path.resolve(__dirname, '../client/build')));
+//app.use(express.static(path.resolve(__dirname, '../client/build')));
 //app.use(express.static(path.resolve(__dirname, '../client/public')));
 
 // Unhandled requests which aren't for the API should serve index.html so
