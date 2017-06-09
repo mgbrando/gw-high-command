@@ -44,8 +44,8 @@ passport.use(new LocalStrategy(
       if (!user.validatePassword(password)) {
         return done(null, false, { message: 'Incorrect password.' });
       }
-      console.log('User: '+user);
-      console.log('Repr: '+user);
+      //console.log('User: '+user);
+      //console.log('Repr: '+user);
       return done(null, user);
     });
   }
@@ -60,12 +60,12 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser(function(user, done) {
-  console.log('line 26: serialize '+ user._id);
+  //console.log('line 26: serialize '+ user._id);
   done(null, user._id);
 });
 
 passport.deserializeUser(function(id, done) {
-  console.log('Line 30, id: '+ id);
+  //console.log('Line 30, id: '+ id);
   Leader.findById(id, function(err, user) {
     done(err, user);
   });
@@ -74,13 +74,28 @@ passport.deserializeUser(function(id, done) {
 // API endpoints go here!
 app.use('/api/member-registration', memberRegistrationRouter);
 app.use('/api/leader-registration', leaderRegistrationRouter);
-app.use('/api/authorization', authorizationRouter(passport));
-app.use('/api/login', loginRouter(passport));
+//app.use('/api/authorization', authorizationRouter(passport));
+//app.use('/api/login', loginRouter(passport));
 app.use('/api/logout', logoutRouter);
 app.use('/api/leaders', leadersRouter);
 app.use('/api/guilds', guildsRouter);
 app.use('/api/register', registrationRouter);
 
+app.post('/api/authorization', (req,res) => {
+  console.log(req.session);
+});
+app.get('/api/login', passport.authenticate('local', {session: true}), (req, res) => {
+        if (!req.user) {
+        //console.log('Req.user line 85' + req.user);
+        return res.status(401).json({error: info.message});
+      }
+      //console.log(req.session);
+      return res.status(200).json({
+          user: req.user.apiRepr(),
+          sessionID: req.sessionID
+          //message: `Welcome ${req.user.username}!`
+      });
+});
 // Serve the built client
 //app.use(express.static(path.resolve(__dirname, '../client/build')));
 //app.use(express.static(path.resolve(__dirname, '../client/public')));

@@ -342,7 +342,8 @@ export const userLogOut = () => {
     fetch('/api/logout')
     .then(() => {
       //removeCookie('gw2highcommand', {path: '/'});
-      //localStorage.removeItem('gw2highcommand');
+      localStorage.removeItem('gw2highcommandUserID');
+      localStorage.removeItem('gw2highcommandSessionID');
       return dispatch(logOutUser())
     });
   }
@@ -367,23 +368,14 @@ export const loginGuildLeader = (username, password) => {
     let user;
     let guildDetails;
     let guildUpgrades;
-    fetch('/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-     credentials: 'same-origin',
-     body: JSON.stringify({
-        username,
-        password
-      })
-      //body: formData
-    })
+    fetch('/api/login?username='+username+'&password='+password)
     .then(response => response.json())
     .then(_response => {
       console.log(_response.user);
       //setCookie('gw2highcommand', 'value', { expires: 7 });
-      //localStorage.setItem('gw2highcommand', {userID: _response.user.id, sessionID: _response.sessionID});
+      console.log(_response.sessionID);
+      localStorage.setItem('gw2highcommandUserID', _response.user.id);
+      localStorage.setItem('gw2highcommandSessionID', _response.sessionID);
       /*user = _response.user;
       guildDetails = await fetch('https://api.guildwars2.com/v2/guild/'+user.guildIds[0]);
       guildUpgrades = await fetch('https://api.guildwars2.com/v2/guild/'+user.guildIds[0]);*/
@@ -416,10 +408,13 @@ export const checkAuthentication = () => {
     }
     else
       return dispatch(authenticationFailed("User is not logged in."));*/
-    /*const userID = localStorage.getItem('gw2highcommand').userID;
-    const sessionID = localStorage.getItem('gw2highcommand').sessionID;
-    if(!userId)
-      return dispatch(authenticationFailed("Unauthorized user"));*/
+    console.log('MADE TO CHECK');
+    const userID = localStorage.getItem('gw2highcommandUserID');
+    console.log(userID);
+    const sessionID = localStorage.getItem('gw2highcommandSessionID');
+    console.log(sessionID);
+    if(!userID)
+      return dispatch(authenticationFailed("Unauthorized user"));
 
     console.log("LINE 416 ");
     //console.log(localStorage.getItem('gw2highcommand'));
@@ -428,13 +423,13 @@ export const checkAuthentication = () => {
     myHeaders.append('cache-control', 'no-cache');
 
     const myInit = {
-      method: 'GET',
+      method: 'POST',
       headers: myHeaders,
-      credentials: 'same-origin'
-      /*body: JSON.stringify({
+      //credentials: 'same-origin'
+      body: JSON.stringify({
         userId: userID,
         sessionID: sessionID
-      })*/
+      })
     };
     //fetch('/api/authorization')
     fetch('/api/authorization', myInit)
@@ -450,7 +445,8 @@ export const checkAuthentication = () => {
     })
     .then(_response => {
       console.log("CHECKED: "+_response.user.username);
-      return dispatch(authenticationCleared(_response.user));        
+      return false;
+      //return dispatch(authenticationCleared(_response.user));        
     })
     .catch((error) => {
       console.log(error.message);

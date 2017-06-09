@@ -13,7 +13,7 @@ router.use(jsonParser);
   router.get('/', (req, res) => {
   	/*console.log("MADE IT TO LOGOUT");
   	console.log(req.session.id);*/
-  	console.log(req.session.passport);
+  	//console.log(req.session.passport);
   	req.logout();
 	req.session.destroy(function (err) {
 		if(err){
@@ -22,10 +22,10 @@ router.use(jsonParser);
 		/*req.logout();
 		req.logOut();*/
 		req.session=null;
-		console.log(req.sessionStore);
-		console.log(req.sessionID);
+		//console.log(req.sessionStore);
+		//console.log(req.sessionID);
 		//delete req.sessionStore.sessions[req.sessionID];
-		console.log(req.sessionStore.sessions);
+		//console.log(req.sessionStore.sessions);
 		//req.session.cookie = {};
 		//req.clearCookie('gw2highcommand', {path: '/'});
 		//res.clearCookie('gw2highcommand', {path: '/'});

@@ -12,7 +12,7 @@ class Authorization extends Component {
   constructor(props) {
       super(props);
   }
-  componentWillMount(){
+  componentDidMount(){
     this.props.dispatch(actions.checkAuthentication());
   }
 

@@ -16,21 +16,22 @@ router.use(jsonParser);
 module.exports = function(passport){
 try{
   router.post('/', passport.authenticate('local', {session: true}), function(req, res, next) {
-      console.log('Line 80 ');
+      //console.log('Line 80 ');
       /*if (err) {
         return next(err);
       }*/
-      console.log('Req.user line 83' + req.user);
+      //console.log('Req.user line 83' + req.user);
       if (!req.user) {
-        console.log('Req.user line 85' + req.user);
+        //console.log('Req.user line 85' + req.user);
         return res.status(401).json({error: info.message});
       }
-      /*console.log(req.session);
+      //console.log(req.session);
       return res.status(200).json({
-          user: req.user.apiRepr()
+          user: req.user.apiRepr(),
+          sessionID: req.sessionID
           //message: `Welcome ${req.user.username}!`
-      });*/
-      req.login(req.user, loginErr => {
+      });
+      /*req.login(req.user, loginErr => {
         if (loginErr) {
           console.log('Req.user line 90' + req.user);
           return res.status(401).json({error: loginErr});
@@ -41,13 +42,13 @@ try{
           sessionID: req.sessionID
           //message: `Welcome ${req.user.username}!`
         });
-      });
+      });*/
   });
 
   return router;
 }
 catch(error){
-  console.log(error);
+  //console.log(error);
   throw error;
 }
 }
