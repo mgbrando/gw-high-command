@@ -37,9 +37,9 @@ class Dashboard extends Component {
         //  <SwipeableRoutes></SwipeableRoutes>
   render() {
     if(this.props.isAuthenticated){
-      const routes = [(<Route exact path='/dashboard/guild' component={Guild} key={0} />),
-                      (<Route exact path='/dashboard/members' component={GuildMembers} key={1} />),
-                      (<Route exact path='/dashboard/teams' component={GuildTeams} key={2} />)];
+      const routes = [(<Route exact path='/dashboard/guild' render={() => <Guild activeUser={this.props.activeUser} />} key={0} />),
+                      (<Route exact path='/dashboard/members' render={() => <GuildMembers activeUser={this.props.activeUser} />} key={1} />),
+                      (<Route exact path='/dashboard/teams' render={() => <GuildTeams activeUser={this.props.activeUser} />} key={2} />)];
       return (<div className="dashboard">
         <WelcomeBar user={this.props.activeUser.username} logOut={this.logOut} />
         <main className="main-content">
@@ -61,8 +61,8 @@ class Dashboard extends Component {
 const mapStateToProps = (state, props) => ({
   isAuthenticated: state.registrationAndLogin.isAuthenticated,
   authorizationChecked: state.registrationAndLogin.authorizationChecked,
-  activeUser: state.registrationAndLogin.activeUser,
-  slideIndex: state.dashboard.slideIndex
+  activeUser: state.registrationAndLogin.activeUser
+  //slideIndex: state.dashboard.slideIndex
 });
 
 export default connect(mapStateToProps)(Dashboard);

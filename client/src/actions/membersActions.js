@@ -1,6 +1,58 @@
 //import 'whatwg-fetch';
 import 'isomorphic-fetch';
 
+export const getGuildMembers = guildID => {
+  return dispatch => {
+    let registeredMembers;
+    let unregisteredMembers;
+    fetch('/api/guilds/'+guildID+'/members')
+    .then(response => response.json())
+    .then(_registeredMembers => {
+      registeredMembers=_registeredMembers;
+      fetch('https://api.guildwars2.com/v2/guild/'+guildID+'/members')
+      .then(guildMembers => {
+        unregisteredMembers = guildMembers.map(member => Object.assign({}, member));
+        let registeredGuildMembers = registeredMembers.map(member => Object.assign({}, member));
+        let registeredMembersToRemove = [];
+        /*for(let j=0; j < guildMembers.length; j++){
+          if(registeredMembers.length === 0)
+            break;
+          
+          registeredMembers = registeredMembers.filter(member => {
+            return guildMembers[i].name !== registeredGuildMembers[i].handleName;
+          });
+        }*/
+
+        for(let i=0; i < registeredGuildMembers.length; i++){
+          unregisteredMembers = unregisteredMembers.filter(member => {
+            if(member.name === registeredGuildMembers[i].handleName){
+              return false;
+            }
+            registeredMembers = registeredMembers.filter(member => {
+              return member.handleName !== registeredGuildMembers[i].handleName;
+            });
+
+            return true;
+          });
+        }
+
+        fetch('/api/guilds/'+guildID,
+        {
+          method: PUT,
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            members: registeredMembers
+          })
+        })
+        .then()
+        dispatch(getRegisteredMembersSuccess(registeredMembers)))
+      })
+    })
+    .catch(error => dispatch(getRegisteredMembersFailure(error)))   
+  }
+}
 //Registered Members
 export const GET_REGISTERED_MEMBERS_SUCCESS = 'GET_REGISTERED_MEMBERS_SUCCESS';
 export const getRegisteredMembersSuccess = members => ({

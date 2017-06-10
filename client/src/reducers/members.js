@@ -2,6 +2,7 @@ import * as actions from '../actions/membersActions';
 
 const initialRepositoryState = {
 	guildMembers: [],
+	selectedMember: {},
     memberDetails: {},
     memberPVPStats: {},
     memberPVEStats: {},

@@ -8,13 +8,15 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import NavigationExpandMore from 'material-ui/svg-icons/navigation/expand-more';
 import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
 //iconElementLeft={<IconButton><NavigationClose /></IconButton>}
+import './SectionBar.css';
 
 function SectionBar(props){
     return (
-    <div className="sectionBar">
+    <div className={"sectionBar "+(props.additionalClasses || '')}>
       <AppBar
-        title={<span>{props.title}</span>}
-        iconElementLeft={<span></span>}
+        className="appBar"
+        title={<span className="title">{props.title}</span>}
+        iconElementLeft={<div className="leftIcon">{props.leftIcon || ''}</div>}
       />
     </div>
   );

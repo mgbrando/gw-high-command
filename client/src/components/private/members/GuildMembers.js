@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 //import GuildDetails from './GuildDetails';
 //import GuildUpgrades from './GuildUpgrades';
-import SectionBar from '../SectionBar';
+import { Route } from 'react-router-dom';
+import { Switch } from 'react-router';
+import MembersTable from './MembersTable';
+import GuildMember from './GuildMember';
 import './GuildMembers.css';
 
 class GuildMembers extends Component {
@@ -13,32 +16,17 @@ class GuildMembers extends Component {
     //this.displayPage = this.displayPage.bind(this);
   }
 
-  /*displayPage(){
-    switch(props.page){
-      case "rankSelection":
-        return (<RankSelection />);
-        break;
-      case "registration":
-        return (<Registration />);
-        break;
-      case "guild":
-        return (<Guild />);
-        break;
-      case "guildMembers":
-        return (<GuildMembers />);
-        break;
-      case "guildTeams":
-        return (<GuildTeams />);
-        break;
-      default:
-        return (<RankSelection />);
-    }
-  }*/
+  componentDidMount(){
+    //this.props.dispatch(actions.getMembersInfo(this.props.activeUser.apiKey));
+  }
+
   render() {
     return (
       <section className="guildMembers">
-        <SectionBar title="Guild Members" />
-
+        <Switch>
+          <Route exact path='/dashboard/members' component={MembersTable} />
+          <Route exact path='dashboard/members/:member' component={GuildMember} />
+        </Switch>
       </section>
     );
   }

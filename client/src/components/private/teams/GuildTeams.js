@@ -14,7 +14,7 @@ class GuildTeams extends Component {
     return (
       <section className="guildTeams">
         <SectionBar title="Guild Teams" />
-    
+        {this.props.someprop}
       </section>
     );
   }

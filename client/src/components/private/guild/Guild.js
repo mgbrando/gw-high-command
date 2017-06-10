@@ -76,7 +76,7 @@ class Guild extends Component {
 //        <GuildUpgrades upgrades={this.props.upgrades} />
 
 const mapStateToProps = (state, props) => ({
-    activeUser: state.registrationAndLogin.activeUser,
+    //activeUser: state.registrationAndLogin.activeUser,
     guildDetails: state.guild.guildDetails,
     guildUpgrades: state.guild.guildUpgrades,
     guildCompletedUpgrades: state.guild.guildCompletedUpgrades,

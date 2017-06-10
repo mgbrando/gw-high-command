@@ -24,3 +24,33 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }*/
+
+/*.onTeam .appBar .leftIcon{
+  color: green;
+}*/
+.onTeam{
+  margin-top: 15px;
+}
+.onTeam .appBar{
+  background-color: #D8D8D8 !important;
+  border: 1px solid #979797 !important;
+}
+.onTeam .appBar div:first-child{
+  margin-top: 0px !important;
+  vertical-align: bottom !important;
+}
+.onTeam .appBar div:first-child .leftIcon{
+  height: 100%;
+}
+.onTeam .appBar div:nth-child(2){
+  color: black !important;
+}
+.onTeam .appBar div{
+  height: 50px !important;
+  line-height: 50px !important;
+}
+.greenRectIcon{
+  height: 24px;
+  width: 40px;
+  margin-top: 11px;
+}
