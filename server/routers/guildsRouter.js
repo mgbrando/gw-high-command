@@ -75,4 +75,31 @@ router.post('/create-guilds', (req, res) => {
 
 });
 
+router.put('/:id', jsonParser, (req, res) => {
+    Guild
+    	.findByIdAndUpdate(req.params.id, {$set: {members: req.body.members}})
+    	.exec()
+    	.then(() => {
+ 			res.status(204).end();
+ 		})
+ 		.catch(err => {
+ 			console.error(err);
+ 			res.status(500).json({message: 'Internal Service Error: '+err});
+ 		});
+});
+
+router.get('/:id/members', jsonParser, (req, res) => {
+	console.log("Members route: "+req.params.id);
+    Guild
+    	.findOne({id: req.params.id})
+    	.exec()
+    	.then(guild => {
+ 			res.json(guild.members);
+ 		})
+ 		.catch(err => {
+ 			console.error(err);
+ 			res.status(500).json({message: 'Internal Service Error: '+err});
+ 		});
+});
+
 module.exports = router;

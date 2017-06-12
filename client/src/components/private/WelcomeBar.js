@@ -10,8 +10,7 @@ function WelcomeBar(props){
   return (
     <div className="welcomeBar">
       <AppBar
-        title={<span>Welcome, {props.user}!</span>}
-        iconElementLeft={<span></span>}
+        title={<span>Welcome, {props.user.username}!</span>}
         iconElementRight={<FlatButton label="Log Out" onClick={props.logOut}/>}
       />
     </div>

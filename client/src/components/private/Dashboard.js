@@ -41,7 +41,7 @@ class Dashboard extends Component {
                       (<Route exact path='/dashboard/members' render={() => <GuildMembers activeUser={this.props.activeUser} />} key={1} />),
                       (<Route exact path='/dashboard/teams' render={() => <GuildTeams activeUser={this.props.activeUser} />} key={2} />)];
       return (<div className="dashboard">
-        <WelcomeBar user={this.props.activeUser.username} logOut={this.logOut} />
+        <WelcomeBar user={this.props.activeUser} logOut={this.logOut} />
         <main className="main-content">
           <Route exact path='/dashboard' render={() => (<Redirect to="/dashboard/guild" />)} />
           <TabNavigation routes={routes} />

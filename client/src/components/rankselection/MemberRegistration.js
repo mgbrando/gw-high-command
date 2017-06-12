@@ -208,40 +208,13 @@ class MemberRegistration extends Component {
             next={true} 
             nextButtonDisabled={this.props.nextButtonDisabled}
             changeSection={this.changeSection}
-            previousSection="keySubmission"
+            previousSection="guildSelection"
             nextSection="registrationSuccess"
           />
         </div>  
       );
     }
-    /*else if(this.props.memberRegistrationSection === "keySubmission" && this.props.isLeader){
-      return(
-        <div className="MemberRegistration">
-          <div className="MemberRegistrationHeader">
-            <h2>Registration</h2>
-          </div>
-          <KeySubmissionForm 
-            apiKey={this.props.memberApiKey} 
-            getAPIKeyInput={this.getAPIKeyInput} 
-            validateAPIKey={this.validateAPIKey}
-            memberValidationMessage={this.props.memberValidationMessage}
-          />
-        <SectionNavigation 
-            previous={true} 
-            next={true} 
-            nextButtonDisabled={this.props.nextButtonDisabled}
-            changeSection={this.changeSection}
-            nextSection="loginCredentials"
-          />
-        </div>  
-      );
-    }*/
     else{
-      let nextSection = 'guildSelection';
-      if(isLeader){
-        nextSection= 'loginCredentials';
-      }
-
       return(
         <div className="MemberRegistration">
           <div className="MemberRegistrationHeader">
@@ -258,7 +231,7 @@ class MemberRegistration extends Component {
             next={true} 
             nextButtonDisabled={this.props.nextButtonDisabled}
             changeSection={this.changeSection}
-            nextSection={nextSection}
+            nextSection="guildSelection"
           />
         </div>  
       );

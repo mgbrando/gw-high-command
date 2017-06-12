@@ -26,19 +26,19 @@ class MembersTable extends Component {
 
   componentWillMount(){
     let rows = [];
-    for(let i=0; i < this.props.guildMembers.length; i++)
+    for(let i=0; i < this.props.registeredMembers.length; i++)
       rows.push(<TableRow>
-                  <TableRowColumn>{this.props.guildMembers[i].handleName}</TableRowColumn>
-                  <TableRowColumn>{this.props.guildMembers[i].rank}</TableRowColumn>
-                  <TableRowColumn>{this.props.guildMembers[i].joined}</TableRowColumn>
-                  <TableRowColumn><input type="image" onClick={this.statsClick} src={pieChart} alt="stats icon" value={this.props.guildMembers[i].apiKey} /></TableRowColumn>
+                  <TableRowColumn>{this.props.registeredMembers[i].handleName}</TableRowColumn>
+                  <TableRowColumn>{this.props.registeredMembers[i].rank}</TableRowColumn>
+                  <TableRowColumn>{this.props.registeredMembers[i].joined}</TableRowColumn>
+                  <TableRowColumn><input type="image" onClick={this.statsClick} src={pieChart} alt="stats icon" value={this.props.registeredMembers[i].apiKey} /></TableRowColumn>
                 </TableRow>);
     this.setState({ rows: rows });
     //this.props.dispatch(actions.getMembersInfo(this.props.activeUser.apiKey));
   }
 
   statsClick(apiKey){
-    this.props.dispatch(actions.selectMember(apiKey));
+    this.props.dispatch(actions.selectMember(apiKey, this.props.registeredMembers));
   }
 
   render() {
@@ -74,9 +74,9 @@ class MembersTable extends Component {
 
 
 const mapStateToProps = (state, props) => ({
-  unregisteredguildMembers: state.members.guildMembers,
-  registeredGuildMembers: state.members.registeredGuildMembers,
-  selectedMember: state.members.selected
+  unregisteredMembers: state.members.unregisteredMembers,
+  registeredMembers: state.members.registeredMembers,
+  selectedMember: state.members.selectedMember
 });
 
 export default connect(mapStateToProps)(MembersTable);

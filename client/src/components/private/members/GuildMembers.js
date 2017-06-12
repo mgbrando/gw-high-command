@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 //import GuildDetails from './GuildDetails';
 //import GuildUpgrades from './GuildUpgrades';
+import * as actions from '../../../actions/membersActions';
 import { Route } from 'react-router-dom';
 import { Switch } from 'react-router';
 import MembersTable from './MembersTable';
@@ -15,7 +16,10 @@ class GuildMembers extends Component {
 
     //this.displayPage = this.displayPage.bind(this);
   }
-
+  componentWillMount(){
+    //if()
+    this.props.dispatch(actions.getGuildMembers(this.props.guildDetails.id, this.props.activeUser.apiKey));
+  }
   componentDidMount(){
     //this.props.dispatch(actions.getMembersInfo(this.props.activeUser.apiKey));
   }
@@ -36,7 +40,7 @@ class GuildMembers extends Component {
 //        <GuildUpgrades upgrades={this.props.upgrades} />
 
 const mapStateToProps = (state, props) => ({
-  guildMembers: state.members.guildMembers,
+  guildDetails: state.guild.guildDetails
 });
 
 export default connect(mapStateToProps)(GuildMembers);

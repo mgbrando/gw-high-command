@@ -41,11 +41,23 @@ class GuildMember extends Component {
     return (
       <section className="guildMember">
         <SectionBar title="Member Details" />
-        <MemberDetails content={this.props.memberDetails} visible={this.props.displayMemberDetails} />
+        <MemberDetails 
+          accountInfo={this.props.accountInfo}
+          joined={this.props.joined} 
+          characters={this.props.characters} 
+          visible={this.props.displayMemberDetails} 
+        />
         <SectionBar title="PvP Stats" />
-        <MemberPVPStats content={this.props.memberPVPStats} visible={this.props.displayMemberPVPStats} />
+        <MemberPVPStats 
+          pvpStats={this.props.pvpStats} 
+          pvpStandings={this.props.pvpStandings} 
+          visible={this.props.displayMemberPVPStats} 
+        />
         <SectionBar title="PvE Stats" />
-        <MemberPVEStats content={this.props.memberPVEStats} visible={this.props.displayMemberPVEStats} />
+        <MemberPVEStats 
+          raids={this.props.raids} 
+          visible={this.props.displayMemberPVEStats} 
+        />
       </section>
     );
   }
@@ -55,12 +67,19 @@ class GuildMember extends Component {
 //        <GuildUpgrades upgrades={this.props.upgrades} />
 
 const mapStateToProps = (state, props) => ({
-    memberDetails: state.members.memberDetails,
+    /*memberDetails: state.members.memberDetails,
     memberPVPStats: state.members.memberPVPStats,
-    memberPVEStats: state.members.memberPVEStats,
+    memberPVEStats: state.members.memberPVEStats,*/
+    registeredMembers: state.members.registeredMembers,
     displayMemberDetails: state.members.displayMemberDetails,
     displayMemberPVPStats: state.members.displayMemberPVPStats,
-    displayMembersPVEStats: state.members.displayMemberPVPStats
+    displayMembersPVEStats: state.members.displayMemberPVPStats,
+    accountInfo: state.members.accountInfo,
+    joined: state.members.joined,
+    characters: state.members.characters,
+    pvpStats: state.members.pvpStats,
+    pvpStandings: state.members.pvpStandings,
+    raids: state.members.raids
 });
 
 export default connect(mapStateToProps)(GuildMember);
