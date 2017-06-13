@@ -1,6 +1,7 @@
 //import 'whatwg-fetch';
-import 'isomorphic-fetch';
+// import 'isomorphic-fetch';
 import { getCookie, setCookie, expireCookie, removeCookie } from 'redux-cookie';
+import $ from 'jquery';
 //import { CookiesProvider, withCookies, Cookies } from 'react-cookie';
 //import Cookies from 'universal-cookie';
 
@@ -102,7 +103,7 @@ export const registerGuildLeader = (username, password, confirmPassword, handleN
         //validationErrors[0] = 'Username already exists';
         //return dispatch(setInvalidCredentials(validationErrors));
       });
-      //});      
+      //});
     }
     else{
       if(username.length <= 8){
@@ -140,7 +141,7 @@ Array.prototype.diff = function(a) {
 
 export const validateMemberAPIKey = access_token => {
   return dispatch => {
-  	let memberGuilds; 
+  	let memberGuilds;
     fetch('https://api.guildwars2.com/v2/account?access_token='+access_token)
     .then(response => response.json())
     .then(responseObject => {
@@ -171,7 +172,7 @@ export const validateMemberAPIKey = access_token => {
     	}
     });
     //.catch(errorMessage => dispatch(validateMemberKeyError(errorMessage)));
-  }	
+  }
 };
 
 //Leader Key Validation
@@ -191,7 +192,7 @@ export const validateLeaderKeySuccess = (memberName, memberApiKey, memberGuildCh
 
 export const validateLeaderAPIKey = access_token => {
   return dispatch => {
-    let leaderGuilds; 
+    let leaderGuilds;
     fetch('https://api.guildwars2.com/v2/account?access_token='+access_token)
     .then(response => response.json())
     .then(responseObject => {
@@ -223,7 +224,7 @@ export const validateLeaderAPIKey = access_token => {
         //.catch(error => { const errorMessage = error;});
       }
     });
-  } 
+  }
 };
 
 //Add Member Key to guilds - (change localhost:8080 dependent on config file)
@@ -258,9 +259,9 @@ export const addMemberToGuilds = (member, guilds) => {
     		successMessage+=' ${guilds[i].name}';
     	}
     	return dispatch(addMemberSuccess(successMessage));
-    })	
+    })
     .catch(error => dispatch(addMemberFailure(error)));
-  }	
+  }
 };
 
 
@@ -298,7 +299,7 @@ export const validateLeaderAPIKey = access_token => {
     		return dispatch(validateLeaderKeySuccess(responseObject, access_token));
     	}
     });
-  }	
+  }
 };*/
 
 //Add Member Key to guilds - (change localhost:8080 dependent on config file)
@@ -330,7 +331,7 @@ export const registerGuildLeaderFailure = error => ({
     	return dispatch(registerGuildLeaderSuccess('Successfully registered as a guild leader.'));
     })
     .catch(error => dispatch(registerGuildLeaderFailure(error)))
-  }	
+  }
 };*/
 export const LOGOUT_USER = 'LOGOUT_USER';
 export const logOutUser = () => ({
@@ -361,29 +362,23 @@ export const loginGuildLeaderFailure = errorMessage => ({
 
 export const loginGuildLeader = (username, password) => {
   return dispatch => {
-    /*let formData = new FormData();
-    formData.append('username', username);
-    formData.append('password', password);*/
 
-    let user;
-    let guildDetails;
-    let guildUpgrades;
-    fetch('/api/login?username='+username+'&password='+password)
-    .then(response => response.json())
-    .then(_response => {
-      console.log(_response.user);
-      //setCookie('gw2highcommand', 'value', { expires: 7 });
-      console.log(_response.sessionID);
-      localStorage.setItem('gw2highcommandUserID', _response.user.id);
-      localStorage.setItem('gw2highcommandSessionID', _response.sessionID);
-      /*user = _response.user;
-      guildDetails = await fetch('https://api.guildwars2.com/v2/guild/'+user.guildIds[0]);
-      guildUpgrades = await fetch('https://api.guildwars2.com/v2/guild/'+user.guildIds[0]);*/
-      //fetch()
-      return dispatch(authenticationCleared(_response.user))
-    })
-    .catch(error => dispatch(authenticationFailed(error.message)));
-  }	
+    const settings = {
+      url: '/api/login',
+      method: "POST",
+      headers: {
+        'content-type': "application/json"
+      },
+      data: JSON.stringify({
+        username,
+        password
+      })
+    };
+
+    $.ajax(settings).done((response) => {
+      return dispatch(authenticationCleared(response.user))
+    });
+  }
 };
 
 export const AUTHENTICATION_CLEARED = 'AUTHENTICATION_CLEARED';
@@ -401,57 +396,42 @@ export const authenticationFailed = (errorMessage) => ({
 
 export const checkAuthentication = () => {
   return dispatch => {
-    /*if(getCookie('gw2highcommand')){
-      fetch('/api/authorization')
-      .then(response => dispatch(authenticationCleared(response.user)))
-      .catch(error => dispatch(authenticationFailed(error.message)));
-    }
-    else
-      return dispatch(authenticationFailed("User is not logged in."));*/
-    console.log('MADE TO CHECK');
-    const userID = localStorage.getItem('gw2highcommandUserID');
-    console.log(userID);
-    const sessionID = localStorage.getItem('gw2highcommandSessionID');
-    console.log(sessionID);
-    if(!userID)
-      return dispatch(authenticationFailed("Unauthorized user"));
 
-    console.log("LINE 416 ");
-    //console.log(localStorage.getItem('gw2highcommand'));
-    let myHeaders = new Headers();
-    myHeaders.append('pragma', 'no-cache');
-    myHeaders.append('cache-control', 'no-cache');
-
-    const myInit = {
-      method: 'POST',
-      headers: myHeaders,
-      //credentials: 'same-origin'
-      body: JSON.stringify({
-        userId: userID,
-        sessionID: sessionID
-      })
-    };
-    //fetch('/api/authorization')
-    fetch('/api/authorization', myInit)
-    .then(response => {
-      if(response.status === 401)
-        throw new Error('User not authenticated');
-      else if(response.status === 200 || response.status === 304){
-        console.log("RESPUSER: "+response.user);
-        return response.json();
+    const settings = {
+      url: '/api/authorization',
+      method: "GET",
+      headers: {
+        'content-type': "application/json"
       }
-      else
-        throw new Error('Internal service error');
-    })
-    .then(_response => {
-      console.log("CHECKED: "+_response.user.username);
-      return false;
-      //return dispatch(authenticationCleared(_response.user));        
-    })
-    .catch((error) => {
-      console.log(error.message);
-      return dispatch(authenticationFailed(error.message));
+    };
+
+    $.ajax(settings).done((response) => {
+      console.log(response);
     });
+
+    //fetch('/api/authorization')
+    // fetch('/api/authorization', {
+    //   credentials: 'include'
+    // })
+    // .then(response => {
+    //   if(response.status === 401)
+    //     throw new Error('User not authenticated');
+    //   else if(response.status === 200 || response.status === 304){
+    //     console.log("RESPUSER: "+response.user);
+    //     return response.json();
+    //   }
+    //   else
+    //     throw new Error('Internal service error');
+    // })
+    // .then(_response => {
+    //   console.log("CHECKED: "+_response.user.username);
+    //   return false;
+    //   //return dispatch(authenticationCleared(_response.user));
+    // })
+    // .catch((error) => {
+    //   console.log(error.message);
+    //   return dispatch(authenticationFailed(error.message));
+    // });
   }
 };
 
@@ -482,7 +462,7 @@ export const completeMemberRegistration = (memberName, apiKey, guilds) => {
     for(let i=0; i < guilds.length; i++)
       guildIds.push(guilds[i].guildId);
 
-    fetch('/api/guilds/bulk-update', 
+    fetch('/api/guilds/bulk-update',
       {
         method: 'PUT',
         headers: {
@@ -528,7 +508,7 @@ export const changeMemberRegistrationSection = (section, leader=false) => {
 		    return dispatch(switchToRegistrationSuccessSection());
       }
     }
-  }	
+  }
 };
 
 export const GET_MEMBER_KEY_INPUT = 'GET_MEMBER_KEY_INPUT';
@@ -563,7 +543,7 @@ export const getGuilds = guildId => {
   			}));*/
 	fetch(apiCall+guildId)
 		.then(response => response.json())//apiCall+guildId)
-		.then(guild => { 
+		.then(guild => {
 			return dispatch(getGuildSuccess({guildId: guild.id, guildName: guild.name, guildTag: guild.tag}));
 		});
 		//.catch(error => {return dispatch(getGuildFailure(error));})//+guildId+'. '+'ERROR: '+error)));
@@ -579,7 +559,7 @@ export const getGuilds = guildId => {
   		return dispatch(saveGuilds(guilds));
   	})*/
   	//.catch(err => err);
-  }	
+  }
 };
 export const CHANGE_SELECTED_GUILDS = 'CHANGE_SELECTED_GUILDS';
 export const changeSelectedGuilds = (selectedGuilds, nextArrowDisabled) => ({
@@ -606,7 +586,7 @@ export const deselectGuild = (selectedGuilds, guild) => {
       return dispatch(changeSelectedGuilds(selectedGuilds, true));
     else
       return dispatch(changeSelectedGuilds(selectedGuilds, false));
-  } 
+  }
 };*/
 
 export const toggleGuild = (selectedGuilds, guilds, guildId) => {
@@ -636,5 +616,5 @@ export const toggleGuild = (selectedGuilds, guilds, guildId) => {
     else
       return dispatch(changeSelectedGuilds(selectedGuilds, false));*/
     return dispatch(changeSelectedGuilds([...selectedGuilds, guild], false));
-  } 
+  }
 };

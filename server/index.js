@@ -1,11 +1,10 @@
-const path = require('path');
 const express = require('express');
-const session = require('express-session');
+const path = require('path');
 const passport = require('passport');
+const session = require('express-session');
 const LocalStrategy = require('passport-local').Strategy;
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const jsonParser = bodyParser.json();
 const {Leader} = require('./models/leader');
 const guildsRouter = require('./routers/guildsRouter');
 const membersRouter = require('./routers/membersRouter');
@@ -21,22 +20,13 @@ const tasksRouter = require('./routers/tasksRouter');
 const {DATABASE_URL, PORT} = require('./config');
 const mongoose = require('mongoose');
 
-
 const app = express();
-app.use(express.static(path.resolve(__dirname, '../client/build')));
-//app.use(cookieParser('keyboard cat'));
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
-app.use(jsonParser);
 
-const cookieExpirationDate = new Date();
-const cookieExpirationDays = 365;
-cookieExpirationDate.setDate(cookieExpirationDate.getDate() + cookieExpirationDays);
+app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
-    Leader.findOne({ username: username }, function (err, user) {
+    Leader.findOne({ username: username }, (err, user) => {
       if (err) { return done(err); }
       if (!user) {
         return done(null, false, { message: 'Incorrect username.' });
@@ -44,32 +34,38 @@ passport.use(new LocalStrategy(
       if (!user.validatePassword(password)) {
         return done(null, false, { message: 'Incorrect password.' });
       }
-      //console.log('User: '+user);
-      //console.log('Repr: '+user);
       return done(null, user);
     });
   }
 ));
 
-app.use(session({ name: 'gw2highcommand',
-                 secret: 'keyboard cat',
-                 saveUninitialized: false,
-                 resave: false
-             }));
+
+app.use(session({
+  secret: 'something something',
+  resave: false,
+  saveUninitialized: true
+}));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.serializeUser(function(user, done) {
+passport.serializeUser((user, done) => {
   //console.log('line 26: serialize '+ user._id);
   done(null, user._id);
 });
 
-passport.deserializeUser(function(id, done) {
-  //console.log('Line 30, id: '+ id);
-  Leader.findById(id, function(err, user) {
+passport.deserializeUser((id, done) => {
+  console.log('Line 30, id: '+ id);
+  Leader.findById(id, (err, user) => {
     done(err, user);
   });
 });
+
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+
+mongoose.connect(DATABASE_URL);
 
 // API endpoints go here!
 app.use('/api/member-registration', memberRegistrationRouter);
@@ -81,20 +77,36 @@ app.use('/api/leaders', leadersRouter);
 app.use('/api/guilds', guildsRouter);
 app.use('/api/register', registrationRouter);
 
-app.post('/api/authorization', (req,res) => {
-  console.log(req.session);
+const isAuthenticated = (req, res, next) => {
+  console.log('81', req.user);
+  if (req.user) {
+      next();
+  }
+  // if they aren't redirect them to the login page
+  else {
+    res.json({message: 'uh oh'})
+  }
+}
+
+app.get('/api/authorization', isAuthenticated, (req,res) => {
+  console.log('After refresh browser:', req.user);
 });
-app.get('/api/login', passport.authenticate('local', {session: true}), (req, res) => {
-        if (!req.user) {
-        //console.log('Req.user line 85' + req.user);
-        return res.status(401).json({error: info.message});
-      }
-      //console.log(req.session);
-      return res.status(200).json({
-          user: req.user.apiRepr(),
-          sessionID: req.sessionID
-          //message: `Welcome ${req.user.username}!`
-      });
+
+app.post('/api/login', (req, res, next) => {
+    passport.authenticate('local', {session: true}, (err, user, info) => {
+        if (err) {
+            return next(err); // will generate a 500 error
+        }
+        if (!user) {
+            return res.send({ success : false, message : info.message || 'Failed' });
+        }
+
+        console.log('After they login:', user);
+        req.logIn(user, (err) => {
+            if (err) { return next(err); }
+            return res.send({ success : true, message : 'Login success', user: user });
+        });
+    })(req, res, next);
 });
 // Serve the built client
 //app.use(express.static(path.resolve(__dirname, '../client/build')));
@@ -107,44 +119,4 @@ app.get(/^(?!\/api(\/|$))/, (req, res) => {
     res.sendFile(index);
 });
 
-let server;
-
-function runServer(databaseUrl=DATABASE_URL, port=3001){
-    return new Promise((resolve, reject) => {
-        mongoose.connect(databaseUrl, err => {
-            if(err){
-                return reject(err);
-            }
-            server = app.listen(port, () => {
-                console.log(`Your app is listening on port: ${port}`);
-                resolve();
-            })
-            .on('error', err => {
-                mongoose.disconnect();
-                reject(err)
-            });
-        });
-    });
-}
-
-function closeServer(){
-    return mongoose.disconnect()
-        .then(() => {
-            return new Promise((resolve, reject) => {
-                console.log('Closing server');
-                server.close(err => {
-                    if(err){
-                        return reject(err);
-                    }
-                    resolve();
-                });
-            });
-        });
-}
-if (require.main === module) {
-    runServer();
-}
-
-module.exports = {
-    app, runServer, closeServer
-};
+app.listen(process.env.PORT || 3001, () => console.log('Server up and running!'));
