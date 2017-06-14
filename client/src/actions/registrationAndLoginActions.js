@@ -365,34 +365,22 @@ export const loginGuildLeaderFailure = errorMessage => ({
 
 export const loginGuildLeader = (username, password) => {
   return dispatch => {
-    /*let formData = new FormData();
-    formData.append('username', username);
-    formData.append('password', password);*/
-
-    let user;
-    let guildDetails;
-    let guildUpgrades;
-    fetch('/api/login', {
-      method: 'POST',
+    const settings = {
+      url: '/api/login',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        'content-type': "application/json"
       },
-     credentials: 'same-origin',
-     body: JSON.stringify({
+      data: JSON.stringify({
         username,
         password
       })
-      //body: formData
-    })
-    .then(response => response.json())
-    .then(_response => {
+    };
+
+    $.ajax(settings)
+    .done((_response) => {
       console.log(_response.user);
-      //setCookie('gw2highcommand', 'value', { expires: 7 });
-      //localStorage.setItem('gw2highcommand', {userID: _response.user.id, sessionID: _response.sessionID});
-      /*user = _response.user;
-      guildDetails = await fetch('https://api.guildwars2.com/v2/guild/'+user.guildIds[0]);
-      guildUpgrades = await fetch('https://api.guildwars2.com/v2/guild/'+user.guildIds[0]);*/
-      //fetch()
+
       let currentUserKey = _response.user.apiKey;
       fetch('https://api.guildwars2.com/v2/account?access_token='+currentUserKey)
       .then(response => response.json())
@@ -410,7 +398,7 @@ export const loginGuildLeader = (username, password) => {
       })
     })
     .catch(error => dispatch(authenticationFailed(error.message)));
-  }	
+  };	
 };
 
 export const AUTHENTICATION_CLEARED = 'AUTHENTICATION_CLEARED';
@@ -430,35 +418,19 @@ export const authenticationFailed = (errorMessage) => ({
 
 export const checkAuthentication = () => {
   return dispatch => {
-    /*if(getCookie('gw2highcommand')){
-      fetch('/api/authorization')
-      .then(response => dispatch(authenticationCleared(response.user)))
-      .catch(error => dispatch(authenticationFailed(error.message)));
-    }
-    else
-      return dispatch(authenticationFailed("User is not logged in."));*/
-    /*const userID = localStorage.getItem('gw2highcommand').userID;
-    const sessionID = localStorage.getItem('gw2highcommand').sessionID;
-    if(!userId)
-      return dispatch(authenticationFailed("Unauthorized user"));*/
-
-    console.log("LINE 416 ");
-    //console.log(localStorage.getItem('gw2highcommand'));
-    let myHeaders = new Headers();
-    myHeaders.append('pragma', 'no-cache');
-    myHeaders.append('cache-control', 'no-cache');
-
-    const myInit = {
-      method: 'GET',
-      headers: myHeaders,
-      credentials: 'same-origin'
-      /*body: JSON.stringify({
-        userId: userID,
-        sessionID: sessionID
-      })*/
+    const settings = {
+      url: '/api/authorization',
+      method: "GET",
+      headers: {
+        'content-type': "application/json"
+      }
     };
-    //fetch('/api/authorization')
-    fetch('/api/authorization', myInit)
+
+    $.ajax(settings).done((response) => {
+      console.log(response);
+    });
+
+    /*fetch('/api/authorization', myInit)
     .then(response => {
       if(response.status === 401)
         throw new Error('User not authenticated');
@@ -490,7 +462,7 @@ export const checkAuthentication = () => {
     .catch((error) => {
       console.log(error.message);
       return dispatch(authenticationFailed(error.message));
-    });
+    });*/
   }
 };
 

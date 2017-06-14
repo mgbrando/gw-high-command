@@ -15,34 +15,22 @@ router.use(jsonParser);
 
 module.exports = function(passport){
 try{
-  router.post('/', passport.authenticate('local', {session: true}), function(req, res, next) {
-      console.log('Line 80 ');
-      /*if (err) {
-        return next(err);
-      }*/
-      console.log('Req.user line 83' + req.user);
-      if (!req.user) {
-        console.log('Req.user line 85' + req.user);
-        return res.status(401).json({error: info.message});
-      }
-      /*console.log(req.session);
-      return res.status(200).json({
-          user: req.user.apiRepr()
-          //message: `Welcome ${req.user.username}!`
-      });*/
-      req.login(req.user, loginErr => {
-        if (loginErr) {
-          console.log('Req.user line 90' + req.user);
-          return res.status(401).json({error: loginErr});
+  router.post('/', (req, res, next) => {
+    passport.authenticate('local', {session: true}, (err, user, info) => {
+        if (err) {
+            return next(err); // will generate a 500 error
         }
-        console.log(`LOGGED IN: ${req.user.username}`);
-        return res.status(200).json({
-          user: req.user.apiRepr(),
-          sessionID: req.sessionID
-          //message: `Welcome ${req.user.username}!`
+        if (!user) {
+            return res.send({ success : false, message : info.message || 'Failed' });
+        }
+
+        console.log('After they login:', user);
+        req.logIn(user, (err) => {
+            if (err) { return next(err); }
+            return res.send({ success : true, message : 'Login success', user: user });
         });
-      });
-  });
+    })(req, res, next);
+});
 
   return router;
 }
