@@ -94,23 +94,14 @@ export const selectMember = (apiKey, registeredMembers) => {
                                 promises.push(fetch('https://api.guildwars2.com/v2/characters/'+encodeURIComponent(name)+'?access_token='+apiKey)
                                               .then(response => response.json()));
                               });
-                              Promise.all(promises)
+                              return Promise.all(promises)
                               .then(characters => {
                                 return characters;
-                              })
+                                //return characters;
+                              });
                            });
 
-    const pvpStats = fetch('https://api.guildwars2.com/v2/pvp/stats',
-                        {
-                          method: 'GET',
-                          headers: {
-                          'Accept': 'application/json',
-                          'Content-Type': 'application/json',
-                          'Authorization': 'Bearer ' + apiKey,
-                          'Host': 'api.guildwars2.com',
-                          'mode': 'no-cors'
-                          }
-                     })
+    const pvpStats = fetch('https://api.guildwars2.com/v2/pvp/stats?access_token='+apiKey)
                      .then(response => response.json());
 
     const pvpStandings = fetch('https://api.guildwars2.com/v2/pvp/standings?access_token='+apiKey)
