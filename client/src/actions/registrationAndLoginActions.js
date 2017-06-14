@@ -1,5 +1,6 @@
 //import 'whatwg-fetch';
 import 'isomorphic-fetch';
+import $ from 'jquery';
 import { getCookie, setCookie, expireCookie, removeCookie } from 'redux-cookie';
 //import { CookiesProvider, withCookies, Cookies } from 'react-cookie';
 //import Cookies from 'universal-cookie';
@@ -106,8 +107,7 @@ export const registerGuildLeader = (username, password, confirmPassword, handleN
         //}
         //validationErrors[0] = 'Username already exists';
         //return dispatch(setInvalidCredentials(validationErrors));
-      });
-      //});      
+      });    
     }
     else{
       if(username.length <= 8){
