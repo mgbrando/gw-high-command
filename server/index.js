@@ -95,9 +95,11 @@ app.get('/api/authorization', isAuthenticated, (req,res) => {
 app.post('/api/login', (req, res, next) => {
     passport.authenticate('local', {session: true}, (err, user, info) => {
         if (err) {
+            console.log(err);
             return next(err); // will generate a 500 error
         }
         if (!user) {
+            console.log('Incorrect user');
             return res.send({ success : false, message : info.message || 'Failed' });
         }
 

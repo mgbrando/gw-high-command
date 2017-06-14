@@ -1,5 +1,5 @@
 //import 'whatwg-fetch';
-// import 'isomorphic-fetch';
+import 'isomorphic-fetch';
 import { getCookie, setCookie, expireCookie, removeCookie } from 'redux-cookie';
 import $ from 'jquery';
 //import { CookiesProvider, withCookies, Cookies } from 'react-cookie';
@@ -376,6 +376,7 @@ export const loginGuildLeader = (username, password) => {
     };
 
     $.ajax(settings).done((response) => {
+      console.log(response.user);
       return dispatch(authenticationCleared(response.user))
     });
   }
