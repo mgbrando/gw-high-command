@@ -426,8 +426,31 @@ export const checkAuthentication = () => {
       }
     };
 
-    $.ajax(settings).done((response) => {
-      console.log(response);
+    $.ajax(settings).done(userObject => {
+      console.log(userObject);
+      if(userObject){
+      let currentUserKey = userObject.user.apiKey;
+      fetch('https://api.guildwars2.com/v2/account?access_token='+currentUserKey)
+      .then(response => response.json())
+      .then(accountInfo => {
+        let guildPromises = [];
+        for(let i=0; i < accountInfo.guilds.length; i++){
+          guildPromises.push(fetch('https://api.guildwars2.com/v2/guild/'+accountInfo.guilds[i]+'?access_token='+currentUserKey)
+                              .then(response => response.json()));
+        }
+
+        Promise.all(guildPromises)
+        .then(guilds => {
+          return dispatch(authenticationCleared(userObject.user, guilds, guilds[0].id));
+        });
+      });
+      }
+      else
+        throw Error('User not authenticated.');   
+    })
+    .catch((error) => {
+      console.log(error.message);
+      return dispatch(authenticationFailed(error.message));
     });
 
     /*fetch('/api/authorization', myInit)
