@@ -22,22 +22,35 @@ class MembersTable extends Component {
   constructor(props) {
     super(props);
     //this.displayPage = this.displayPage.bind(this);
+    this.state = {
+      rows: []
+    };
+    this.statsClick = this.statsClick.bind(this);
+    this.getAPIKey = this.getAPIKey.bind(this);
   }
 
-  componentWillMount(){
+  componentDidMount(){
     let rows = [];
-    for(let i=0; i < this.props.registeredMembers.length; i++)
-      rows.push(<TableRow>
-                  <TableRowColumn>{this.props.registeredMembers[i].handleName}</TableRowColumn>
+    for(let i=0; i < this.props.registeredMembers.length; i++){
+      const apiKey = this.getAPIKey(i);
+      rows.push(<TableRow className="memberRow" key={i}>
+                  <TableRowColumn>{this.props.registeredMembers[i].name}</TableRowColumn>
                   <TableRowColumn>{this.props.registeredMembers[i].rank}</TableRowColumn>
                   <TableRowColumn>{this.props.registeredMembers[i].joined}</TableRowColumn>
-                  <TableRowColumn><input type="image" onClick={this.statsClick} src={pieChart} alt="stats icon" value={this.props.registeredMembers[i].apiKey} /></TableRowColumn>
+                  <TableRowColumn><button type="button" name="statsButton" value={apiKey} onClick={this.statsClick}><img className="statsImage" src={pieChart} /></button></TableRowColumn>
                 </TableRow>);
+    }
     this.setState({ rows: rows });
+    console.log(this.state.rows);
+    console.log(rows);
     //this.props.dispatch(actions.getMembersInfo(this.props.activeUser.apiKey));
   }
-
-  statsClick(apiKey){
+  getAPIKey(memberIndex){
+    return this.props.registeredMembers[memberIndex].apiKey;
+  }
+  statsClick(event){
+    const apiKey = event.currentTarget.value;
+    console.log(apiKey);
     this.props.dispatch(actions.selectMember(apiKey, this.props.registeredMembers));
   }
 

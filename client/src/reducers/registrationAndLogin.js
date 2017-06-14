@@ -38,7 +38,9 @@ const initialRepositoryState = {
     activeUser: {},
     authorizationErrorMessage: "",
     isAuthenticated: false,
-    authorizationChecked: false
+    authorizationChecked: false,
+    activeUserGuilds: [],
+    activeGuild: ""
 };
 
 const registrationAndLogin = (state=initialRepositoryState, action) => {
@@ -128,13 +130,16 @@ const registrationAndLogin = (state=initialRepositoryState, action) => {
 	}*/
 	else if(action.type=== actions.AUTHENTICATION_CLEARED){
 		console.log(action.user.username);
-		return Object.assign({}, state, {isAuthenticated: true, authorizationChecked: true, activeUser: action.user});
+		return Object.assign({}, state, {isAuthenticated: true, authorizationChecked: true, activeUser: action.user, activeUserGuilds: action.guilds, activeGuild: action.activeGuild});
 	}
 	else if(action.type=== actions.AUTHENTICATION_FAILED){
 		return Object.assign({}, state, {isAuthenticated: false, authorizationChecked: true, authorizationErrorMessage: action.errorMessage});
 	}
 	else if(action.type === actions.LOGOUT_USER){
 		return Object.assign({}, state, {isAuthenticated: false, authorizationChecked: true, activeUser: {}});
+	}
+	else if(action.type === actions.SET_ACTIVE_GUILD){
+		return Object.assign({}, state, {activeGuild: action.guild});
 	}
 	return state;
 };

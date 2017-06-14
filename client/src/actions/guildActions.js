@@ -7,26 +7,26 @@ export const setGuilds = guilds => ({
     guilds
 });
 
-export const getGuildInfo = access_token => {
-    let accountInfo;
+export const getGuildInfo = (guildID, access_token) => {
+   /* let accountInfo;
     let guildDetails;
-    let guildUpgrades;
+    let guildUpgrades;*/
     return dispatch => {
-        fetch('https://api.guildwars2.com/v2/account?access_token='+access_token)
+  /*      fetch('https://api.guildwars2.com/v2/account?access_token='+access_token)
         .then(response => response.json())
         .then(_accountInfo => {
-            console.log(_accountInfo.guilds);
-            return Promise.all([
-                dispatch(getGuildDetails(_accountInfo.guilds[0])),
-                dispatch(getGuildUpgrades(_accountInfo.guilds[0], access_token))
-            ]);
-        });
+            console.log(_accountInfo.guilds);*/
+        return Promise.all([
+            dispatch(getGuildDetails(guildID)),
+            dispatch(getGuildUpgrades(guildID, access_token))
+        ]);
+        //});
         /*.then(() => dispatch);
         await dispatch(getGuildDetails(accountInfo.guilds[0]));
         await dispatch(getGuildUpgrades(accountInfo.guilds[0], access_token));
         return;*/
-    }
-}
+    };
+};
 //Guild Details
 export const GET_GUILD_DETAILS_SUCCESS = 'GET_GUILD_DETAILS_SUCCESS';
 export const getGuildDetailsSuccess = guildDetails => ({

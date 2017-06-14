@@ -94,6 +94,8 @@ router.get('/:id/members', jsonParser, (req, res) => {
     	.findOne({id: req.params.id})
     	.exec()
     	.then(guild => {
+    		console.log(guild);
+    		console.log(guild.members);
  			res.json(guild.members);
  		})
  		.catch(err => {

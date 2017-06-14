@@ -43,7 +43,14 @@ class Guild extends Component {
           this.props.dispatch(actions.getGuildDetails(accountInfo.guilds[0]));
           this.props.dispatch(actions.getGuildUpgrades(accountInfo.guilds[0], this.props.activeUser.apiKey));
         })*/
-    this.props.dispatch(actions.getGuildInfo(this.props.activeUser.apiKey));
+    this.props.dispatch(actions.getGuildInfo(this.props.activeGuild, this.props.activeUser.apiKey));
+  }
+  /*componentDidUpdate(){
+    this.props.dispatch(actions.getGuildInfo(this.props.activeGuild, this.props.activeUser.apiKey));
+  }*/
+  componentWillReceiveProps(nextProps) {
+     if(nextProps.activeGuild !== this.props.activeGuild)
+        this.props.dispatch(actions.getGuildInfo(nextProps.activeGuild, nextProps.activeUser.apiKey));
   }
 
   descriptionToggle(){
@@ -77,6 +84,7 @@ class Guild extends Component {
 
 const mapStateToProps = (state, props) => ({
     //activeUser: state.registrationAndLogin.activeUser,
+    activeGuild: state.registrationAndLogin.activeGuild,
     guildDetails: state.guild.guildDetails,
     guildUpgrades: state.guild.guildUpgrades,
     guildCompletedUpgrades: state.guild.guildCompletedUpgrades,

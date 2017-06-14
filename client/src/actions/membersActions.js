@@ -6,24 +6,26 @@ export const getGuildMembers = (guildID, access_token) => {
     let registeredMembers;
     let unregisteredMembers;
     const registeredMembersPromise = fetch('/api/guilds/'+guildID+'/members')
-                                    .then(response => response.json());
+                                      .then(response => response.json());
     const unregisteredMembersPromise = fetch('https://api.guildwars2.com/v2/guild/'+guildID+'/members?access_token='+access_token)
                                        .then(response => response.json()); 
 
           Promise.all([registeredMembersPromise, unregisteredMembersPromise])
           .then(members => {
-              let registeredMembers = members[0].map(member => Object.assign({}, member));
+              let registeredMembers = []; //members[0].map(member => Object.assign({}, member));
               let unregisteredMembers = members[1].map(member => Object.assign({}, member));
 
               for(let i=0; i < members[0].length; i++){
                 unregisteredMembers = unregisteredMembers.filter(member => {
                   if(member.name === members[0][i].handleName){
+                    member.apiKey = members[0][i].apiKey;
+                    registeredMembers.push(member);
                     return false;
                   }
 
-                  registeredMembers = registeredMembers.filter(member => {
+                  /*registeredMembers = registeredMembers.filter(member => {
                     return member.handleName !== members[0][i].handleName;
-                  });
+                  });*/
 
                   return true;
                 });
@@ -98,13 +100,23 @@ export const selectMember = (apiKey, registeredMembers) => {
                               })
                            });
 
-    const pvpStats = fetch('https://api.guildwars2.com/v2/pvp/stats?access_token'+apiKey)
+    const pvpStats = fetch('https://api.guildwars2.com/v2/pvp/stats',
+                        {
+                          method: 'GET',
+                          headers: {
+                          'Accept': 'application/json',
+                          'Content-Type': 'application/json',
+                          'Authorization': 'Bearer ' + apiKey,
+                          'Host': 'api.guildwars2.com',
+                          'mode': 'no-cors'
+                          }
+                     })
                      .then(response => response.json());
 
-    const pvpStandings = fetch('https://api.guildwars2.com/v2/pvp/standings?access_token'+apiKey)
+    const pvpStandings = fetch('https://api.guildwars2.com/v2/pvp/standings?access_token='+apiKey)
                      .then(response => response.json());
 
-    const raids = fetch('https://api.guildwars2.com/v2/raids?access_token'+apiKey)
+    const raids = fetch('https://api.guildwars2.com/v2/raids?access_token='+apiKey)
                      .then(response => response.json());
 
     Promise.all([accountInfo, characters, pvpStats, pvpStandings, raids])

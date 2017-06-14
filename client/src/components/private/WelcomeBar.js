@@ -1,20 +1,75 @@
-import React from 'react';
+import React, { Component } from 'react';
+import {connect} from 'react-redux';
 import AppBar from 'material-ui/AppBar';
-import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import FlatButton from 'material-ui/FlatButton';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import IconButton from 'material-ui/IconButton';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import * as actions from '../../actions/registrationAndLoginActions';
 
 //iconElementLeft={<IconButton><NavigationClose /></IconButton>}
 
-function WelcomeBar(props){
+class WelcomeBar extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      valueSingle: ""
+    };
+
+    this.handleChangeSingle = this.handleChangeSingle.bind(this);
+  }
+
+  componentDidMount(){
+    this.setState({valueSingle: this.props.activeGuild});
+  }
+
+  handleChangeSingle(event, value){
+    //console.log(this.state.valueSingle);
+    this.setState({valueSingle: value});
+
+    this.props.dispatch(actions.setActiveGuild(value));
+  }
+
+  /*handleOpenMenu = () => {
+    this.setState({
+      openMenu: true
+    });
+  }
+
+  handleOnRequestChange = (value) => {
+    this.setState({
+      openMenu: value,
+    });
+  }*/
+
+  render(){
+    let count = 0;
+    const guildMenuOptions = this.props.activeUserGuilds.map(guild => {
+      return (<MenuItem value={guild.id} primaryText={guild.name} key={count++} />);
+    });
+    //for(let i=0; i < activeUserGuilds.length; i++)
   return (
     <div className="welcomeBar">
       <AppBar
-        title={<span>Welcome, {props.user.username}!</span>}
-        iconElementRight={<FlatButton label="Log Out" onClick={props.logOut}/>}
+        title={<span>Welcome, {this.props.user.username}!</span>}
+        iconElementLeft={        
+        <IconMenu
+          iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+          onChange={this.handleChangeSingle}
+          value={this.state.valueSingle}
+        >
+          {guildMenuOptions}
+        </IconMenu>
+      }
+        iconElementRight={<FlatButton label="Log Out" onClick={this.props.logOut}/>}
       />
     </div>
   );
+}
 	/*if(props.previous && props.next){
 		return (
     	<div className="registrationNavigation">
@@ -40,4 +95,12 @@ function WelcomeBar(props){
 
 //<Link to="/" className="nextButton"><button type="button">Next</button></Link>
 
-export default WelcomeBar; 
+const mapStateToProps = (state, props) => ({
+  /*isAuthenticated: state.registrationAndLogin.isAuthenticated,
+  authorizationChecked: state.registrationAndLogin.authorizationChecked,
+  activeUser: state.registrationAndLogin.activeUser*/
+  //slideIndex: state.dashboard.slideIndex
+  activeUserGuilds: state.registrationAndLogin.activeUserGuilds
+});
+
+export default connect(mapStateToProps)(WelcomeBar);

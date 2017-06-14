@@ -60,3 +60,10 @@
   width: 50%;
   text-align: center;
 }
+.statsImage{
+  width: 40px;
+  height: 40px;
+}
+.memberRow{
+  height: 40px;
+}

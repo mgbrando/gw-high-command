@@ -5,6 +5,11 @@ import { getCookie, setCookie, expireCookie, removeCookie } from 'redux-cookie';
 //import Cookies from 'universal-cookie';
 
 
+export const SET_ACTIVE_GUILD = 'SET_ACTIVE_GUILD';
+export const setActiveGuild = guild => ({
+    type: SET_ACTIVE_GUILD,
+    guild
+});
 //Set Rank
 export const SET_RANK = 'SET_RANK';
 export const setRank = isLeader => ({
@@ -388,16 +393,32 @@ export const loginGuildLeader = (username, password) => {
       guildDetails = await fetch('https://api.guildwars2.com/v2/guild/'+user.guildIds[0]);
       guildUpgrades = await fetch('https://api.guildwars2.com/v2/guild/'+user.guildIds[0]);*/
       //fetch()
-      return dispatch(authenticationCleared(_response.user))
+      let currentUserKey = _response.user.apiKey;
+      fetch('https://api.guildwars2.com/v2/account?access_token='+currentUserKey)
+      .then(response => response.json())
+      .then(accountInfo => {
+        let guildPromises = [];
+        for(let i=0; i < accountInfo.guilds.length; i++){
+          guildPromises.push(fetch('https://api.guildwars2.com/v2/guild/'+accountInfo.guilds[i]+'?access_token='+currentUserKey)
+                              .then(response => response.json()));
+        }
+
+        Promise.all(guildPromises)
+        .then(guilds => {
+          return dispatch(authenticationCleared(_response.user, guilds, guilds[0].id));
+        });
+      })
     })
     .catch(error => dispatch(authenticationFailed(error.message)));
   }	
 };
 
 export const AUTHENTICATION_CLEARED = 'AUTHENTICATION_CLEARED';
-export const authenticationCleared = (user) => ({
+export const authenticationCleared = (user, guilds, activeGuild) => ({
   type: AUTHENTICATION_CLEARED,
-  user
+  user,
+  guilds,
+  activeGuild
   //welcomeMessage
 });
 
@@ -449,8 +470,22 @@ export const checkAuthentication = () => {
         throw new Error('Internal service error');
     })
     .then(_response => {
-      console.log("CHECKED: "+_response.user.username);
-      return dispatch(authenticationCleared(_response.user));        
+
+      let currentUserKey = _response.user.apiKey;
+      fetch('https://api.guildwars2.com/v2/account?access_token='+currentUserKey)
+      .then(response => response.json())
+      .then(accountInfo => {
+        let guildPromises = [];
+        for(let i=0; i < accountInfo.guilds.length; i++){
+          guildPromises.push(fetch('https://api.guildwars2.com/v2/guild/'+accountInfo.guilds[i]+'?access_token='+currentUserKey)
+                              .then(response => response.json()));
+        }
+
+        Promise.all(guildPromises)
+        .then(guilds => {
+          return dispatch(authenticationCleared(_response.user, guilds, guilds[0].id));
+        });
+      })       
     })
     .catch((error) => {
       console.log(error.message);

@@ -16,13 +16,17 @@ class GuildMembers extends Component {
 
     //this.displayPage = this.displayPage.bind(this);
   }
-  componentWillMount(){
-    //if()
-    this.props.dispatch(actions.getGuildMembers(this.props.guildDetails.id, this.props.activeUser.apiKey));
-  }
   componentDidMount(){
-    //this.props.dispatch(actions.getMembersInfo(this.props.activeUser.apiKey));
+    //if()
+    this.props.dispatch(actions.getGuildMembers(this.props.activeGuild, this.props.activeUser.apiKey));
   }
+  componentWillReceiveProps(nextProps) {
+     if(nextProps.activeGuild !== this.props.activeGuild)
+        this.props.dispatch(actions.getGuildMembers(nextProps.activeGuild, nextProps.activeUser.apiKey));
+  }
+  /*componentDidMount(){
+    //this.props.dispatch(actions.getMembersInfo(this.props.activeUser.apiKey));
+  }*/
 
   render() {
     return (
@@ -40,7 +44,8 @@ class GuildMembers extends Component {
 //        <GuildUpgrades upgrades={this.props.upgrades} />
 
 const mapStateToProps = (state, props) => ({
-  guildDetails: state.guild.guildDetails
+  guildDetails: state.guild.guildDetails,
+  activeGuild: state.registrationAndLogin.activeGuild
 });
 
 export default connect(mapStateToProps)(GuildMembers);
