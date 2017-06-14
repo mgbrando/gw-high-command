@@ -96,10 +96,12 @@ export const selectMember = (apiKey, registeredMembers) => {
                               });
                               return Promise.all(promises)
                               .then(characters => {
+                                console.log(characters);
                                 return characters;
                                 //return characters;
                               });
                            });
+                           console.log(characters);
 
     const pvpStats = fetch('https://api.guildwars2.com/v2/pvp/stats?access_token='+apiKey)
                      .then(response => response.json());
