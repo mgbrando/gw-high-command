@@ -11,6 +11,9 @@ const initialRepositoryState = {
 };
 
 const teams = (state=initialRepositoryState, action) => {
+	if(action.type === actions.GET_TEAMS_SUCCESS){
+		return Object.assign({}, state, {guildTeams: action.teams});
+	}
 
 	return state;
 };

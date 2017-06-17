@@ -32,7 +32,7 @@ const Root = ({store, history}) => (
               <Route component={Authorization}>
                 <Route path='/dashboard' component={Dashboard}>
                   <Route path="/guild" component={Guild}></Route>
-                  <Route path="/members" component={GuildMembers}></Route>
+                  <Route path="/members" component={GuildMembers} />
                   <Route path="/teams" component={GuildTeams}></Route>
                 </Route>
               </Route>

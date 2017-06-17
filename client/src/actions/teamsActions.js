@@ -14,9 +14,9 @@ export const getTeamsFailure = error => ({
 	error
 });
 
-export const getTeams = (guildID, access_token) => {
+export const getGuildTeams = (guildID, access_token) => {
   return dispatch => {
-    fetch('https://api.guildwars2.com/v2/guild/${guildID}/teams?access_token=${access_token}')
+    fetch('https://api.guildwars2.com/v2/guild/'+guildID+'/teams?access_token='+access_token)
     .then(response => response.json())
     .then(teams => dispatch(getTeamsSuccess(teams)))
     .catch(error => dispatch(getTeamsFailure(error)))
@@ -49,3 +49,5 @@ export const getTeamDetails = (teamID, teams) => {
     .catch(error => dispatch(getTeamDetailsFailure(error)))*/
   }	
 };
+
+

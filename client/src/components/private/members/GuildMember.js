@@ -13,30 +13,9 @@ class GuildMember extends Component {
   constructor(props) {
     super(props);
 
-    //this.displayPage = this.displayPage.bind(this);
+    console.log("In GuildMember");
   }
 
-  /*displayPage(){
-    switch(props.page){
-      case "rankSelection":
-        return (<RankSelection />);
-        break;
-      case "registration":
-        return (<Registration />);
-        break;
-      case "guild":
-        return (<Guild />);
-        break;
-      case "guildMembers":
-        return (<GuildMembers />);
-        break;
-      case "guildTeams":
-        return (<GuildTeams />);
-        break;
-      default:
-        return (<RankSelection />);
-    }
-  }*/
   render() {
     return (
       <section className="guildMember">
@@ -63,14 +42,7 @@ class GuildMember extends Component {
   }
 }
 
-//        <GuildDetails details={this.props.details} />
-//        <GuildUpgrades upgrades={this.props.upgrades} />
-
 const mapStateToProps = (state, props) => ({
-    /*memberDetails: state.members.memberDetails,
-    memberPVPStats: state.members.memberPVPStats,
-    memberPVEStats: state.members.memberPVEStats,*/
-    registeredMembers: state.members.registeredMembers,
     displayMemberDetails: state.members.displayMemberDetails,
     displayMemberPVPStats: state.members.displayMemberPVPStats,
     displayMembersPVEStats: state.members.displayMemberPVPStats,

@@ -83,10 +83,19 @@ export const getGuildMembers = (guildID, access_token) => {
 
 export const selectMember = (apiKey, registeredMembers) => {
   return dispatch => {
-    const accountInfo = fetch('https://api.guildwars2.com/v2/account?access_token='+apiKey)
-                        .then(response => response.json());
+    let promises = [];
+    promises.push(fetch('https://api.guildwars2.com/v2/account?access_token='+apiKey)
+                        .then(response => response.json())
+                        .then(accountInfo => {
+                          const currentMember = registeredMembers.filter(member => {
+                            return member.handleName === accountInfo.name;
+                          });   
+                          let date = new Date(currentMember.joined);
+                          const joinDate = (date.getMonth()+1)+'/'+date.getDate()+'/'+date.getFullYear();
+                          return dispatch(setSelectedAccountInfo(accountInfo, joinDate));
+                        }));
 
-    const characters = fetch('https://api.guildwars2.com/v2/characters?access_token='+apiKey)
+    promises.push(fetch('https://api.guildwars2.com/v2/characters?access_token='+apiKey)
                            .then(response => response.json())
                            .then(characterNames => {
                               let promises = [];
@@ -94,46 +103,79 @@ export const selectMember = (apiKey, registeredMembers) => {
                                 promises.push(fetch('https://api.guildwars2.com/v2/characters/'+encodeURIComponent(name)+'?access_token='+apiKey)
                                               .then(response => response.json()));
                               });
-                              return Promise.all(promises)
+                              Promise.all(promises)
                               .then(characters => {
-                                console.log(characters);
-                                return characters;
+                                /*console.log(characters);
+                                return characters;*/
+                                return dispatch(setSelectedCharacters(characters));
                                 //return characters;
                               });
-                           });
-                           console.log(characters);
+                           }));
+                           //console.log(characters);
 
-    const pvpStats = fetch('https://api.guildwars2.com/v2/pvp/stats?access_token='+apiKey)
-                     .then(response => response.json());
+    promises.push(fetch('https://api.guildwars2.com/v2/pvp/stats?access_token='+apiKey)
+                     .then(response => response.json())
+                     .then(pvpStats => {
+                        return dispatch(setSelectedPVPStats(pvpStats));
+                     }));
 
-    const pvpStandings = fetch('https://api.guildwars2.com/v2/pvp/standings?access_token='+apiKey)
-                     .then(response => response.json());
+    promises.push(fetch('https://api.guildwars2.com/v2/pvp/standings?access_token='+apiKey)
+                     .then(response => response.json())
+                     .then(pvpStandings => {
+                        return dispatch(setSelectedPVPStandings(pvpStandings));
+                     }));
 
-    const raids = fetch('https://api.guildwars2.com/v2/raids?access_token='+apiKey)
-                     .then(response => response.json());
+    promises.push(fetch('https://api.guildwars2.com/v2/raids?access_token='+apiKey)
+                     .then(response => response.json())
+                     .then(raids => {
+                        return dispatch(setSelectedRaids(raids));
+                     }));
 
-    Promise.all([accountInfo, characters, pvpStats, pvpStandings, raids])
-    .then(values => {
-                  const currentMember = registeredMembers.filter(member => {
-                    return member.handleName === values[0].name;
-                  });
-
-                  let date = new Date(currentMember.joined);
-                  const joinDate = (date.getMonth()+1)+'/'+date.getDate()+'/'+date.getFullYear();
-      return dispatch(setSelectedMemberInfoSuccess(values[0], joinDate, values[1], values[2], values[3], values[5]));
+    /*const currentMember = registeredMembers.filter(member => {
+      return member.handleName === values[0].name;
+    });*/  
+    Promise.all(promises)
+    .then(() => {
+      return dispatch(setSelectedMember(true));
     })
   }
 }
 
 export const SET_SELECTED_MEMBER_SUCCESS = 'SET_SELECTED_MEMBER_SUCCESS';
-export const setSelectedMemberInfoSuccess = (accountInfo, joined, characters, pvpStats, pvpStandings, raids) => ({
+export const setSelectedMember = selectedMember => ({
   type: SET_SELECTED_MEMBER_SUCCESS,
-  accountInfo,
-  joined,
-  characters,
-  pvpStats,
-  pvpStandings,
+  selectedMember
+});
+
+export const SET_SELECTED_CHARACTERS_SUCCESS = 'SET_SELECTED_CHARACTERS_SUCCESS';
+export const setSelectedCharacters = characters => ({
+  type: SET_SELECTED_CHARACTERS_SUCCESS,
+  characters
+});
+
+export const SET_SELECTED_PVP_STATS_SUCCESS = 'SET_SELECTED_PVP_STATS_SUCCESS';
+export const setSelectedPVPStats = pvpStats => ({
+  type: SET_SELECTED_CHARACTERS_SUCCESS,
+  pvpStats
+});
+
+export const SET_SELECTED_PVP_STANDINGS_SUCCESS = 'SET_SELECTED_PVP_STANDINGS_SUCCESS';
+export const setSelectedPVPStandings = pvpStandings => ({
+  type: SET_SELECTED_PVP_STANDINGS_SUCCESS,
+  pvpStandings
+});
+
+export const SET_SELECTED_RAIDS_SUCCESS = 'SET_SELECTED_RAIDS_SUCCESS';
+export const setSelectedRaids = raids => ({
+  type: SET_SELECTED_RAIDS_SUCCESS,
   raids
+});
+
+export const SET_SELECTED_ACCOUNT_INFO_SUCCESS = 'SET_SELECTED_ACCOUNT_INFO_SUCCESS';
+export const setSelectedAccountInfo = (accountInfo, joined) => ({
+  type: SET_SELECTED_ACCOUNT_INFO_SUCCESS,
+  accountInfo,
+  joined
 });
 
 //Registered Members

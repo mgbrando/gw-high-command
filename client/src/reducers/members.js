@@ -23,9 +23,27 @@ const members = (state=initialRepositoryState, action) => {
 	if(action.type === actions.GET_GUILD_MEMBERS_SUCCESS){
 		return Object.assign({}, state, {registeredMembers: action.registeredMembers, unregisteredMembers: action.unregisteredMembers});
 	}
-	else if(action.type === actions.SET_SELECTED_MEMBER_SUCCESS){
+	/*else if(action.type === actions.SET_SELECTED_MEMBER_SUCCESS){
 		return Object.assign({}, state, {accountInfo: action.accountInfo, joined: action.joined, characters: action.characters, pvpStats: action.pvpStats, pvpStandings: action.pvpStandings, raids: action.raids, selectedMember: true});
-	}
+	}*/
+  else if(action.type === actions.SET_SELECTED_MEMBER_SUCCESS){
+    return Object.assign({}, state, {selectedMember: action.selectedMember});
+  }
+  else if(action.type === actions.SET_SELECTED_CHARACTERS_SUCCESS){
+    return Object.assign({}, state, {characters: action.characters});
+  }
+  else if(action.type === actions.SET_SELECTED_PVP_STATS_SUCCESS){
+    return Object.assign({}, state, {pvpStats: action.pvpStats});
+  }
+  else if(action.type === actions.SET_SELECTED_PVP_STANDINGS_SUCCESS){
+    return Object.assign({}, state, {pvpStandings: action.pvpStandings});
+  }
+  else if(action.type === actions.SET_SELECTED_RAIDS_SUCCESS){
+    return Object.assign({}, state, {raids: action.raids});
+  }
+  else if(action.type === actions.SET_SELECTED_ACCOUNT_INFO_SUCCESS){
+    return Object.assign({}, state, {accountInfo: action.accountInfo, joined: action.joined});
+  }
 	return state;
 };
 

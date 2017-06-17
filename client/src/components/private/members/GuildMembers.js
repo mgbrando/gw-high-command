@@ -23,6 +23,7 @@ class GuildMembers extends Component {
   componentWillReceiveProps(nextProps) {
      if(nextProps.activeGuild !== this.props.activeGuild)
         this.props.dispatch(actions.getGuildMembers(nextProps.activeGuild, nextProps.activeUser.apiKey));
+     //if(nextProps.selectedMember === true)
   }
   /*componentDidMount(){
     //this.props.dispatch(actions.getMembersInfo(this.props.activeUser.apiKey));
@@ -33,7 +34,7 @@ class GuildMembers extends Component {
       <section className="guildMembers">
         <Switch>
           <Route exact path='/dashboard/members' component={MembersTable} />
-          <Route exact path='dashboard/members/:member' component={GuildMember} />
+          <Route exact path='/dashboard/members/:member' component={GuildMember} />
         </Switch>
       </section>
     );
@@ -45,7 +46,9 @@ class GuildMembers extends Component {
 
 const mapStateToProps = (state, props) => ({
   guildDetails: state.guild.guildDetails,
-  activeGuild: state.registrationAndLogin.activeGuild
+  activeGuild: state.registrationAndLogin.activeGuild,
+  /*selectedMember: state.members.selectedMember,
+  characters: state.members.characters*/
 });
 
 export default connect(mapStateToProps)(GuildMembers);

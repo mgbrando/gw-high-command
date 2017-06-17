@@ -39,7 +39,7 @@ class Dashboard extends Component {
     if(this.props.isAuthenticated){
       const routes = [(<Route exact path='/dashboard/guild' render={() => <Guild activeUser={this.props.activeUser} />} key={0} />),
                       (<Route exact path='/dashboard/members' render={() => <GuildMembers activeUser={this.props.activeUser} />} key={1} />),
-                      (<Route exact path='/dashboard/teams' render={() => <GuildTeams activeUser={this.props.activeUser}  activeGuild={this.props.activeGuild} />} key={2} />)];
+                      (<Route exact path='/dashboard/teams' render={() => <GuildTeams activeUser={this.props.activeUser} />} key={2} />)];
       return (<div className="dashboard">
         <WelcomeBar user={this.props.activeUser} activeGuild={this.props.activeGuild} logOut={this.logOut} />
         <main className="main-content">
