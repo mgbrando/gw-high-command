@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 //import GuildDetails from './GuildDetails';
 //import GuildUpgrades from './GuildUpgrades';
 import * as actions from '../../../actions/membersActions';
-import { Route } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import { Switch } from 'react-router';
 import MembersTable from './MembersTable';
 import GuildMember from './GuildMember';
@@ -48,4 +48,4 @@ const mapStateToProps = (state, props) => ({
   activeGuild: state.registrationAndLogin.activeGuild
 });
 
-export default connect(mapStateToProps)(GuildMembers);
+export default withRouter(connect(mapStateToProps)(GuildMembers));

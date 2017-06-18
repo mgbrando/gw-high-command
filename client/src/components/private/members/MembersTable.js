@@ -30,9 +30,9 @@ class MembersTable extends Component {
   }
 
   componentDidMount(){
-    let rows = [];
+   /* let rows = [];
     for(let i=0; i < this.props.registeredMembers.length; i++){
-      const apiKey = this.getAPIKey(i);
+      const apiKey = this.getAPIKey(this.props, i);
       rows.push(<TableRow className="memberRow" key={i}>
                   <TableRowColumn>{this.props.registeredMembers[i].name}</TableRowColumn>
                   <TableRowColumn>{this.props.registeredMembers[i].rank}</TableRowColumn>
@@ -42,11 +42,30 @@ class MembersTable extends Component {
     }
     this.setState({ rows: rows });
     console.log(this.state.rows);
-    console.log(rows);
+    console.log(rows);*/
     //this.props.dispatch(actions.getMembersInfo(this.props.activeUser.apiKey));
   }
-  getAPIKey(memberIndex){
-    return this.props.registeredMembers[memberIndex].apiKey;
+  componentWillReceiveProps(nextProps){
+    if(this.props.registeredMembers != nextProps.registeredMembers){
+      let rows = [];
+      for(let i=0; i < nextProps.registeredMembers.length; i++){
+        const apiKey = this.getAPIKey(nextProps, i);
+        let date = new Date(nextProps.registeredMembers[i].joined);
+        const joinDate = (date.getMonth()+1)+'/'+date.getDate()+'/'+date.getFullYear();
+        rows.push(<TableRow className="memberRow" key={i}>
+                  <TableRowColumn>{nextProps.registeredMembers[i].name}</TableRowColumn>
+                  <TableRowColumn>{nextProps.registeredMembers[i].rank}</TableRowColumn>
+                  <TableRowColumn>{joinDate}</TableRowColumn>
+                  <TableRowColumn><button type="button" name="statsButton" value={apiKey} onClick={this.statsClick}><img className="statsImage" src={pieChart} /></button></TableRowColumn>
+                </TableRow>);
+        }
+      this.setState({ rows: rows });
+      console.log(this.state.rows);
+      console.log(rows);  
+    }
+  }
+  getAPIKey(props, memberIndex){
+    return props.registeredMembers[memberIndex].apiKey;
   }
   statsClick(event){
     const apiKey = event.currentTarget.value;
@@ -56,7 +75,7 @@ class MembersTable extends Component {
 
   render() {
     if(this.props.selectedMember){
-      const url="/dashboard/members/"+this.props.selectedMember.handleName;
+      const url="/dashboard/members/"+encodeURIComponent((this.props.accountInfo.name).toLowerCase());
       return (
         <Redirect to={url} />
       );
@@ -66,8 +85,8 @@ class MembersTable extends Component {
       <section className="membersTable">
         <SectionBar title="Guild Members" />
         <SectionBar additionalClasses="onTeam" title={<div>On team <img className="greenRectIcon" src={greenRect} alt="green highlight" /></div>} />
-        <Table>
-          <TableHeader>
+        <Table selectable={false}>
+          <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow>
               <TableHeaderColumn>Handle</TableHeaderColumn>
               <TableHeaderColumn>Rank</TableHeaderColumn>
@@ -75,7 +94,7 @@ class MembersTable extends Component {
               <TableHeaderColumn>Stats</TableHeaderColumn>
             </TableRow>
           </TableHeader>
-          <TableBody> 
+          <TableBody displayRowCheckbox={false}> 
             {this.state.rows}
           </TableBody>
         </Table>
@@ -89,7 +108,8 @@ class MembersTable extends Component {
 const mapStateToProps = (state, props) => ({
   unregisteredMembers: state.members.unregisteredMembers,
   registeredMembers: state.members.registeredMembers,
-  selectedMember: state.members.selectedMember
+  selectedMember: state.members.selectedMember,
+  accountInfo: state.members.accountInfo
 });
 
 export default connect(mapStateToProps)(MembersTable);

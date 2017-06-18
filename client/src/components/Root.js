@@ -30,9 +30,7 @@ const Root = ({store, history}) => (
               <Route path='/registration/:rank' component={MemberRegistration}></Route>
               <Route path="/login" component={LeaderLogin}></Route>
               <Route component={Authorization}>
-                <Route path='/dashboard' component={Dashboard}>
-
-                </Route>
+                <Route path='/dashboard' component={Dashboard} />
               </Route>
             </Route>
           </div>
