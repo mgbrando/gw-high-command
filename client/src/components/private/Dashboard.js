@@ -23,6 +23,7 @@ class Dashboard extends Component {
     this.logOut = this.logOut.bind(this);
     this.tabChange = this.tabChange.bind(this);
   }
+
   tabChange(routePath){
     //this.props.history.push('routePath');
   }
@@ -37,13 +38,17 @@ class Dashboard extends Component {
         //  <SwipeableRoutes></SwipeableRoutes>
   render() {
     if(this.props.isAuthenticated){
+      const routes = [(<Route exact path='/dashboard/guild' render={() => <Guild activeUser={this.props.activeUser} />} key={0} />),
+                      (<Route exact path='/dashboard/members' render={() => <GuildMembers activeUser={this.props.activeUser} />} key={1} />),
+                      (<Route exact path='/dashboard/teams' render={() => <GuildTeams activeUser={this.props.activeUser}  activeGuild={this.props.activeGuild} />} key={2} />),
+                      (<Route path='/dashboard' render={() => (<Redirect to="/dashboard/guild" />)} key={3} />)];
       return (<div className="dashboard">
         <WelcomeBar user={this.props.activeUser} activeGuild={this.props.activeGuild} logOut={this.logOut} />
         <main className="main-content">
           <TabNavigation />
-            {this.props.children && React.cloneElement(this.props.children, {
-              activeUser: this.props.activeUser
-            })}
+          <Switch>
+            {routes}
+          </Switch>
         </main>
       </div>
       );

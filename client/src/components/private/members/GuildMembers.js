@@ -3,11 +3,10 @@ import {connect} from 'react-redux';
 //import GuildDetails from './GuildDetails';
 //import GuildUpgrades from './GuildUpgrades';
 import * as actions from '../../../actions/membersActions';
-import { Route } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import { Switch } from 'react-router';
 import MembersTable from './MembersTable';
 import GuildMember from './GuildMember';
-import { withRouter } from 'react-router-dom';
 import './GuildMembers.css';
 
 class GuildMembers extends Component {
@@ -24,7 +23,6 @@ class GuildMembers extends Component {
   componentWillReceiveProps(nextProps) {
      if(nextProps.activeGuild !== this.props.activeGuild)
         this.props.dispatch(actions.getGuildMembers(nextProps.activeGuild, nextProps.activeUser.apiKey));
-     //if(nextProps.selectedMember === true)
   }
   /*componentDidMount(){
     //this.props.dispatch(actions.getMembersInfo(this.props.activeUser.apiKey));
@@ -35,7 +33,7 @@ class GuildMembers extends Component {
       <section className="guildMembers">
         <Switch>
           <Route exact path='/dashboard/members' component={MembersTable} />
-          <Route exact path='/dashboard/members/:member' component={GuildMember} />
+          <Route exact path='dashboard/members/:member' component={GuildMember} />
         </Switch>
       </section>
     );
@@ -47,9 +45,7 @@ class GuildMembers extends Component {
 
 const mapStateToProps = (state, props) => ({
   guildDetails: state.guild.guildDetails,
-  activeGuild: state.registrationAndLogin.activeGuild,
-  /*selectedMember: state.members.selectedMember,
-  characters: state.members.characters*/
+  activeGuild: state.registrationAndLogin.activeGuild
 });
 
 export default withRouter(connect(mapStateToProps)(GuildMembers));

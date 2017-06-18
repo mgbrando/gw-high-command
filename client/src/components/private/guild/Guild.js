@@ -6,7 +6,6 @@ import * as actions from '../../../actions/guildActions';
 import SectionBar from '../SectionBar';
 import GuildDetails from './GuildDetails';
 import GuildUpgrades from './GuildUpgrades';
-import { withRouter } from 'react-router-dom';
 import './Guild.css';
 
 class Guild extends Component {
@@ -95,4 +94,4 @@ const mapStateToProps = (state, props) => ({
     guildUpgradesLoading: state.guild.guildUpgradesLoading
 });
 
-export default withRouter(connect(mapStateToProps)(Guild));
+export default connect(mapStateToProps)(Guild);
