@@ -11,6 +11,7 @@ import GuildTeams from './teams/GuildTeams';
 import Authorization from './Authorization';
 import WelcomeBar from './WelcomeBar';
 import TabNavigation from './TabNavigation';
+import { withRouter } from 'react-router-dom';
 //import {Tabs, Tab} from 'material-ui/Tabs';
 import './Dashboard.css';
 
@@ -39,12 +40,15 @@ class Dashboard extends Component {
     if(this.props.isAuthenticated){
       const routes = [(<Route exact path='/dashboard/guild' render={() => <Guild activeUser={this.props.activeUser} />} key={0} />),
                       (<Route exact path='/dashboard/members' render={() => <GuildMembers activeUser={this.props.activeUser} />} key={1} />),
-                      (<Route exact path='/dashboard/teams' render={() => <GuildTeams activeUser={this.props.activeUser}  activeGuild={this.props.activeGuild} />} key={2} />)];
+                      (<Route exact path='/dashboard/teams' render={() => <GuildTeams activeUser={this.props.activeUser}  activeGuild={this.props.activeGuild} />} key={2} />),
+                      (<Route path='/dashboard' render={() => (<Redirect to="/dashboard/guild" />)} key={3} />)];
       return (<div className="dashboard">
         <WelcomeBar user={this.props.activeUser} activeGuild={this.props.activeGuild} logOut={this.logOut} />
         <main className="main-content">
-          <Route exact path='/dashboard' render={() => (<Redirect to="/dashboard/guild" />)} />
-          <TabNavigation routes={routes} />
+          <TabNavigation />
+          <Switch>
+            {routes}
+          </Switch>
         </main>
       </div>
       );
@@ -66,4 +70,4 @@ const mapStateToProps = (state, props) => ({
   //slideIndex: state.dashboard.slideIndex
 });
 
-export default connect(mapStateToProps)(Dashboard);
+export default withRouter(connect(mapStateToProps)(Dashboard));

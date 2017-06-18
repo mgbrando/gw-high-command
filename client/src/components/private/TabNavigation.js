@@ -29,6 +29,13 @@ class TabNavigation extends React.Component {
     };
   }
 
+  componentDidMount(){
+    const values = this.props.location.pathname.split('/');
+    if(values[values.length-1] === "dashboard")
+      values[values.length-1] = "guild"
+    this.setState({value: values[values.length-1]});
+  }
+  
   handleChange = (value) => {
     console.log(this.props.location.pathname);
     if("dashboard/"+value === this.props.location.pathname)
@@ -86,9 +93,6 @@ class TabNavigation extends React.Component {
           <Tab label="Members" value="members" />
           <Tab label="Teams" value="teams" />
         </Tabs>
-        <Switch>
-          {this.props.routes}
-        </Switch>
       </div>
     );
   }
