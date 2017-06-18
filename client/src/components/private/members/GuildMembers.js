@@ -7,6 +7,7 @@ import { Route } from 'react-router-dom';
 import { Switch } from 'react-router';
 import MembersTable from './MembersTable';
 import GuildMember from './GuildMember';
+import { withRouter } from 'react-router-dom';
 import './GuildMembers.css';
 
 class GuildMembers extends Component {
@@ -51,4 +52,4 @@ const mapStateToProps = (state, props) => ({
   characters: state.members.characters*/
 });
 
-export default connect(mapStateToProps)(GuildMembers);
+export default withRouter(connect(mapStateToProps)(GuildMembers));
