@@ -5,18 +5,22 @@ const initialRepositoryState = {
 	registeredMembers: [],
 	unregisteredMembers: [],
 	selectedMember: false,
-    memberDetails: {},
-    memberPVPStats: {},
-    memberPVEStats: {},
-    displayMemberDetails: true,
-    displayMemberPVPStats: true,
-    displayMemberPVEStats: true,
-    accountInfo: {},
-    joined: "",
-    characters: [],
-  	pvpStats: {},
-  	pvpStandings: {},
-  	raids: []
+  memberDetailsLoading: true,
+  memberPVPStatsLoading: true,
+  memberPVEStatsLoading: true,
+  memberDetails: {},
+  memberGuildNames: '',
+  memberPVPStats: {},
+  memberPVEStats: {},
+  displayMemberDetails: true,
+  displayMemberPVPStats: true,
+  displayMemberPVEStats: true,
+  accountInfo: {},
+  joined: "",
+  characters: [],
+  pvpStats: {},
+  pvpStandings: {},
+  raids: []
 };
 
 const members = (state=initialRepositoryState, action) => {
@@ -27,7 +31,7 @@ const members = (state=initialRepositoryState, action) => {
 		return Object.assign({}, state, {accountInfo: action.accountInfo, joined: action.joined, characters: action.characters, pvpStats: action.pvpStats, pvpStandings: action.pvpStandings, raids: action.raids, selectedMember: true});
 	}*/
   else if(action.type === actions.SET_SELECTED_MEMBER_SUCCESS){
-    return Object.assign({}, state, {selectedMember: action.selectedMember});
+    return Object.assign({}, state, {selectedMember: action.selectedMember, memberDetailsLoading: false, memberPVPStatsLoading: false, memberPVEStatsLoading: false});
   }
   else if(action.type === actions.SET_SELECTED_CHARACTERS_SUCCESS){
     return Object.assign({}, state, {characters: action.characters});
@@ -42,7 +46,7 @@ const members = (state=initialRepositoryState, action) => {
     return Object.assign({}, state, {raids: action.raids});
   }
   else if(action.type === actions.SET_SELECTED_ACCOUNT_INFO_SUCCESS){
-    return Object.assign({}, state, {accountInfo: action.accountInfo, joined: action.joined});
+    return Object.assign({}, state, {accountInfo: action.accountInfo, joined: action.joined, memberGuildNames: action.memberGuildNames});
   }
 	return state;
 };

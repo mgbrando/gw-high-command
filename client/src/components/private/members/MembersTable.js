@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import * as actions from '../../../actions/membersActions';
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import SectionBar from '../SectionBar';
 import greenRect from '../../assets/green-rectangle.png';
 import pieChart from '../../assets/pie-chart.png';
@@ -46,7 +46,10 @@ class MembersTable extends Component {
     //this.props.dispatch(actions.getMembersInfo(this.props.activeUser.apiKey));
   }
   componentWillReceiveProps(nextProps){
-    if(this.props.registeredMembers != nextProps.registeredMembers){
+    if(nextProps.selectedMember){
+      nextProps.history.push("/dashboard/members/"+nextProps.accountInfo.name);
+    }
+    else if(this.props.registeredMembers !== nextProps.registeredMembers){
       let rows = [];
       for(let i=0; i < nextProps.registeredMembers.length; i++){
         const apiKey = this.getAPIKey(nextProps, i);
@@ -109,7 +112,8 @@ const mapStateToProps = (state, props) => ({
   unregisteredMembers: state.members.unregisteredMembers,
   registeredMembers: state.members.registeredMembers,
   selectedMember: state.members.selectedMember,
-  accountInfo: state.members.accountInfo
+  accountInfo: state.members.accountInfo,
+  callsFinished: state.members.callsFinished
 });
 
-export default connect(mapStateToProps)(MembersTable);
+export default withRouter(connect(mapStateToProps)(MembersTable));

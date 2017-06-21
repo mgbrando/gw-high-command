@@ -5,17 +5,50 @@ import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import FlatButton from 'material-ui/FlatButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Paper from 'material-ui/Paper';
+import CircularProgress from 'material-ui/CircularProgress';
+import {List, ListItem, makeSelectable} from 'material-ui/List';
 
 function MemberPVEStats(props){
-  return (
-    <div className="memberPVEStats">
-      <Paper className="infoSection" zDepth={2}>
-        <h1>Player Handle</h1>
-        <h2>{props.memberDetails.handleName}</h2>
-        
-      </Paper>
-    </div>
+  let count = 0;
+  const raidListItems = props.raids.map(raid => (<ListItem primaryText={raid} key={count++}/>));
+  let raidListLeft;
+  let raidListRight;
+  if(raidListItems.length > 1){
+    if((raidListItems.length % 2) === 0){
+      raidListLeft = raidListItems.slice(0, raidListItems.length/2);
+      raidListRight = raidListItems.slice(raidListItems.length/2, raidListItems.length);
+    }
+    else{
+      raidListLeft = raidListItems.slice(0, Math.ceil(raidListItems.length/2));
+      raidListRight = raidListItems.slice(Math.ceil(raidListItems.length/2), raidListItems.length);
+    }
+
+    return (
+      <div className="memberPVEStats">
+        <Paper className="infoSection" zDepth={2}>
+          <h1>Completed Weekly Raids</h1>
+          <List className="raidsLeftList">
+            {raidListLeft}
+          </List>
+          <List className="raidsRightList">
+            {raidListRight}
+          </List>
+        </Paper>
+      </div>
+    );    
+  }
+  else{
+    return (
+      <div className="memberPVEStats">
+        <Paper className="infoSection" zDepth={2}>
+          <h1>Completed Weekly Raids</h1>
+          <List>
+            {raidListItems}
+          </List>
+        </Paper>
+      </div>
   );
+  }
   //<FlatButton label="Log Out" onClick={props.logOut}/>
 }
 

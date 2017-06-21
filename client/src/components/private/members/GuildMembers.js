@@ -33,7 +33,7 @@ class GuildMembers extends Component {
       <section className="guildMembers">
         <Switch>
           <Route exact path='/dashboard/members' component={MembersTable} />
-          <Route exact path='dashboard/members/:member' component={GuildMember} />
+          <Route path='/dashboard/members/:member' component={GuildMember} />
         </Switch>
       </section>
     );

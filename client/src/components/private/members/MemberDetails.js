@@ -21,32 +21,35 @@ function MemberDetails(props){
     );
   }
   else if(props.display){
-    let isCommander;
+  /*  let isCommander;
     if(props.accountInfo.commander)
       isCommander = "Yes";
     else
-      isCommander = "No";
+      isCommander = "No";*/
 
   return (
       <div className="memberDetails">
         <Paper className="infoSection" zDepth={2}>
           <Paper className="memberDetailsInfo" zDepth={5}>
           <h1 className="sectionHeader">Player Handle</h1>
-          <h2 className="guildName">{props.accountInfo.name}</h2>
+          <h2 className="memberName">{props.accountInfo.name}</h2>
           <List className="membersDetailsList">
             <ListItem primaryText="Member Since: " secondaryText={props.joined} disabled={true}/>
-            <ListItem primaryText="Guilds: " secondaryText={props.accountInfo.guilds} disabled={true}/>
+            <ListItem primaryText="Guilds: " secondaryText={props.memberGuildNames} disabled={true}/>
           </List>
           <List className="membersDetailsList">
             <ListItem primaryText="Player Access: " secondaryText={props.accountInfo.access} disabled={true}/>
-            <ListItem primaryText="Commander: " secondaryText={isCommander} disabled={true}/>
+            <ListItem primaryText="Commander: " secondaryText={props.isCommander} disabled={true}/>
           </List>
           </Paper>
         </Paper>
       </div>
   );
 }
+else{
+  return false;
   //<FlatButton label="Log Out" onClick={props.logOut}/>
+}
 }
 
 /*      <AppBar

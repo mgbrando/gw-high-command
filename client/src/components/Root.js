@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
-import {BrowserRouter, Route, Redirect} from 'react-router-dom';
+import {BrowserRouter, Route} from 'react-router-dom';
 import { Switch } from 'react-router';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import App from './App';
@@ -22,7 +22,7 @@ import { CookiesProvider, withCookies, Cookies } from 'react-cookie';
 //{ /* ConnectedRouter will use the store from Provider automatically */ }
 const Root = ({store, history}) => (
   <Provider store={store}>
-	  <MuiThemeProvider>
+    <MuiThemeProvider>
         <BrowserRouter history={history}>
           <div>
             <Route path="/" component={App}>
@@ -30,26 +30,17 @@ const Root = ({store, history}) => (
               <Route path='/registration/:rank' component={MemberRegistration}></Route>
               <Route path="/login" component={LeaderLogin}></Route>
               <Route component={Authorization}>
-                <Route path='/dashboard' component={Dashboard}>
-                  <Redirect from="/dashboard" to="/dashboard/guild" />
-                  <Switch>
-                  <Route path="/" render={() => <Redirect to="/dashboard/guild" />}></Route>
-                  <Route exact path="dashboard/guild" render={(props) => { console.log(...props); return(<Guild {...props} />);}}></Route>
-                  <Route exact path="/members" render={(props) => <GuildMembers {...props} />} >
-                    <Route path="/:member" component={GuildMember} />
-                  </Route>
-                  <Route exact path="/teams" render={(props) => <GuildTeams {...props} />}></Route>
-                  <Route path="*" render={() => <Guild />}></Route>
-                  </Switch>
-                </Route>
+                <Route path='/dashboard' component={Dashboard} />
               </Route>
             </Route>
           </div>
         </BrowserRouter>
-  	</MuiThemeProvider>
+    </MuiThemeProvider>
   </Provider>
 );
-
+/*<Route path="/leader-registration" component={LeaderRegistration}></Route>*/
+/*              <Route path="/apikey-submission" component={KeySubmissionForm}></Route>
+              <Route path="/guilds-selection" component={KeySubmissionForm}></Route>*/
 Root.propTypes = {
   store: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired

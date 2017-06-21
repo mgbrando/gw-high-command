@@ -84,33 +84,66 @@ export const getGuildMembers = (guildID, access_token) => {
 export const selectMember = (apiKey, registeredMembers) => {
   return dispatch => {
     let promises = [];
-    promises.push(fetch('https://api.guildwars2.com/v2/account?access_token='+apiKey)
+    let guildNamePromises = [];
+    let characterPromises = [];
+    promises.push(new Promise((resolve, reject) => {
+                      fetch('https://api.guildwars2.com/v2/account?access_token='+apiKey)
                         .then(response => response.json())
                         .then(accountInfo => {
                           const currentMember = registeredMembers.filter(member => {
-                            return member.handleName === accountInfo.name;
+                            return member.name === accountInfo.name;
                           });   
-                          let date = new Date(currentMember.joined);
+                          let date = new Date(currentMember[0].joined);
                           const joinDate = (date.getMonth()+1)+'/'+date.getDate()+'/'+date.getFullYear();
-                          return dispatch(setSelectedAccountInfo(accountInfo, joinDate));
-                        }));
+                          let memberGuildNames;
+                          let memberGuildsQuery='';
+                          /*for(let i=0; i<accountInfo.guilds.length; i++){
+                            if(i === accountInfo.guilds.length-1){
+                              memberGuildsQuery += accountInfo.guilds[i];
+                            }
+                            else{
+                              memberGuildsQuery += accountInfo.guilds[i]+',';
+                            }
+                          }*/
+                          
+                          for(let i=0; i<accountInfo.guilds.length; i++){
+                            guildNamePromises.push(fetch('https://api.guildwars2.com/v2/guild/'+accountInfo.guilds[i]+'?access_token='+apiKey)
+                              .then(response => response.json())
+                              .then(guild => guild.name));
+                          }
+                            Promise.all(guildNamePromises)
+                            .then(memberGuildNames => {
+                              let nameString = '';
+                              for(let j=0; j<memberGuildNames.length; j++){
+                                if(j === memberGuildNames.length-1)
+                                  nameString += memberGuildNames[j];
+                                else
+                                  nameString += memberGuildNames[j]+', ';
+                              }
+                              resolve();
+                              return dispatch(setSelectedAccountInfo(accountInfo, joinDate, nameString));
+                            });
+                        });
+    }));
 
-    promises.push(fetch('https://api.guildwars2.com/v2/characters?access_token='+apiKey)
+    promises.push(new Promise((resolve, reject) => {
+                          fetch('https://api.guildwars2.com/v2/characters?access_token='+apiKey)
                            .then(response => response.json())
                            .then(characterNames => {
-                              let promises = [];
                               characterNames.forEach(name => {
-                                promises.push(fetch('https://api.guildwars2.com/v2/characters/'+encodeURIComponent(name)+'?access_token='+apiKey)
+                                characterPromises.push(fetch('https://api.guildwars2.com/v2/characters/'+encodeURIComponent(name)+'?access_token='+apiKey)
                                               .then(response => response.json()));
                               });
-                              Promise.all(promises)
+                              Promise.all(characterPromises)
                               .then(characters => {
                                 /*console.log(characters);
                                 return characters;*/
+                                resolve();
                                 return dispatch(setSelectedCharacters(characters));
                                 //return characters;
                               });
-                           }));
+                           });
+      }));
                            //console.log(characters);
 
     promises.push(fetch('https://api.guildwars2.com/v2/pvp/stats?access_token='+apiKey)
@@ -137,7 +170,7 @@ export const selectMember = (apiKey, registeredMembers) => {
     Promise.all(promises)
     .then(() => {
       return dispatch(setSelectedMember(true));
-    })
+    });
   }
 }
 
@@ -155,7 +188,7 @@ export const setSelectedCharacters = characters => ({
 
 export const SET_SELECTED_PVP_STATS_SUCCESS = 'SET_SELECTED_PVP_STATS_SUCCESS';
 export const setSelectedPVPStats = pvpStats => ({
-  type: SET_SELECTED_CHARACTERS_SUCCESS,
+  type: SET_SELECTED_PVP_STATS_SUCCESS,
   pvpStats
 });
 
@@ -172,10 +205,11 @@ export const setSelectedRaids = raids => ({
 });
 
 export const SET_SELECTED_ACCOUNT_INFO_SUCCESS = 'SET_SELECTED_ACCOUNT_INFO_SUCCESS';
-export const setSelectedAccountInfo = (accountInfo, joined) => ({
+export const setSelectedAccountInfo = (accountInfo, joined, memberGuildNames) => ({
   type: SET_SELECTED_ACCOUNT_INFO_SUCCESS,
   accountInfo,
-  joined
+  joined,
+  memberGuildNames
 });
 
 //Registered Members
