@@ -129,13 +129,14 @@ const registrationAndLogin = (state=initialRepositoryState, action) => {
 		return Object.assign({}, state, {selectedMemberGuilds: action.selectedGuilds, nextButtonDisabled: action.nextArrowDisabled});
 	}*/
 	else if(action.type=== actions.AUTHENTICATION_CLEARED){
-		console.log(action.user.username);
+		//console.log(action.user.username);
 		return Object.assign({}, state, {isAuthenticated: true, authorizationChecked: true, activeUser: action.user, activeUserGuilds: action.guilds, activeGuild: action.activeGuild});
 	}
 	else if(action.type=== actions.AUTHENTICATION_FAILED){
 		return Object.assign({}, state, {isAuthenticated: false, authorizationChecked: true, authorizationErrorMessage: action.errorMessage});
 	}
 	else if(action.type === actions.LOGOUT_USER){
+		console.log('Reducer fired');
 		return Object.assign({}, state, {isAuthenticated: false, authorizationChecked: true, activeUser: {}});
 	}
 	else if(action.type === actions.SET_ACTIVE_GUILD){

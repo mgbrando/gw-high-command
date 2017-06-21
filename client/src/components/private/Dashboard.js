@@ -37,6 +37,7 @@ class Dashboard extends Component {
 //<TabNavigation currentTab={} />
         //  <SwipeableRoutes></SwipeableRoutes>
   render() {
+    console.log('Dashboard.js Line 40:', this.props.isAuthenticated);
     if(this.props.isAuthenticated){
       const routes = [(<Route exact path='/dashboard/guild' render={() => <Guild activeUser={this.props.activeUser} />} key={0} />),
                       (<Route exact path='/dashboard/members' render={() => <GuildMembers activeUser={this.props.activeUser} />} key={1} />),

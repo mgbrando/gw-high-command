@@ -25,10 +25,6 @@ const mongoose = require('mongoose');
 const app = express();
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 
-/*const cookieExpirationDate = new Date();
-const cookieExpirationDays = 365;
-cookieExpirationDate.setDate(cookieExpirationDate.getDate() + cookieExpirationDays);*/
-
 passport.use(new LocalStrategy(
   function(username, password, done) {
     Leader.findOne({ username: username }, function (err, user) {
@@ -39,8 +35,7 @@ passport.use(new LocalStrategy(
       if (!user.validatePassword(password)) {
         return done(null, false, { message: 'Incorrect password.' });
       }
-      console.log('User: '+user);
-      console.log('Repr: '+user);
+
       return done(null, user);
     });
   }
@@ -49,7 +44,7 @@ passport.use(new LocalStrategy(
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: false
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -77,50 +72,52 @@ app.use('/api/member-registration', memberRegistrationRouter);
 app.use('/api/leader-registration', leaderRegistrationRouter);
 //app.use('/api/authorization', authorizationRouter(passport));
 //app.use('/api/login', loginRouter(passport));
-app.use('/api/logout', logoutRouter);
+//app.use('/api/logout', logoutRouter);
 app.use('/api/leaders', leadersRouter);
 app.use('/api/guilds', guildsRouter);
 app.use('/api/register', registrationRouter);
 
 const isAuthenticated = (req, res, next) => {
-  console.log('81', req.user);
   if (req.user) {
       next();
   }
   // if they aren't redirect them to the login page
   else {
-    res.redirect('/login');
+    res.json({authenticated: false});
     //res.json({message: 'User not authenticated'})
   }
 }
 
 app.get('/api/authorization', isAuthenticated, (req,res) => {
-  console.log('After refresh browser:', req.user);
-  //let tempuser = req.user.apiRepr()
-  return res.status(200).json({
-        user: req.user.apiRepr()
-  });
+  return res.json({user: req.user.apiRepr()});
 });
-
 
 app.post('/api/login', (req, res, next) => {
     passport.authenticate('local', {session: true}, (err, user, info) => {
         if (err) {
-            console.log(err);
             return next(err); // will generate a 500 error
         }
         if (!user) {
-            console.log('Incorrect user');
             return res.send({ success : false, message : info.message || 'Failed' });
         }
 
-        console.log('After they login:', user);
         req.logIn(user, (err) => {
             if (err) { return next(err); }
+
             return res.send({ success : true, message : 'Login success', user: user });
         });
     })(req, res, next);
 });
+
+app.post('/api/logout', (req, res) => {
+     req.logout();
+     req.session.destroy((err) => {
+       if(err) {
+         console.log(err);
+       }
+       res.redirect('/');
+     });
+ });
 // Serve the built client
 //app.use(express.static(path.resolve(__dirname, '../client/build')));
 //app.use(express.static(path.resolve(__dirname, '../client/public')));

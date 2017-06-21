@@ -10,10 +10,14 @@ const jsonParser = bodyParser.json();
 
 router.use(jsonParser);
 
-  router.get('/', (req, res) => {
- 	req.session.destroy(function (err) {
-          res.redirect('/');
-      }); 
+router.post('/', (req, res) => {
+	req.logout();
+    req.session.destroy((err) => {
+       if(err) {
+         console.log(err);
+       }
+       res.redirect('/');
+     });
   });
 
 module.exports = router;

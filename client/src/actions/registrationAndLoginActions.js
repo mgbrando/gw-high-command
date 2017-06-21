@@ -344,12 +344,18 @@ export const logOutUser = () => ({
 
 export const userLogOut = () => {
   return dispatch => {
-    fetch('/api/logout')
-    .then(() => {
-      //removeCookie('gw2highcommand', {path: '/'});
-      //localStorage.removeItem('gw2highcommand');
-      return dispatch(logOutUser())
-    });
+    const settings = {
+      url: '/api/logout',
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      }
+    };
+
+    $.ajax(settings)
+      .done(_response => {
+        return dispatch(logOutUser());
+      });
   }
 }
 export const LOGIN_GUILD_LEADER_SUCCESS = 'LOGIN_GUILD_LEADER_SUCCESS';
@@ -426,10 +432,9 @@ export const checkAuthentication = () => {
       }
     };
 
-    $.ajax(settings).done(userObject => {
-      console.log(userObject);
-      if(userObject){
-      let currentUserKey = userObject.user.apiKey;
+    $.ajax(settings).done(response => {
+      if(response.user){
+      let currentUserKey = response.user.apiKey;
       fetch('https://api.guildwars2.com/v2/account?access_token='+currentUserKey)
       .then(response => response.json())
       .then(accountInfo => {
@@ -441,12 +446,13 @@ export const checkAuthentication = () => {
 
         Promise.all(guildPromises)
         .then(guilds => {
-          return dispatch(authenticationCleared(userObject.user, guilds, guilds[0].id));
+          return dispatch(authenticationCleared(response.user, guilds, guilds[0].id));
         });
       });
       }
       else
-        throw Error('User not authenticated.');   
+        window.location = '/login';
+        //throw Error('User not authenticated.');   
     })
     .catch((error) => {
       console.log(error.message);

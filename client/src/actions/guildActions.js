@@ -72,7 +72,7 @@ export const getGuildUpgrades = (guildID, access_token) => {
   	const upgradesPromise = fetch('https://api.guildwars2.com/v2/guild/upgrades')
                             .then(response => response.json())
                             .then(upgradesArray => {
-                                console.log(upgradesArray.join());
+                                
                                 const upgradePromises = [];
                                 let i,j,temparray,chunk = 200;
                                 for (i=0,j=upgradesArray.length; i<j; i+=chunk) {
