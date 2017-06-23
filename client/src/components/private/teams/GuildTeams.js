@@ -1,13 +1,13 @@
-/*import React, { Component } from 'react';
+import React, { Component } from 'react';
 import {connect} from 'react-redux';
 //import GuildDetails from './GuildDetails';
 //import GuildUpgrades from './GuildUpgrades';
 import * as actions from '../../../actions/teamsActions';
-import { Route } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import { Switch } from 'react-router';
 import TeamsTable from './TeamsTable';
 import GuildTeam from './GuildTeam';
-import './GuildTeam.css';
+import './GuildTeams.css';
 
 class GuildTeams extends Component {
 
@@ -22,14 +22,14 @@ class GuildTeams extends Component {
   }
   componentWillReceiveProps(nextProps) {
      if(nextProps.activeGuild !== this.props.activeGuild)
-        this.props.dispatch(actions.getGuildMembers(nextProps.activeGuild, nextProps.activeUser.apiKey));
+        this.props.dispatch(actions.getGuildTeams(nextProps.activeGuild, nextProps.activeUser.apiKey));
      //if(nextProps.selectedMember === true)
   }
   /*componentDidMount(){
     //this.props.dispatch(actions.getMembersInfo(this.props.activeUser.apiKey));
   }*/
 
-  /*render() {
+  render() {
     return (
       <section className="guildTeams">
         <Switch>
@@ -46,9 +46,9 @@ class GuildTeams extends Component {
 
 const mapStateToProps = (state, props) => ({
   guildDetails: state.guild.guildDetails,
-  activeGuild: state.registrationAndLogin.activeGuild,*/
+  activeGuild: state.registrationAndLogin.activeGuild
   /*selectedMember: state.members.selectedMember,
   characters: state.members.characters*/
-/*});
+});
 
-export default connect(mapStateToProps)(GuildTeams);*/
+export default withRouter(connect(mapStateToProps)(GuildTeams));

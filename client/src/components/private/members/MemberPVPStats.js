@@ -28,7 +28,7 @@ function MemberPVPStats(props){
     memberPVPStandings = props.pvpStandings;
   }*/
   return (
-      <div className="MemberPVPStats">
+      <div className="memberPVPStats">
         <Paper className="infoSection" zDepth={2}>
           <Paper className="memberPVPStatsInfo" zDepth={5}>
           <List className="membersPVPStatsList">

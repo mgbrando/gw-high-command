@@ -30,10 +30,17 @@ class TabNavigation extends React.Component {
   }
 
   componentDidMount(){
-    const values = this.props.location.pathname.split('/');
+    /*const values = this.props.location.pathname.split('/');
     if(values[values.length-1] === "dashboard")
       values[values.length-1] = "guild"
-    this.setState({value: values[values.length-1]});
+    this.setState({value: values[values.length-1]});*/
+    const pathname = this.props.location.pathname;
+    if(pathname.includes("dashboard/members"))
+      this.setState({value: "members"});
+    else if(pathname.includes("dashboard/teams"))
+      this.setState({value: "teams"});
+    else
+      this.setState({value: "guild"});
   }
   
   handleChange = (value) => {

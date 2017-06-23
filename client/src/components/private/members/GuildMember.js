@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 //import GuildDetails from './GuildDetails';
 //import GuildUpgrades from './GuildUpgrades';
+import * as actions from '../../../actions/membersActions';
 import SectionBar from '../SectionBar';
 import MemberDetails from './MemberDetails';
 import MemberPVPStats from './MemberPVPStats';
@@ -15,7 +16,16 @@ class GuildMember extends Component {
 
     console.log("In GuildMember");
   }
-
+  componentWillReceiveProps(nextProps){
+    if(Object.keys(this.props.accountInfo).length === 0 && this.props.accountInfo.constructor === Object){
+      if(this.props.registeredMembers !== nextProps.registeredMembers){
+        const selectedMember = nextProps.registeredMembers.filter(member => {
+          return member.name.toLowerCase() === decodeURIComponent(nextProps.match.params.member);
+        });
+        nextProps.dispatch(actions.selectMember(selectedMember[0].apiKey, nextProps.registeredMembers))
+      }
+    }
+  }
   render() {
     return (
       <section className="guildMember">
@@ -56,6 +66,7 @@ const mapStateToProps = (state, props) => ({
     memberPVPStatsLoading: state.members.memberPVPStatsLoading,
     memberPVEStatsLoading: state.members.memberPVEStatsLoading,
     accountInfo: state.members.accountInfo,
+    registeredMembers: state.members.registeredMembers,
     memberGuildNames: state.members.memberGuildNames,
     joined: state.members.joined,
     characters: state.members.characters,

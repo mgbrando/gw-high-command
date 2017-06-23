@@ -1,6 +1,11 @@
 //import 'whatwg-fetch';
 import 'isomorphic-fetch';
 
+export const SELECT_TEAM = 'SELECT_TEAM';
+export const selectTeam = team => ({
+  type: SELECT_TEAM,
+  team
+});
 //Teams
 export const GET_TEAMS_SUCCESS = 'GET_TEAMS_SUCCESS';
 export const getTeamsSuccess = teams => ({
@@ -19,7 +24,7 @@ export const getGuildTeams = (guildID, access_token) => {
     fetch('https://api.guildwars2.com/v2/guild/'+guildID+'/teams?access_token='+access_token)
     .then(response => response.json())
     .then(teams => dispatch(getTeamsSuccess(teams)))
-    .catch(error => dispatch(getTeamsFailure(error)))
+    .catch(error => dispatch(getTeamsFailure(error)));
   }	
 };
 

@@ -129,7 +129,6 @@ const registrationAndLogin = (state=initialRepositoryState, action) => {
 		return Object.assign({}, state, {selectedMemberGuilds: action.selectedGuilds, nextButtonDisabled: action.nextArrowDisabled});
 	}*/
 	else if(action.type=== actions.AUTHENTICATION_CLEARED){
-		console.log(action.user.username);
 		return Object.assign({}, state, {isAuthenticated: true, authorizationChecked: true, activeUser: action.user, activeUserGuilds: action.guilds, activeGuild: action.activeGuild});
 	}
 	else if(action.type=== actions.AUTHENTICATION_FAILED){
