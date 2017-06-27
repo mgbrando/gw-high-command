@@ -7,7 +7,11 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import NavigationArrowDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down';
+import ActionNoteAdd from 'material-ui/svg-icons/action/note-add';
+import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 import * as actions from '../../actions/registrationAndLoginActions';
+import './Dashboard.css';
 
 //iconElementLeft={<IconButton><NavigationClose /></IconButton>}
 
@@ -65,11 +69,29 @@ class WelcomeBar extends Component {
           {guildMenuOptions}
         </IconMenu>
       }
-        iconElementRight={<FlatButton label="Log Out" onClick={this.props.logOut}/>}
+        iconElementRight={
+            <div className="rightAppbar">
+              <FlatButton label="Log Out" className="logoutButton" onClick={this.props.logOut}/>
+              <IconButton className="iconButton" onClick={this.props.togglePanel}><ActionNoteAdd /></IconButton>
+            </div>
+        }
       />
     </div>
   );
 }
+/*            <Toolbar>
+              <ToolbarGroup firstChild={true}>
+                <FlatButton label="Log Out" onClick={this.props.logOut}/>
+                <ToolbarSeparator />
+                <IconButton onClick={this.props.logOut}><ActionNoteAdd /></IconButton>
+              </ToolbarGroup>
+            </Toolbar>*/
+ /*
+            <div>
+              <FlatButton label="Log Out" onClick={this.props.logOut}/>
+              <IconButton onClick={this.props.logOut}><ActionNoteAdd /></IconButton>
+            </div>
+*/
 	/*if(props.previous && props.next){
 		return (
     	<div className="registrationNavigation">

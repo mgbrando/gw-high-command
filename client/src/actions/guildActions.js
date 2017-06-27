@@ -17,7 +17,8 @@ export const getGuildInfo = (guildID, access_token) => {
         .then(_accountInfo => {
             console.log(_accountInfo.guilds);*/
         return Promise.all([
-            dispatch(getGuildDetails(guildID)),
+            dispatch(getGuildDetails(guildID, access_token)),
+            dispatch(getGuildCoins(guildID, access_token)),
             dispatch(getGuildUpgrades(guildID, access_token))
         ]);
         //});
@@ -25,6 +26,48 @@ export const getGuildInfo = (guildID, access_token) => {
         await dispatch(getGuildDetails(accountInfo.guilds[0]));
         await dispatch(getGuildUpgrades(accountInfo.guilds[0], access_token));
         return;*/
+    };
+};
+
+export const SET_GUILD_COINS_SUCCESS = 'SET_GUILD_COINS_SUCCESS';
+export const setGuildCoinsSuccess = coins => ({
+    type: SET_GUILD_COINS_SUCCESS,
+    coins
+});
+
+export const SET_GUILD_COINS_FAILURE = 'SET_GUILD_COINS_FAILURE';
+export const setGuildCoinsFailure = error => ({
+    type: SET_GUILD_COINS_FAILURE,
+    error
+});
+
+export const getGuildCoins = (guildID, access_token) => {
+   /* let accountInfo;
+    let guildDetails;
+    let guildUpgrades;*/
+    return dispatch => {
+        fetch('https://api.guildwars2.com/v2/guild/'+guildID+'/stash?access_token='+access_token)
+        .then(response => response.json())
+        .then(guildStashes => {
+            if(guildStashes.length === 0){
+                return dispatch(setGuildCoinsSuccess({}));
+            }
+            else{
+                let totalCoins = 0;
+                guildStashes.foreach(stash => {
+                    totalCoins += stash.coins;
+                });
+                //let coins = props.coins;
+                const gold = Math.floor(totalCoins/10000);
+                totalCoins -= gold*10000;
+                const silver = Math.floor(totalCoins/100);
+                totalCoins -= silver*100;
+                const copper = totalCoins;
+
+                return dispatch(setGuildCoinsSuccess({gold: gold, silver: silver, copper: copper}));
+            }
+        })
+        .catch(error => dispatch(setGuildCoinsFailure(error.text)));
     };
 };
 //Guild Details
@@ -40,9 +83,9 @@ export const getGuildDetailsFailure = error => ({
 	error
 });
 
-export const getGuildDetails = guildID => {
+export const getGuildDetails = (guildID, access_token) => {
   return dispatch => {
-    fetch('https://api.guildwars2.com/v2/guild/'+guildID)
+    fetch('https://api.guildwars2.com/v2/guild/'+guildID+'?access_token='+access_token)
     .then(response => response.json())
     .then(guildDetails => dispatch(getGuildDetailsSuccess(
         Object.assign({}, guildDetails, {level: guildDetails.level || "N/A", favor: guildDetails.favor || "N/A", aetherium: guildDetails.aetherium || "N/A", influence: guildDetails.influence || "N/A"})

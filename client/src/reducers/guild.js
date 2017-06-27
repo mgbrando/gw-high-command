@@ -11,7 +11,8 @@ const initialRepositoryState = {
     displayGuildDetails: true,
     displayGuildUpgrades: true,
     guildDetailsLoading: true,
-    guildUpgradesLoading: true
+    guildUpgradesLoading: true,
+    coins: {}
 };
 
 const guild = (state=initialRepositoryState, action) => {
@@ -29,6 +30,9 @@ const guild = (state=initialRepositoryState, action) => {
 	}
 	else if(action.type === actions.SET_GUILDS){
 		return Object.assign({}, state, {activeUserGuilds: action.guilds});
+	}
+	else if(action.type === actions.SET_GUILD_COINS_SUCCESS){
+		return Object.assign({}, state, {coins: action.coins});
 	}
 	/*else if(action.type === actions.SET_ACTIVE_GUILD){
 		return Object.assign({}, state, {activeGuild: action.guild});

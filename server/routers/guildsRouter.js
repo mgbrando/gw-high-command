@@ -75,6 +75,83 @@ router.post('/create-guilds', (req, res) => {
 
 });
 
+router.put('/:id/tasks', jsonParser, (req, res) => {
+	Guild
+		.findOneAndUpdate({id: req.params.id}, {$push: {tasks: {description: req.body.description, importance: req.body.importance}}}, {new: true})
+		.then(guild => {
+			console.log('Guild');
+			console.log(guild);
+			console.log('TASKS');
+			console.log(guild.tasks);
+			res.json(guild.tasks);
+		})
+		.catch(err => {
+			console.log('PUT ERROR');
+			console.log(err);
+			res.status(500).json({message: err.message})
+		});
+	/*Guild
+		.update({id: req.params.id}, {$push: {tasks: {description: req.body.description, importance: req.body.importance}}})
+		.exec()
+		.then(guild => {
+			console.log('PUT COMPLETE');
+			console.log(guild.task);
+			res.json(guild.task);
+		})
+		.catch(err => {
+			console.log('PUT ERROR');
+			console.log(err);
+			res.status(500).json({message: err.message})
+		});*/
+});
+
+router.put('/:id/tasks/bulk-delete', jsonParser, (req, res) => {
+	Guild
+		.findOneAndUpdate({id: req.params.id}, {$set: {tasks: []}}, {new: true})
+		.then((guild) => {
+			console.log('Guild');
+			console.log(guild);
+			console.log('Tasks');
+			console.log(guild.tasks);
+			res.json(guild.tasks);
+		})
+ 		.catch(err => {
+ 			console.error(err);
+ 			res.status(500).json({message: 'Internal Service Error: '+err});
+ 		});
+});
+
+router.put('/:id/tasks/:task_id', jsonParser, (req, res) => {
+	Guild
+		.findOneAndUpdate({id: req.params.id}, {$pull: {tasks: {_id: req.params.task_id}}}, {new: true})
+		.then((guild) => {
+			console.log('Guild');
+			console.log(guild);
+			console.log('Tasks');
+			console.log(guild.tasks);
+			res.json(guild.tasks);
+		})
+ 		.catch(err => {
+ 			console.error(err);
+ 			res.status(500).json({message: 'Internal Service Error: '+err});
+ 		});
+});
+
+router.get('/:id/tasks', jsonParser, (req, res) => {
+	Guild
+		.findOne({id: req.params.id})
+		.exec()
+		.then(guild => {
+			console.log('TASKS');
+			console.log(guild.tasks);
+			res.json(guild.tasks);
+		})
+ 		.catch(err => {
+ 			console.error(err);
+ 			res.status(500).json({message: 'Internal Service Error: '+err});
+ 		});
+});
+
 router.put('/:id', jsonParser, (req, res) => {
     Guild
     	.findByIdAndUpdate(req.params.id, {$set: {members: req.body.members}})

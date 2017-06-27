@@ -11,7 +11,7 @@ const GuildSchema = mongoose.Schema({
   },
   name: {type: String, required: true},
   tag: {type: String, required: true},
-  tasks: [{type: String, required: true}],
+  tasks: [{description: {type: String, required: true}, importance: {type: Number, required: true}}],
   members: [{handleName: {type: String, required: true}, apiKey: {type: String, required: true}}],
 });
 

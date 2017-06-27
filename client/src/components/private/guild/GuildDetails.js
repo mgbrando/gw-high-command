@@ -21,6 +21,33 @@ function GuildDetails(props){
     );
   }
   else if(props.display){
+    /*let coins = props.coins;
+    const gold = Math.floor(coins/10000);
+    coins -= gold*10000;
+    const silver = Math.floor(coins/100);
+    coins -= silver*100;
+    const copper = coins;*/
+    let totalCoinsElement;
+    if(Object.keys(props.coins).length > 0){
+      totalCoinsElement = (          
+          <div className="totalCoins">
+            <span className="category">Total Coins: </span>
+            <div className="coinAmount"><img src="../../assets/gold.png" alt="gold" /><span>{props.coins.gold}</span></div>
+            <div className="coinAmount"><img src="../../assets/silver.png" alt="silver" /><span>{props.coins.silver}</span></div>
+            <div className="coinAmount"><img src="../../assets/bronze.png" alt="copper" /><span>{props.coins.copper}</span></div>
+          </div>);
+    }
+    else{
+      totalCoinsElement = (          
+          <div className="totalCoins">
+            <span className="category">Total Coins: </span>
+            <div className="coinAmount"><img src="../../assets/gold.png" alt="gold" /><span>0</span></div>
+            <div className="coinAmount"><img src="../../assets/silver.png" alt="silver" /><span>0</span></div>
+            <div className="coinAmount"><img src="../../assets/bronze.png" alt="copper" /><span>0</span></div>
+          </div>);
+    }
+
+
     return (
       <div className="guildDetails">
         <Paper className="infoSection" zDepth={2}>
@@ -35,6 +62,7 @@ function GuildDetails(props){
             <ListItem primaryText="Favor" secondaryText={props.guildDetails.favor} disabled={true}/>
             <ListItem primaryText="Aetherium" secondaryText={props.guildDetails.aetherium} disabled={true}/>
           </List>
+            {totalCoinsElement}
           </Paper>
         </Paper>
       </div>

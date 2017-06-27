@@ -26,7 +26,10 @@ function MemberDetails(props){
       isCommander = "Yes";
     else
       isCommander = "No";*/
-
+    let count = 0;
+    const memberCharacters = props.characters.map(character => {
+      return <ListItem secondaryText={`${character.name}: Level ${character.level} ${character.profession}`} disabled={true} key={count++} />;
+    });
   return (
       <div className="memberDetails">
         <Paper className="infoSection" zDepth={2}>
@@ -40,6 +43,10 @@ function MemberDetails(props){
           <List className="membersDetailsList">
             <ListItem primaryText="Player Access: " secondaryText={props.accountInfo.access} disabled={true}/>
             <ListItem primaryText="Commander: " secondaryText={props.isCommander} disabled={true}/>
+          </List>
+          <List className="charactersList">
+            Characters:
+            {memberCharacters}
           </List>
           </Paper>
         </Paper>

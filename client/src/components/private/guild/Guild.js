@@ -65,6 +65,7 @@ class Guild extends Component {
           loading={this.props.guildDetailsLoading} 
           display={this.props.displayGuildDetails} 
           guildDetails={this.props.guildDetails} 
+          coins={this.props.coins}
         />
         <SectionBar title="Upgrades" />
         <GuildUpgrades 
@@ -91,7 +92,8 @@ const mapStateToProps = (state, props) => ({
     displayGuildDetails: state.guild.displayGuildDetails,
     displayGuildUpgrades: state.guild.displayGuildUpgrades,
     guildDetailsLoading: state.guild.guildDetailsLoading,
-    guildUpgradesLoading: state.guild.guildUpgradesLoading
+    guildUpgradesLoading: state.guild.guildUpgradesLoading,
+    coins: state.guild.coins
 });
 
 export default connect(mapStateToProps)(Guild);

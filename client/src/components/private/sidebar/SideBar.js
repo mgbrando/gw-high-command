@@ -1,14 +1,23 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
+import Drawer from 'material-ui/Drawer';
+import AppBar from 'material-ui/AppBar';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import IconButton from 'material-ui/IconButton';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import FlatButton from 'material-ui/FlatButton';
+import NavigationArrowDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down';
+import NavigationChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 import GuildLog from './GuildLog';
 import GuildTasks from './GuildTasks';
 import './SideBar.css';
  
-let logWorker = new Worker("../../workers/logWorker.js");
+//let logWorker = new Worker("../../workers/logWorker.js");
 
-class SideBar extends Component {
+function SideBar(props) {
 
-  constructor(props) {
+  /*constructor(props) {
     super(props);
 
     this.displayActivity = this.displayActivity.bind(this);
@@ -35,26 +44,40 @@ class SideBar extends Component {
     }
     else{
     }
-  }
+  }*/
 
-  render() {
+  //render() {
+    let sideBarContent;
+    if(props.title.toLowerCase() === 'tasks')
+      sideBarContent = (<GuildTasks />);
+    else{
+      sideBarContent = (<GuildLog />);
+    }
+
     return (
-      <div className="SideBar">
-        <div className="SideBar-header">
-          <h3>Guild Activities</h3>
-        </div>
-        <div>
-          {this.displayActivity()}
-        </div>
+      <div className="sideBar">
+        <Drawer width={300} openSecondary={true} open={props.open} >
+          <AppBar
+            title={props.title}
+            iconElementLeft={        
+              <IconMenu
+                iconButtonElement={<IconButton><NavigationArrowDropDown /></IconButton>}
+                onChange={props.handleChangeSingle}
+                value={props.title}
+              >
+                <MenuItem value="Log" primaryText="Guild Log" key={0} />
+                <MenuItem value="Tasks" primaryText="Task Manager" key={1} />
+              </IconMenu>
+            }
+            iconElementRight={
+              <NavigationChevronRight className="closeSidePanelChevron" onClick={props.togglePanel} />
+            }
+          />
+          {sideBarContent}
+        </Drawer>
       </div>
     );
-  }
+  //}
 }
 
-const mapStateToProps = (state, props) => ({
-    currentActivity: state.activity,
-    log: state.log,
-    tasks: state.tasks
-});
-
-export default connect(mapStateToProps)(SideBar);
+export default SideBar;
