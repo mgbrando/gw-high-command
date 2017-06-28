@@ -78,36 +78,31 @@ class GuildLog extends Component {
         case 'joined':
           const text = (<span></span>);
           return (<ListItem 
-            primaryText='[ NEW MEMBER ]: ' 
-            secondaryText={<span>{logEntry.user} has joined the guild.</span>}
+            primaryText={<div className="logEntry"><strong>[ NEW MEMBER ]:</strong> <span>{logEntry.user} has joined the guild.</span></div> }
             key={count++}
           />);
           break;
         case 'invited':
           return (<ListItem 
-            primaryText='[ INVITE ]: ' 
-            secondaryText={<span>{logEntry.user} has been invited by {logEntry.invited_by} to join the guild.</span>}
+            primaryText={<div className="logEntry"><strong>[ INVITE ]:</strong> <span>{logEntry.user} has been invited by {logEntry.invited_by} to join the guild.</span></div>}
             key={count++} 
           />);
           break;
         case 'kick':
           return (<ListItem 
-            primaryText='[ KICK ]: ' 
-            secondaryText={<span>{logEntry.user} has been kicked from the guild by {logEntry.kicked_by}.</span>}
+            primaryText={<div className="logEntry"><strong>[ KICK ]:</strong> <span>{logEntry.user} has been kicked from the guild by {logEntry.kicked_by}.</span></div>} 
             key={count++} 
           />);
           break;
         case 'rank_change':
           return (<ListItem 
-            primaryText='[ RANK CHANGE ]: ' 
-            secondaryText={<span>{logEntry.user} has had their ranked changed from {logEntry.old_rank} to {logEntry.new_rank} by {logEntry.changed_by || 'SYSTEM'}.</span>}
+            primaryText={<div className="logEntry"><strong>[ RANK CHANGE ]:</strong> <span>{logEntry.user} has had their ranked changed from {logEntry.old_rank} to {logEntry.new_rank} by {logEntry.changed_by || 'SYSTEM'}.</span></div>} 
             key={count++} 
           />);
           break;
         case 'treasury':
           return (<ListItem 
-            primaryText='[ TREASURY ]: ' 
-            secondaryText={<span>{logEntry.user} has deposited {logEntry.count} {logEntry.item_name}.</span>}
+            primaryText={<div className="logEntry"><strong>[ TREASURY ]:</strong> <span>{logEntry.user} has deposited {logEntry.count} {logEntry.item_name}.</span></div>}
             key={count++} 
           />);
           break;
@@ -115,14 +110,12 @@ class GuildLog extends Component {
           if(logEntry.operation === 'deposit'){
             if(logEntry.hasOwnProperty('item_name'))
               return (<ListItem 
-                primaryText='[ STASH ]: ' 
-                secondaryText={<span>{logEntry.user} has deposited {logEntry.count} {logEntry.item_name} and {logEntry.coins} coins.</span>}
+                primaryText={<div className="logEntry"><strong>[ STASH ]:</strong> <span>{logEntry.user} has deposited {logEntry.count} {logEntry.item_name} and {logEntry.coins} coins.</span></div>}
                 key={count++} 
               />);
             else
               return (<ListItem 
-                primaryText='[ STASH ]: ' 
-                secondaryText={<span>{logEntry.user} has deposited {logEntry.coins} coins.</span>}
+                primaryText={<div className="logEntry"><strong>[ STASH ]:</strong> <span>{logEntry.user} has deposited {logEntry.coins} coins.</span></div>} 
                 key={count++} 
               />);
           }
@@ -172,7 +165,7 @@ class GuildLog extends Component {
 
         default:
             return (<ListItem 
-              primaryText='[ ERROR ]: ' {<div className="logEntry"><strong>[ ERROR ]:</strong> <span>Unknown log entry type.</span></div>}
+              primaryText={<div className="logEntry"><strong>[ ERROR ]:</strong> <span>Unknown log entry type.</span></div>}
               key={count++} 
             />);   
         }
