@@ -48,3 +48,7 @@
 .taskList{
 	margin-top: 20px;
 }
+.logEntry{
+	width: 100%;
+	word-wrap: break-word;
+}

@@ -149,16 +149,26 @@ export const getLogEntriesFailure = error => ({
 	type: GET_LOG_ENTRIES_FAILURE,
 	error
 });
-
-export const getLogEntries = (guildID, access_token) => {
+const compareLogEntries = (logEntryA, logEntryB) => {
+  if(logEntryA > logEntryB)
+    return -1;
+  else if(logEntryA < logEntryB)
+    return 1;
+  else
+    return 0;
+};
+export const getLogEntries = (guildID, access_token, logEntries) => {
   return dispatch => {
-    /*let endpoint;
-    if(eventID)
-      endpoint = 'https://api.guildwars2.com/v2/guild/'+guildID+'/log?since='+eventID+'&&access_token='+access_token;
-    else
-      endpoint = 'https://api.guildwars2.com/v2/guild/'+guildID+'/log?access_token='+access_token;*/
+    let endpoint;
+    if(logEntries.length > 0){
+      endpoint = 'https://api.guildwars2.com/v2/guild/'+guildID+'/log?since='+logEntries[0].id+'&access_token='+access_token;
+    }
+    else{
 
-    fetch('https://api.guildwars2.com/v2/guild/'+guildID+'/log?access_token='+access_token)
+      endpoint = 'https://api.guildwars2.com/v2/guild/'+guildID+'/log?access_token='+access_token;
+    }
+
+    fetch(endpoint)
     .then(response => response.json())
     .then(logEntries => {
       let promises = [];
@@ -179,7 +189,10 @@ export const getLogEntries = (guildID, access_token) => {
           return logEntry;
       });
       Promise.all(promises)
-        .then(() => dispatch(getLogEntriesSuccess(logEntries)));
+        .then(() => { 
+          return dispatch(getLogEntriesSuccess(logEntries));
+          //setInterval(dispatch(getNewLogEntries(guildID, access_token, logEntries[0].id)));
+        });
     })
     .catch(error => dispatch(getLogEntriesFailure(error)));
   } 

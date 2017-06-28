@@ -12,7 +12,12 @@ class GuildLog extends Component {
   constructor(props) {
     super(props);
 
+    this.state ={
+      shouldCallInterval: false
+    }
+
     this.getLog = this.getLog.bind(this);
+    this.grabLog = this.grabLog.bind(this);
   }
 
   componentWillMount(){
@@ -23,17 +28,37 @@ class GuildLog extends Component {
     }*/
   }
   componentDidMount(){
-    this.getLog();
+    //if(this.props.log.length === 0){
+      setInterval(this.getLog, 5000);
+      /*if()
+      setInterval(this.props.dispatch(actions.getNewLogEntries(this.props.activeGuild, this.props.activeUser.apiKey, this.props.log[this.props.log.length-1].id)), 5000);*/
+    //}
+    /*const logPromise = new Promise(resolve, reject){
+      this.props.dispatch(actions.getLogEntries(this.props.activeGuild, this.props.activeUser.apiKey));
+    }
+    this.getLog();*/
   }
-  componentWillReceiveProps(nextProps){
+  /*componentDidUpdate(){
+    if(this.state.shouldCallInterval){
+      this.setState({shouldCallInterval: false});
+      setInterval(this.props.dispatch(actions.getNewLogEntries(this.props.activeGuild, this.props.activeUser.apiKey, this.props.log[this.props.log.length-1].id)), 5000);
+    }
+  }*/
+  /*componentWillReceiveProps(nextProps){
     if(this.props.logMounted !== nextProps.logMounted)
-      setInterval(this.getLog(nextProps), 5000);
-    /*if(this.props.log.length > 0)
-      setInterval(this.props.dispatch(actions.getLogEntries(this.props.activeGuild, this.props.activeUser.apiKey, this.props.log[this.props.log.length-1].id)) ,5000);*/
-  }
+      this.setState({shouldCallInterval: true});
+    //if(this.props.log.length > 0)
+     // setInterval(this.props.dispatch(actions.getLogEntries(this.props.activeGuild, this.props.activeUser.apiKey, this.props.log[this.props.log.length-1].id)) ,5000);
+  }*/
 
-  getLog(nextProps = null){
-      if(nextProps){
+  grabLog = async () => {
+    await this.props.dispatch(actions.getLogEntries(this.props.activeGuild, this.props.activeUser.apiKey));
+    setInterval(this.props.dispatch(actions.getNewLogEntries(this.props.activeGuild, this.props.activeUser.apiKey, this.props.log[this.props.log.length-1].id)), 5000);
+  };
+
+  getLog(){
+    this.props.dispatch(actions.getLogEntries(this.props.activeGuild, this.props.activeUser.apiKey, this.props.log));
+      /*if(nextProps){
         nextProps.dispatch(actions.getNewLogEntries(nextProps.activeGuild, nextProps.activeUser.apiKey, nextProps.log[nextProps.log.length-1].id));
       }
       else if(this.props.log.length === 0){
@@ -42,7 +67,7 @@ class GuildLog extends Component {
       }
       else{
         setInterval(this.props.dispatch(actions.getNewLogEntries(this.props.activeGuild, this.props.activeUser.apiKey, this.props.log[this.props.log.length-1].id)), 5000);
-      }
+      }*/
   }
 
   render() {
@@ -104,48 +129,42 @@ class GuildLog extends Component {
           else{
             if(logEntry.hasOwnProperty('item_name'))
               return (<ListItem 
-                primaryText='[ STASH ]: ' 
-                secondaryText={<span>{logEntry.user} has withdrawn {logEntry.count} {logEntry.item_name} and {logEntry.coins} coins.</span>}
+                primaryText={<div className="logEntry"><strong>[ STASH ]:</strong> <span>{logEntry.user} has withdrawn {logEntry.count} {logEntry.item_name} and {logEntry.coins} coins.</span></div>}
                 key={count++} 
               />);
             else
               return (<ListItem 
-                primaryText='[ STASH ]: ' 
-                secondaryText={<span>{logEntry.user} has withdrawn {logEntry.coins} coins.</span>}
+                primaryText={<div className="logEntry"><strong>[ STASH ]:</strong> <span>{logEntry.user} has withdrawn {logEntry.coins} coins.</span></div>}
                 key={count++} 
               />);
           }
           break;
         case 'motd':
           return (<ListItem 
-            primaryText='[ MOTD ]: ' 
-            secondaryText={<span>{logEntry.user} has changed the message of the day to {logEntry.motd}.</span>}
+            style={{width: '100%'}}
+            primaryText={<div className="logEntry"><strong>[ MOTD ]:</strong> <span>{logEntry.user} has changed the message of the day to {logEntry.motd}.</span></div>} 
             key={count++} 
           />);
           break;
         case 'upgrade':
           if(logEntry.action === 'queued')
             return (<ListItem 
-            primaryText='[ UPGRADE ]: ' 
-            secondaryText={<span>{logEntry.user} has queued the {logEntry.upgrade_name} upgrade for completion.</span>}
+            primaryText={<div className="logEntry"><strong>[ UPGRADE ]:</strong> <span>{logEntry.user} has queued the {logEntry.upgrade_name} upgrade for completion.</span></div>} 
             key={count++} 
           />);
           else if(logEntry.action === 'cancelled')
             return (<ListItem 
-            primaryText='[ UPGRADE ]: ' 
-            secondaryText={<span>{logEntry.user} has cancelled the {logEntry.upgrade_name} upgrade.</span>}
+            primaryText={<div className="logEntry"><strong>[ UPGRADE ]:</strong> <span>{logEntry.user} has cancelled the {logEntry.upgrade_name} upgrade.</span></div>} 
             key={count++} 
           />);
           else if(logEntry.action === 'completed')
             return (<ListItem 
-            primaryText='[ UPGRADE ]: ' 
-            secondaryText={<span>{logEntry.user} has completed the {logEntry.upgrade_name} upgrade.</span>}
+            primaryText={<div className="logEntry"><strong>[ UPGRADE ]:</strong> <span>{logEntry.user} has completed the {logEntry.upgrade_name} upgrade.</span></div>} 
             key={count++} 
           />);          
           else{
             return (<ListItem 
-              primaryText='[ UPGRADE ]: ' 
-              secondaryText={<span>{logEntry.user} has sped up the completion of the {logEntry.upgrade_name} upgrade.</span>}
+              primaryText={<div className="logEntry"><strong>[ UPGRADE ]:</strong> <span>{logEntry.user} has sped up the completion of the {logEntry.upgrade_name} upgrade.</span></div>} 
               key={count++} 
             />);            
           }
@@ -153,8 +172,7 @@ class GuildLog extends Component {
 
         default:
             return (<ListItem 
-              primaryText='[ ERROR ]: ' 
-              secondaryText={<span>Unknown log entry type.</span>}
+              primaryText='[ ERROR ]: ' {<div className="logEntry"><strong>[ ERROR ]:</strong> <span>Unknown log entry type.</span></div>}
               key={count++} 
             />);   
         }

@@ -15,10 +15,10 @@ const initialRepositoryState = {
 
 const logAndTasks = (state=initialRepositoryState, action) => {
 	if(action.type === actions.GET_LOG_ENTRIES_SUCCESS){
-		return Object.assign({}, state, {log: [...state.log, ...action.logEntries], logLoading: false, logHasBeenFetched: true, logMounted: true});
+		return Object.assign({}, state, {log: [...action.logEntries, ...state.log], logLoading: false, logHasBeenFetched: true, logMounted: true});
 	}
 	else if(action.type === actions.GET_NEW_LOG_ENTRIES_SUCCESS){
-		return Object.assign({}, state, {log: [...state.log, ...action.logEntries]});
+		return Object.assign({}, state, {log: [...action.logEntries, ...state.log]});
 	}
 	else if(action.type === actions.GET_TASKS_SUCCESS){
 		return Object.assign({}, state, {tasks: action.tasks, logAndTasksMounted: true});
