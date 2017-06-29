@@ -1,6 +1,11 @@
 //import 'whatwg-fetch';
 import 'isomorphic-fetch';
 
+export const SET_GUILD_LOADING_STATES = 'SET_GUILD_LOADING_STATES';
+export const setGuildLoadingStates = () => ({
+    type: SET_GUILD_LOADING_STATES
+});
+
 export const SET_GUILDS = 'SET_GUILDS';
 export const setGuilds = guilds => ({
     type: SET_GUILDS,

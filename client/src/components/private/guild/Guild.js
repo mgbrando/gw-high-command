@@ -6,6 +6,7 @@ import * as actions from '../../../actions/guildActions';
 import SectionBar from '../SectionBar';
 import GuildDetails from './GuildDetails';
 import GuildUpgrades from './GuildUpgrades';
+import CircularProgress from 'material-ui/CircularProgress';
 import './Guild.css';
 
 class Guild extends Component {
@@ -45,6 +46,9 @@ class Guild extends Component {
         })*/
     this.props.dispatch(actions.getGuildInfo(this.props.activeGuild, this.props.activeUser.apiKey));
   }
+  componentWillUnmount(){
+    this.props.dispatch(actions.setGuildLoadingStates());
+  }
   /*componentDidUpdate(){
     this.props.dispatch(actions.getGuildInfo(this.props.activeGuild, this.props.activeUser.apiKey));
   }*/
@@ -58,6 +62,13 @@ class Guild extends Component {
   }
 
   render() {
+    if(this.props.guildDetailsLoading || this.props.guildUpgradesLoading || this.props.guildCoinsLoading){
+      return (
+      <section className="guildLoadingScreen">
+          <CircularProgress size={80} thickness={5} />
+      </section>
+      );
+    }
     return (
       <section className="guild">
         <SectionBar title="Guild Details" />
@@ -93,6 +104,7 @@ const mapStateToProps = (state, props) => ({
     displayGuildUpgrades: state.guild.displayGuildUpgrades,
     guildDetailsLoading: state.guild.guildDetailsLoading,
     guildUpgradesLoading: state.guild.guildUpgradesLoading,
+    guildCoinsLoading: state.guild.guildCoinsLoading,
     coins: state.guild.coins
 });
 

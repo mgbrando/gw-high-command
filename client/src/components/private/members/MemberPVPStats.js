@@ -45,15 +45,17 @@ function MemberPVPStats(props){
             <ListItem primaryText="sPvP Rank: " secondaryText={props.pvpStats.rank || 'N/A'} />
             <ListItem primaryText="WvW Rank: " secondaryText={props.wvwRank || 'N/A'} />
           </List>
-          <h2>sPvP win ratios: </h2>
-          <div className="left50">
-            <h3>Ranked</h3>
-          </div>
-          <div className="right50">
-            <h3>Unranked</h3>
+          <div>
+            <h2 className="sectionHeader">sPvP win ratios</h2>
+            <div className="left50">
+              <h3>Ranked</h3>
+            </div>
+            <div className="right50">
+              <h3>Unranked</h3>
+            </div>
           </div>
           <div>
-            <h2>sPvP win ratios by character: </h2>
+            <h2 className="sectionHeader">sPvP win ratios by character</h2>
             <span>placeholder</span>
           </div>
           </Paper>

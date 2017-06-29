@@ -24,3 +24,23 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }*/
+.teamName, .seasonRating{
+  text-align: center;
+  margin: 5px;
+  font-style: italic;
+  font-weight: normal;
+}
+.teamDetailsInfo, .teamPVPStatsInfo, .teamRecentMatchesInfo{
+  padding: 10px;
+}
+.teamSPVPSection{
+  width: 33.3333%;
+  text-align: center;
+  display: inline-block;
+}
+.teamMembersList{
+  text-align: center;
+}
+.statsButton{
+  cursor: pointer !important;
+}

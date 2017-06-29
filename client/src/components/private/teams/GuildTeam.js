@@ -5,12 +5,16 @@ import TeamDetails from './TeamDetails';
 import TeamPVPStats from './TeamPVPStats';
 import * as actions from '../../../actions/teamsActions';
 import TeamRecentMatches from './TeamRecentMatches';
+import NavigationArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
+import {Link, Redirect} from 'react-router-dom';
 import './GuildTeams.css';
 
 class GuildTeam extends Component {
 
   constructor(props) {
     super(props);
+
+    this.deselectTeam = this.deselectTeam.bind(this);
   }
   componentWillReceiveProps(nextProps){
     if(Object.keys(this.props.selectedTeamInfo).length === 0 && this.props.selectedTeamInfo.constructor === Object){
@@ -22,7 +26,12 @@ class GuildTeam extends Component {
       }
     }
   }
+  deselectTeam(){
+    this.props.dispatch(actions.deselectTeam());
+  }
   render() {
+    if(this.props.selectedTeam === false)
+      return (<Redirect to="/dashboard/teams" />);
     if(!(Object.keys(this.props.selectedTeamInfo).length === 0 && this.props.selectedTeamInfo.constructor === Object)){
     let seasonPVPStats = 'No season stats available';
     if(this.props.selectedTeamInfo.hasOwnProperty('seasons'))
@@ -38,6 +47,7 @@ class GuildTeam extends Component {
 
     return (
       <section className="guildTeam">
+        <SectionBar additionalClasses="backNavigation" leftIcon={<button type='button' onClick={this.deselectTeam} className="backSection"><NavigationArrowBack className="backArrow" /><div className="returnTo"> Return to teams</div></button>} title={<span></span>} />
         <SectionBar title="Team Details" />
         <TeamDetails 
           loading={this.props.teamDetailsLoading} 
@@ -76,7 +86,8 @@ const mapStateToProps = (state, props) => ({
     teamRecentMatches: state.teams.teamRecentMatches,
     displayTeamDetails: state.teams.displayTeamDetails,
     displayTeamPVPStats: state.teams.displayTeamPVPStats,
-    displayTeamRecentMatches:state.teams.displayTeamRecentMatches
+    displayTeamRecentMatches:state.teams.displayTeamRecentMatches,
+    selectedTeam: state.teams.selectedTeam
 });
 
 export default connect(mapStateToProps)(GuildTeam);

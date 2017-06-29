@@ -9,11 +9,15 @@
 .tabNavigation{
 	margin-bottom: 15px;
 }
-.iconButton{
-	vertical-align: middle;
-}
 .closeSidePanelChevron{
 	vertical-align: middle;
 	margin-top: 12px;
 	cursor: pointer;
+}
+.logoutButton{
+	color: white;
+}
+.iconButton{
+	fill: white;
+	vertical-align: middle;
 }

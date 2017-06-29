@@ -27,7 +27,22 @@ class TeamsTable extends Component {
   }
 
   componentDidMount(){
-
+        let rows = [];
+        for(let i=0; i < this.props.guildTeams.length; i++){
+          //const apiKey = this.getAPIKey(nextProps, i);
+          let rating = 'N/A';
+          if(this.props.guildTeams[i].seasons && this.props.guildTeams[i].seasons.length !== 0){
+            rating = this.props.guildTeams[i].seasons[this.props.guildTeams[i].seasons.length-1].rating;
+          }
+          rows.push(<TableRow className="teamRow" key={i}>
+                  <TableRowColumn style={{textAlign: 'center'}}>{this.props.guildTeams[i].name}</TableRowColumn>
+                  <TableRowColumn style={{textAlign: 'center'}}>{rating}</TableRowColumn>
+                  <TableRowColumn style={{textAlign: 'center'}}><button className="statsButton" type="button" name="statsButton" value={i} onClick={this.statsClick}><img className="statsImage" src={pieChart} /></button></TableRowColumn>
+                </TableRow>);
+        }
+        this.setState({ rows: rows });
+        console.log(this.state.rows);
+        console.log(rows); 
   }
   componentWillReceiveProps(nextProps){
     if(nextProps.selectedTeam){
@@ -43,9 +58,9 @@ class TeamsTable extends Component {
             rating = nextProps.guildTeams[i].seasons[nextProps.guildTeams[i].seasons.length-1].rating;
           }
           rows.push(<TableRow className="teamRow" key={i}>
-                  <TableRowColumn>{nextProps.guildTeams[i].name}</TableRowColumn>
-                  <TableRowColumn>{rating}</TableRowColumn>
-                  <TableRowColumn><button type="button" name="statsButton" value={i} onClick={this.statsClick}><img className="statsImage" src={pieChart} /></button></TableRowColumn>
+                  <TableRowColumn style={{textAlign: 'center'}}>{nextProps.guildTeams[i].name}</TableRowColumn>
+                  <TableRowColumn style={{textAlign: 'center'}}>{rating}</TableRowColumn>
+                  <TableRowColumn style={{textAlign: 'center'}}><button className="statsButton" type="button" name="statsButton" value={i} onClick={this.statsClick}><img className="statsImage" src={pieChart} /></button></TableRowColumn>
                 </TableRow>);
         }
         this.setState({ rows: rows });
@@ -86,9 +101,9 @@ class TeamsTable extends Component {
           <Table selectable={false}>
             <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
               <TableRow>
-                <TableHeaderColumn>Name</TableHeaderColumn>
-                <TableHeaderColumn>Rating</TableHeaderColumn>
-                <TableHeaderColumn>Stats</TableHeaderColumn>
+                <TableHeaderColumn style={{textAlign: 'center'}}>Name</TableHeaderColumn>
+                <TableHeaderColumn style={{textAlign: 'center'}}>Rating</TableHeaderColumn>
+                <TableHeaderColumn style={{textAlign: 'center'}}>Stats</TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody displayRowCheckbox={false}> 

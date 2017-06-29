@@ -1,6 +1,11 @@
 //import 'whatwg-fetch';
 import 'isomorphic-fetch';
 
+export const DESELECT_TEAM = 'DESELECT_TEAM';
+export const deselectTeam = () => ({
+  type: DESELECT_TEAM
+});
+
 export const SELECT_TEAM = 'SELECT_TEAM';
 export const selectTeam = team => ({
   type: SELECT_TEAM,

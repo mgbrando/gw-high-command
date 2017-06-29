@@ -3,10 +3,16 @@ import {connect} from 'react-redux';
 //import GuildDetails from './GuildDetails';
 //import GuildUpgrades from './GuildUpgrades';
 import * as actions from '../../../actions/membersActions';
+import NavigationArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
 import SectionBar from '../SectionBar';
 import MemberDetails from './MemberDetails';
 import MemberPVPStats from './MemberPVPStats';
 import MemberPVEStats from './MemberPVEStats';
+import CircularProgress from 'material-ui/CircularProgress';
+/*import {
+  BrowserRouter as Router, Route, Link, Switch
+} from 'react-router-dom';*/
+import {Link, Redirect} from 'react-router-dom';
 //import './GuildMembers.css';
 
 class GuildMember extends Component {
@@ -15,6 +21,7 @@ class GuildMember extends Component {
     super(props);
 
     console.log("In GuildMember");
+    this.deselectMember = this.deselectMember.bind(this);
   }
   componentWillReceiveProps(nextProps){
     if(Object.keys(this.props.accountInfo).length === 0 && this.props.accountInfo.constructor === Object){
@@ -26,9 +33,27 @@ class GuildMember extends Component {
       }
     }
   }
+  deselectMember(){
+    this.props.dispatch(actions.deselectMember());
+  }
+  componentWillUnmount(){
+    this.deselectMember();
+  }
   render() {
+    if(this.props.selectedMember === false)
+      return (<Redirect to="/dashboard/members" />);
+
+    if(this.props.memberDetailsLoading || this.props.memberPVPStatsLoading || this.props.memberPVEStatsLoading){
+      return (
+      <section className="memberLoadingScreen">
+          <CircularProgress size={80} thickness={5} />
+      </section>
+      );
+    }
+
     return (
       <section className="guildMember">
+        <SectionBar additionalClasses="backNavigation" leftIcon={<button type='button' onClick={this.deselectMember} className="backSection"><NavigationArrowBack className="backArrow" /><div className="returnTo"> Return to members</div></button>} title={<span></span>} />
         <SectionBar title="Member Details" />
         <MemberDetails 
           loading={this.props.memberDetailsLoading}
@@ -72,7 +97,8 @@ const mapStateToProps = (state, props) => ({
     characters: state.members.characters,
     pvpStats: state.members.pvpStats,
     pvpStandings: state.members.pvpStandings,
-    raids: state.members.raids
+    raids: state.members.raids,
+    selectedMember: state.members.selectedMember
 });
 
 export default connect(mapStateToProps)(GuildMember);

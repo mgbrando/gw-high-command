@@ -4,7 +4,7 @@ const initialRepositoryState = {
 	guildMembers: [],
 	registeredMembers: [],
 	unregisteredMembers: [],
-	selectedMember: false,
+	selectedMember: null,
   memberDetailsLoading: true,
   memberPVPStatsLoading: true,
   memberPVEStatsLoading: true,
@@ -47,6 +47,9 @@ const members = (state=initialRepositoryState, action) => {
   }
   else if(action.type === actions.SET_SELECTED_ACCOUNT_INFO_SUCCESS){
     return Object.assign({}, state, {accountInfo: action.accountInfo, joined: action.joined, memberGuildNames: action.memberGuildNames});
+  }
+  else if(action.type === actions.DESELECT_MEMBER){
+    return Object.assign({}, state, {selectedMember: false, memberDetailsLoading: true, memberPVPStatsLoading: true, memberPVEStatsLoading: true});
   }
 	return state;
 };

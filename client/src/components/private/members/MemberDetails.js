@@ -30,6 +30,7 @@ function MemberDetails(props){
     const memberCharacters = props.characters.map(character => {
       return <ListItem secondaryText={`${character.name}: Level ${character.level} ${character.profession}`} disabled={true} key={count++} />;
     });
+    const access = props.accountInfo.access.replace(/([A-Z])/g, ' $1').trim();
   return (
       <div className="memberDetails">
         <Paper className="infoSection" zDepth={2}>
@@ -37,15 +38,15 @@ function MemberDetails(props){
           <h1 className="sectionHeader">Player Handle</h1>
           <h2 className="memberName">{props.accountInfo.name}</h2>
           <List className="membersDetailsList">
-            <ListItem primaryText="Member Since: " secondaryText={props.joined} disabled={true}/>
-            <ListItem primaryText="Guilds: " secondaryText={props.memberGuildNames} disabled={true}/>
+            <ListItem primaryText="Member Since " secondaryText={props.joined} disabled={true}/>
+            <ListItem primaryText="Guilds " secondaryText={props.memberGuildNames} disabled={true}/>
           </List>
           <List className="membersDetailsList">
-            <ListItem primaryText="Player Access: " secondaryText={props.accountInfo.access} disabled={true}/>
-            <ListItem primaryText="Commander: " secondaryText={props.isCommander} disabled={true}/>
+            <ListItem primaryText="Player Access " secondaryText={access} disabled={true}/>
+            <ListItem primaryText="Commander " secondaryText={props.isCommander} disabled={true}/>
           </List>
           <List className="charactersList">
-            Characters:
+            Characters
             {memberCharacters}
           </List>
           </Paper>

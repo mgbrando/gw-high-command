@@ -11,16 +11,8 @@ import {List, ListItem, makeSelectable} from 'material-ui/List';
 
 //{props.guildDetails.guildName}
 function GuildDetails(props){
-  if(props.loading && props.display){
-    return (
-      <div className="guildDetails">
-        <Paper className="infoSection" zDepth={2}>
-          <CircularProgress size={80} thickness={5} />
-        </Paper>
-      </div>
-    );
-  }
-  else if(props.display){
+
+  if(props.display){
     /*let coins = props.coins;
     const gold = Math.floor(coins/10000);
     coins -= gold*10000;
@@ -32,18 +24,18 @@ function GuildDetails(props){
       totalCoinsElement = (          
           <div className="totalCoins">
             <span className="category">Total Coins: </span>
-            <div className="coinAmount"><img src="../../assets/gold.png" alt="gold" /><span>{props.coins.gold}</span></div>
-            <div className="coinAmount"><img src="../../assets/silver.png" alt="silver" /><span>{props.coins.silver}</span></div>
-            <div className="coinAmount"><img src="../../assets/bronze.png" alt="copper" /><span>{props.coins.copper}</span></div>
+            <div className="coinAmount"><img src={require('../../assets/gold.png')} alt="gold" /><span>{props.coins.gold}</span></div>
+            <div className="coinAmount"><img src={require('../../assets/silver.png')} alt="silver" /><span>{props.coins.silver}</span></div>
+            <div className="coinAmount"><img src={require('../../assets/bronze.png')} alt="copper" /><span>{props.coins.copper}</span></div>
           </div>);
     }
     else{
       totalCoinsElement = (          
           <div className="totalCoins">
             <span className="category">Total Coins: </span>
-            <div className="coinAmount"><img src="../../assets/gold.png" alt="gold" /><span>0</span></div>
-            <div className="coinAmount"><img src="../../assets/silver.png" alt="silver" /><span>0</span></div>
-            <div className="coinAmount"><img src="../../assets/bronze.png" alt="copper" /><span>0</span></div>
+            <div className="coinAmount"><img src={require('../../assets/gold.png')} alt="gold" /><span>0</span></div>
+            <div className="coinAmount"><img src={require('../../assets/silver.png')} alt="silver" /><span>0</span></div>
+            <div className="coinAmount"><img src={require('../../assets/bronze.png')} alt="copper" /><span>0</span></div>
           </div>);
     }
 

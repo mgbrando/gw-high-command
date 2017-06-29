@@ -161,7 +161,11 @@ export const selectMember = (apiKey, registeredMembers) => {
     promises.push(fetch('https://api.guildwars2.com/v2/raids?access_token='+apiKey)
                      .then(response => response.json())
                      .then(raids => {
-                        return dispatch(setSelectedRaids(raids));
+                        const formattedRaids = raids.map(raid => {
+                          raid = raid.replace(/_/g, ' ');
+                          return raid.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+                        });
+                        return dispatch(setSelectedRaids(formattedRaids));
                      }));
 
     /*const currentMember = registeredMembers.filter(member => {
@@ -173,6 +177,11 @@ export const selectMember = (apiKey, registeredMembers) => {
     });
   }
 }
+
+export const DESELECT_MEMBER = 'DESELECT_MEMBER';
+export const deselectMember = () => ({
+  type: DESELECT_MEMBER
+});
 
 export const SET_SELECTED_MEMBER_SUCCESS = 'SET_SELECTED_MEMBER_SUCCESS';
 export const setSelectedMember = selectedMember => ({

@@ -9,6 +9,7 @@ import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import NavigationArrowDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down';
 import ActionNoteAdd from 'material-ui/svg-icons/action/note-add';
+import ActionList from 'material-ui/svg-icons/action/list';
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 import * as actions from '../../actions/registrationAndLoginActions';
 import './Dashboard.css';
@@ -71,8 +72,8 @@ class WelcomeBar extends Component {
       }
         iconElementRight={
             <div className="rightAppbar">
-              <FlatButton label="Log Out" className="logoutButton" onClick={this.props.logOut}/>
-              <IconButton className="iconButton" onClick={this.props.togglePanel}><ActionNoteAdd /></IconButton>
+              <FlatButton label="Log Out" style={{color: 'white'}} onClick={this.props.logOut}/>
+              <IconButton className="iconButton" style={{fill: 'white'}} onClick={this.props.togglePanel}><ActionList /></IconButton>
             </div>
         }
       />

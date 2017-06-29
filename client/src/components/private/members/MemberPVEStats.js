@@ -26,13 +26,15 @@ function MemberPVEStats(props){
     return (
       <div className="memberPVEStats">
         <Paper className="infoSection" zDepth={2}>
-          <h1>Completed Weekly Raids</h1>
-          <List className="raidsLeftList">
+          <Paper className="memberPVEStatsInfo" zDepth={5}>
+          <h1 className="sectionHeader">Completed Weekly Raids</h1>
+          <List className="raidListLeft">
             {raidListLeft}
           </List>
-          <List className="raidsRightList">
+          <List className="raidListRight">
             {raidListRight}
           </List>
+          </Paper>
         </Paper>
       </div>
     );    

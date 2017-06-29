@@ -52,7 +52,7 @@
 .greenRectIcon{
   height: 24px;
   width: 40px;
-  margin-top: 11px;
+  vertical-align: middle;
 }
 .membersDetailsList{
   box-sizing: border-box;
@@ -66,4 +66,71 @@
 }
 .memberRow{
   height: 40px;
+}
+.memberName{
+  text-align: center;
+  margin: 5px;
+  font-style: italic;
+  font-weight: normal;
+}
+.charactersList{
+  text-align: center;
+}
+.raidListLeft, .raidListRight, .membersPVPStatsList, .left50, .right50{
+  display: inline-block;
+  text-align: center;
+  width: 50%;
+}
+.sectionHeader{
+  text-align: center;
+  font-size: 1.5em;
+}
+.memberDetailsInfo, .memberPVPStatsInfo, .memberPVEStatsInfo{
+  padding: 10px;
+}
+.infoSection:first-child, .infoSection:nth-child(2){
+  margin-bottom: 15px;
+}
+
+.completeTeamsTable th, .completeTeamsTable td{
+  text-align: center;
+}
+.backArrow{
+  vertical-align: middle !important;
+  fill: white !important;
+}
+.backNavigation{
+  margin-top: -15px;
+  margin-bottom: 15px;
+}
+.backSection{
+  height: 100%;
+  cursor: pointer;
+  background-color: #C92626;
+  border: 2px solid white;
+  color: white;
+  border-radius: 10px;
+  -moz-box-shadow:    5px 5px 5px #666;
+  -webkit-box-shadow: 5px 5px 5px #666;
+  box-shadow:         5px 5px 5px #666;
+}
+.backNavigation > .appBar{
+  background-color: #D8D8D8 !important;
+  border: 1px solid #979797 !important;;
+  height: 48px;
+}
+.returnTo{
+  font-size: 20px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.memberLoadingScreen{
+  background-color: white;
+  text-align: center;
+  /*position: absolute;
+  z-index: 999999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;*/
 }

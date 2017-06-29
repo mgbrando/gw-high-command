@@ -24,6 +24,16 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }*/
+.guildLoadingScreen{
+  background-color: white;
+  text-align: center;
+  /*position: absolute;
+  z-index: 999999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;*/
+}
 .infoSection h1{
   text-align: center;
 }
@@ -32,6 +42,7 @@
   margin: 5px;
   text-decoration: underline;
   margin-top: 0px;
+  font-size: 1.5em;
 }
 
 .guildName{
@@ -98,4 +109,21 @@
 }
 .expandIcon{
   vertical-align: middle;
+}
+.coinAmount{
+  display: inline-block;
+  margin-left: 8px;
+}
+.coinAmount > img{
+  vertical-align: middle;
+  margin-right: 2px;
+}
+.totalCoins{
+  text-align: center;
+}
+.guildDetailsInfo, .upgrades{
+  padding: 10px;
+}
+.completedUpgrades{
+  margin-bottom: 15px;
 }

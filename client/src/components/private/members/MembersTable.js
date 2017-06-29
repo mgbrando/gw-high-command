@@ -30,24 +30,26 @@ class MembersTable extends Component {
   }
 
   componentDidMount(){
-   /* let rows = [];
+    let rows = [];
     for(let i=0; i < this.props.registeredMembers.length; i++){
       const apiKey = this.getAPIKey(this.props, i);
+      let date = new Date(this.props.registeredMembers[i].joined);
+      const joinDate = (date.getMonth()+1)+'/'+date.getDate()+'/'+date.getFullYear();
       rows.push(<TableRow className="memberRow" key={i}>
-                  <TableRowColumn>{this.props.registeredMembers[i].name}</TableRowColumn>
-                  <TableRowColumn>{this.props.registeredMembers[i].rank}</TableRowColumn>
-                  <TableRowColumn>{this.props.registeredMembers[i].joined}</TableRowColumn>
-                  <TableRowColumn><button type="button" name="statsButton" value={apiKey} onClick={this.statsClick}><img className="statsImage" src={pieChart} /></button></TableRowColumn>
+                  <TableRowColumn style={{textAlign: 'center'}}>{this.props.registeredMembers[i].name}</TableRowColumn>
+                  <TableRowColumn style={{textAlign: 'center'}}>{this.props.registeredMembers[i].rank}</TableRowColumn>
+                  <TableRowColumn style={{textAlign: 'center'}}>{joinDate}</TableRowColumn>
+                  <TableRowColumn style={{textAlign: 'center'}}><button className="statsButton" type="button" name="statsButton" value={apiKey+"|"+i} onClick={this.statsClick}><img className="statsImage" src={pieChart} /></button></TableRowColumn>
                 </TableRow>);
     }
     this.setState({ rows: rows });
     console.log(this.state.rows);
-    console.log(rows);*/
+    console.log(rows);
     //this.props.dispatch(actions.getMembersInfo(this.props.activeUser.apiKey));
   }
   componentWillReceiveProps(nextProps){
     if(nextProps.selectedMember){
-      nextProps.history.push("/dashboard/members/"+nextProps.accountInfo.name);
+      nextProps.history.push("/dashboard/members/"+nextProps.accountInfo.name.toLowerCase());
     }
     else if(this.props.registeredMembers !== nextProps.registeredMembers){
       let rows = [];
@@ -56,10 +58,10 @@ class MembersTable extends Component {
         let date = new Date(nextProps.registeredMembers[i].joined);
         const joinDate = (date.getMonth()+1)+'/'+date.getDate()+'/'+date.getFullYear();
         rows.push(<TableRow className="memberRow" key={i}>
-                  <TableRowColumn>{nextProps.registeredMembers[i].name}</TableRowColumn>
-                  <TableRowColumn>{nextProps.registeredMembers[i].rank}</TableRowColumn>
-                  <TableRowColumn>{joinDate}</TableRowColumn>
-                  <TableRowColumn><button type="button" name="statsButton" value={apiKey} onClick={this.statsClick}><img className="statsImage" src={pieChart} /></button></TableRowColumn>
+                  <TableRowColumn style={{textAlign: 'center'}}>{nextProps.registeredMembers[i].name}</TableRowColumn>
+                  <TableRowColumn style={{textAlign: 'center'}}>{nextProps.registeredMembers[i].rank}</TableRowColumn>
+                  <TableRowColumn style={{textAlign: 'center'}}>{joinDate}</TableRowColumn>
+                  <TableRowColumn style={{textAlign: 'center'}}><button className="statsButton" type="button" name="statsButton" value={apiKey+"|"+i} onClick={this.statsClick}><img className="statsImage" src={pieChart} /></button></TableRowColumn>
                 </TableRow>);
         }
       this.setState({ rows: rows });
@@ -71,19 +73,21 @@ class MembersTable extends Component {
     return props.registeredMembers[memberIndex].apiKey;
   }
   statsClick(event){
-    const apiKey = event.currentTarget.value;
-    console.log(apiKey);
-    this.props.dispatch(actions.selectMember(apiKey, this.props.registeredMembers));
+    const statsValue = event.currentTarget.value;
+    console.log(statsValue);
+    const options = statsValue.split('|');
+    this.props.dispatch(actions.selectMember(options[0], this.props.registeredMembers));
+    this.props.history.push("/dashboard/members/"+encodeURIComponent((this.props.registeredMembers[parseInt(options[1])].name).toLowerCase()));
   }
 
   render() {
-    if(this.props.selectedMember){
+    /*if(this.props.selectedMember){
       const url="/dashboard/members/"+encodeURIComponent((this.props.accountInfo.name).toLowerCase());
       return (
         <Redirect to={url} />
       );
     }
-    else{
+    else{*/
     return (
       <section className="membersTable">
         <SectionBar title="Guild Members" />
@@ -91,10 +95,10 @@ class MembersTable extends Component {
         <Table selectable={false}>
           <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow>
-              <TableHeaderColumn>Handle</TableHeaderColumn>
-              <TableHeaderColumn>Rank</TableHeaderColumn>
-              <TableHeaderColumn>Joined</TableHeaderColumn>
-              <TableHeaderColumn>Stats</TableHeaderColumn>
+              <TableHeaderColumn style={{textAlign: 'center'}}>Handle</TableHeaderColumn>
+              <TableHeaderColumn style={{textAlign: 'center'}}>Rank</TableHeaderColumn>
+              <TableHeaderColumn style={{textAlign: 'center'}}>Joined</TableHeaderColumn>
+              <TableHeaderColumn style={{textAlign: 'center'}}>Stats</TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody displayRowCheckbox={false}> 
@@ -103,7 +107,7 @@ class MembersTable extends Component {
         </Table>
       </section>
     );
-    }
+    //}
   }
 }
 

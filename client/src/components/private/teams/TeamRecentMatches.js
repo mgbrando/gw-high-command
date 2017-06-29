@@ -71,7 +71,9 @@ function TeamRecentMatches(props){
     return (
       <div className="teamRecentMatches">
         <Paper className="infoSection" zDepth={2}>
-          <span>This team has not played any games as of yet.</span>
+          <Paper className="teamRecentMatchesInfo" zDepth={5}>
+            <span>This team has not played any games as of yet.</span>
+          </Paper>
         </Paper>
       </div>
     );    

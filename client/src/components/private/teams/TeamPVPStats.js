@@ -28,19 +28,19 @@ function TeamPVPStats(props){
       <div className="teamPVPStats">
         <Paper className="infoSection" zDepth={2}>
           <Paper className="teamPVPStatsInfo" zDepth={5}>
-          <h1>Season Rating</h1>
-          <h2>{seasonRating}</h2>
+          <h1 className="sectionHeader">Season Rating</h1>
+          <h2 className="seasonRating">{seasonRating}</h2>
           <div className="teamStatistics">
-            <h2>sPvP win ratios</h2>
-            <div>
+            <h2 className="sectionHeader">sPvP win ratios</h2>
+            <div className="teamSPVPSection">
               <h3>This Season</h3>
               <div className="piechart"></div>
             </div>
-            <div>
+            <div className="teamSPVPSection">
               <h3>Ranked</h3>
               <div className="piechart"></div>
             </div>
-            <div>
+            <div className="teamSPVPSection">
               <h3>Unranked</h3>
               <div className="piechart"></div>
             </div>
