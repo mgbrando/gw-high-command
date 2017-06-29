@@ -36,9 +36,9 @@ class GuildMember extends Component {
   deselectMember(){
     this.props.dispatch(actions.deselectMember());
   }
-  componentWillUnmount(){
+  /*componentWillUnmount(){
     this.deselectMember();
-  }
+  }*/
   render() {
     if(this.props.selectedMember === false)
       return (<Redirect to="/dashboard/members" />);

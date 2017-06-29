@@ -9,7 +9,8 @@ const initialRepositoryState = {
     displayTeamPVPStats: true,
     displayTeamRecentMatches:true,
     selectedTeam: null,
-    selectedTeamInfo: {}
+    selectedTeamInfo: {},
+    teamLoading: true
 };
 
 const teams = (state=initialRepositoryState, action) => {
@@ -17,7 +18,7 @@ const teams = (state=initialRepositoryState, action) => {
 		return Object.assign({}, state, {guildTeams: action.teams});
 	}
     else if(action.type === actions.SELECT_TEAM){
-        return Object.assign({}, state, {selectedTeamInfo: action.team, selectedTeam: true});
+        return Object.assign({}, state, {selectedTeamInfo: action.team, selectedTeam: true, teamLoading: false});
     }
     else if(action.type === actions.DESELECT_TEAM){
         return Object.assign({}, state, {selectedTeam: false, selectedTeamInfo: {}, teamDetails: {}, teamPVPStats: {}, teamRecentMatches: []});

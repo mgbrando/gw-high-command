@@ -7,6 +7,7 @@ import * as actions from '../../../actions/teamsActions';
 import TeamRecentMatches from './TeamRecentMatches';
 import NavigationArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
 import {Link, Redirect} from 'react-router-dom';
+import CircularProgress from 'material-ui/CircularProgress';
 import './GuildTeams.css';
 
 class GuildTeam extends Component {
@@ -32,6 +33,15 @@ class GuildTeam extends Component {
   render() {
     if(this.props.selectedTeam === false)
       return (<Redirect to="/dashboard/teams" />);
+
+    if(!this.props.teamLoading){
+      return (
+      <section className="teamLoadingScreen">
+          <CircularProgress size={80} thickness={5} />
+      </section>
+      );
+    }
+
     if(!(Object.keys(this.props.selectedTeamInfo).length === 0 && this.props.selectedTeamInfo.constructor === Object)){
     let seasonPVPStats = 'No season stats available';
     if(this.props.selectedTeamInfo.hasOwnProperty('seasons'))
@@ -87,7 +97,8 @@ const mapStateToProps = (state, props) => ({
     displayTeamDetails: state.teams.displayTeamDetails,
     displayTeamPVPStats: state.teams.displayTeamPVPStats,
     displayTeamRecentMatches:state.teams.displayTeamRecentMatches,
-    selectedTeam: state.teams.selectedTeam
+    selectedTeam: state.teams.selectedTeam,
+    teamLoading: state.teams.teamLoading
 });
 
 export default connect(mapStateToProps)(GuildTeam);
