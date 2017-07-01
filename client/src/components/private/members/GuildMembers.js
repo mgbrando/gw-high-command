@@ -16,14 +16,14 @@ class GuildMembers extends Component {
 
     //this.displayPage = this.displayPage.bind(this);
   }
-  componentDidMount(){
+  /*componentDidMount(){
     //if()
     this.props.dispatch(actions.getGuildMembers(this.props.activeGuild, this.props.activeUser.apiKey));
   }
   componentWillReceiveProps(nextProps) {
      if(nextProps.activeGuild !== this.props.activeGuild)
         this.props.dispatch(actions.getGuildMembers(nextProps.activeGuild, nextProps.activeUser.apiKey));
-  }
+  }*/
   /*componentDidMount(){
     //this.props.dispatch(actions.getMembersInfo(this.props.activeUser.apiKey));
   }*/

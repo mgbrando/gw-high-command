@@ -16,7 +16,7 @@ class GuildTeams extends Component {
 
     //this.displayPage = this.displayPage.bind(this);
   }
-  componentDidMount(){
+  /*componentDidMount(){
     //if()
     this.props.dispatch(actions.getGuildTeams(this.props.activeGuild, this.props.activeUser.apiKey));
   }

@@ -29,12 +29,13 @@ class GuildTeam extends Component {
   }
   deselectTeam(){
     this.props.dispatch(actions.deselectTeam());
+    this.props.history.push('/dashboard/teams');
   }
   render() {
-    if(this.props.selectedTeam === false)
-      return (<Redirect to="/dashboard/teams" />);
+    /*if(this.props.selectedTeam === false)
+      return (<Redirect to="/dashboard/teams" />);*/
 
-    if(!this.props.teamLoading){
+    if(this.props.teamLoading){
       return (
       <section className="teamLoadingScreen">
           <CircularProgress size={80} thickness={5} />

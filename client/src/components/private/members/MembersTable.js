@@ -5,6 +5,7 @@ import { Redirect, withRouter } from 'react-router-dom';
 import SectionBar from '../SectionBar';
 import greenRect from '../../assets/green-rectangle.png';
 import pieChart from '../../assets/pie-chart.png';
+import CircularProgress from 'material-ui/CircularProgress';
 import {
   Table,
   TableBody,
@@ -30,7 +31,8 @@ class MembersTable extends Component {
   }
 
   componentDidMount(){
-    let rows = [];
+    this.props.dispatch(actions.getGuildMembers(this.props.activeGuild, this.props.activeUser.apiKey));
+    /*let rows = [];
     for(let i=0; i < this.props.registeredMembers.length; i++){
       const apiKey = this.getAPIKey(this.props, i);
       let date = new Date(this.props.registeredMembers[i].joined);
@@ -44,13 +46,15 @@ class MembersTable extends Component {
     }
     this.setState({ rows: rows });
     console.log(this.state.rows);
-    console.log(rows);
+    console.log(rows);*/
     //this.props.dispatch(actions.getMembersInfo(this.props.activeUser.apiKey));
   }
   componentWillReceiveProps(nextProps){
-    if(nextProps.selectedMember){
+    /*else if(nextProps.selectedMember){
       nextProps.history.push("/dashboard/members/"+nextProps.accountInfo.name.toLowerCase());
-    }
+    }*/
+    if(nextProps.activeGuild !== this.props.activeGuild)
+      this.props.dispatch(actions.getGuildMembers(nextProps.activeGuild, nextProps.activeUser.apiKey));
     else if(this.props.registeredMembers !== nextProps.registeredMembers){
       let rows = [];
       for(let i=0; i < nextProps.registeredMembers.length; i++){
@@ -88,6 +92,14 @@ class MembersTable extends Component {
       );
     }
     else{*/
+    if(this.props.teamsLoading){
+      return (
+      <section className="memberLoadingScreen">
+          <CircularProgress size={80} thickness={5} />
+      </section>
+      );
+    }
+
     return (
       <section className="membersTable">
         <SectionBar title="Guild Members" />
@@ -117,7 +129,10 @@ const mapStateToProps = (state, props) => ({
   registeredMembers: state.members.registeredMembers,
   selectedMember: state.members.selectedMember,
   accountInfo: state.members.accountInfo,
-  callsFinished: state.members.callsFinished
+  callsFinished: state.members.callsFinished,
+  guildDetails: state.guild.guildDetails,
+  activeGuild: state.registrationAndLogin.activeGuild,
+  activeUser: state.registrationAndLogin.activeUser
 });
 
 export default withRouter(connect(mapStateToProps)(MembersTable));

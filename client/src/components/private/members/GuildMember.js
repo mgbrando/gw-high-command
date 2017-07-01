@@ -29,19 +29,20 @@ class GuildMember extends Component {
         const selectedMember = nextProps.registeredMembers.filter(member => {
           return member.name.toLowerCase() === decodeURIComponent(nextProps.match.params.member);
         });
-        nextProps.dispatch(actions.selectMember(selectedMember[0].apiKey, nextProps.registeredMembers))
+        nextProps.dispatch(actions.selectMember(selectedMember[0].apiKey, nextProps.registeredMembers));
       }
     }
   }
   deselectMember(){
     this.props.dispatch(actions.deselectMember());
+    this.props.history.push('/dashboard/members');
   }
   /*componentWillUnmount(){
     this.deselectMember();
   }*/
   render() {
-    if(this.props.selectedMember === false)
-      return (<Redirect to="/dashboard/members" />);
+    /*if(this.props.selectedMember === false)
+      return (<Redirect to="/dashboard/members" />);*/
 
     if(this.props.memberDetailsLoading || this.props.memberPVPStatsLoading || this.props.memberPVEStatsLoading){
       return (

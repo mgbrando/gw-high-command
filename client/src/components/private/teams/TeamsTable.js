@@ -4,6 +4,7 @@ import * as actions from '../../../actions/teamsActions';
 import { Redirect } from 'react-router-dom';
 import SectionBar from '../SectionBar';
 import Paper from 'material-ui/Paper';
+import CircularProgress from 'material-ui/CircularProgress';
 import pieChart from '../../assets/pie-chart.png';
 import {
   Table,
@@ -27,7 +28,8 @@ class TeamsTable extends Component {
   }
 
   componentDidMount(){
-        let rows = [];
+    this.props.dispatch(actions.getGuildTeams(this.props.activeGuild, this.props.activeUser.apiKey));
+        /*let rows = [];
         for(let i=0; i < this.props.guildTeams.length; i++){
           //const apiKey = this.getAPIKey(nextProps, i);
           let rating = 'N/A';
@@ -42,13 +44,15 @@ class TeamsTable extends Component {
         }
         this.setState({ rows: rows });
         console.log(this.state.rows);
-        console.log(rows); 
+        console.log(rows);*/
   }
   componentWillReceiveProps(nextProps){
-    if(nextProps.selectedTeam){
+    /*if(nextProps.selectedTeam){
       nextProps.history.push("/dashboard/teams/"+encodeURIComponent((nextProps.selectedTeamInfo.name).toLowerCase()));
-    }
-    else if(this.props.guildTeams != nextProps.guildTeams){
+    }*/
+    if(nextProps.activeGuild !== this.props.activeGuild)
+      this.props.dispatch(actions.getGuildTeams(nextProps.activeGuild, nextProps.activeUser.apiKey));
+    else if(this.props.guildTeams !== nextProps.guildTeams){
       if(nextProps.guildTeams.length > 0){
         let rows = [];
         for(let i=0; i < nextProps.guildTeams.length; i++){
@@ -75,14 +79,24 @@ class TeamsTable extends Component {
   statsClick(event){
     const teamIndex = event.currentTarget.value;
     console.log(teamIndex);
+    //const options = statsValue.split('|');
+    //this.props.dispatch(actions.selectTeam(options[0], this.props.registeredMembers));
     this.props.dispatch(actions.selectTeam(this.props.guildTeams[teamIndex]));
+    this.props.history.push("/dashboard/teams/"+encodeURIComponent((this.props.guildTeams[teamIndex].name).toLowerCase()));
   }
 
   render() {
-    if(this.props.selectedTeam){
+    /*if(this.props.selectedTeam){
       const url="/dashboard/teams/"+encodeURIComponent((this.props.selectedTeamInfo.name).toLowerCase());
       return (
         <Redirect to={url} />
+      );
+    }*/
+    if(this.props.teamsLoading){
+      return (
+      <section className="teamLoadingScreen">
+          <CircularProgress size={80} thickness={5} />
+      </section>
       );
     }
     else if(this.props.guildTeams.length === 0){
@@ -120,7 +134,11 @@ class TeamsTable extends Component {
 const mapStateToProps = (state, props) => ({
   guildTeams: state.teams.guildTeams,
   selectedTeam: state.teams.selectedTeam,
-  selectedTeamInfo: state.teams.selectedTeamInfo
+  selectedTeamInfo: state.teams.selectedTeamInfo,
+  teamsLoading: state.teams.teamsLoading,
+  guildDetails: state.guild.guildDetails,
+  activeGuild: state.registrationAndLogin.activeGuild,
+  activeUser: state.registrationAndLogin.activeUser
   //accountInfo: state.members.accountInfo
 });
 
