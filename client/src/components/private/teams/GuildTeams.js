@@ -16,19 +16,23 @@ class GuildTeams extends Component {
 
     //this.displayPage = this.displayPage.bind(this);
   }
-  /*componentDidMount(){
+  componentDidMount(){
     //if()
     this.props.dispatch(actions.getGuildTeams(this.props.activeGuild, this.props.activeUser.apiKey));
   }
   componentWillReceiveProps(nextProps) {
-     if(nextProps.activeGuild !== this.props.activeGuild)
-        this.props.dispatch(actions.getGuildTeams(nextProps.activeGuild, nextProps.activeUser.apiKey));
+    if(nextProps.activeGuild !== this.props.activeGuild)
+      this.props.dispatch(actions.getGuildTeams(nextProps.activeGuild, nextProps.activeUser.apiKey));
+    else if(nextProps.refreshTeams)
+      this.props.dispatch(actions.getGuildTeams(nextProps.activeGuild, nextProps.activeUser.apiKey));
      //if(nextProps.selectedMember === true)
-  }*/
+  }
   /*componentDidMount(){
     //this.props.dispatch(actions.getMembersInfo(this.props.activeUser.apiKey));
   }*/
-
+  componentWillUnmount(){
+    this.props.dispatch(actions.resetGuildTeams());
+  }
   render() {
     return (
       <section className="guildTeams">
@@ -46,7 +50,8 @@ class GuildTeams extends Component {
 
 const mapStateToProps = (state, props) => ({
   guildDetails: state.guild.guildDetails,
-  activeGuild: state.registrationAndLogin.activeGuild
+  activeGuild: state.registrationAndLogin.activeGuild,
+  refreshTeams: state.navigation.refreshTeams
   /*selectedMember: state.members.selectedMember,
   characters: state.members.characters*/
 });

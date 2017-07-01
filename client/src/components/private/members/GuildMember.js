@@ -102,7 +102,8 @@ const mapStateToProps = (state, props) => ({
     pvpStats: state.members.pvpStats,
     pvpStandings: state.members.pvpStandings,
     raids: state.members.raids,
-    selectedMember: state.members.selectedMember
+    selectedMember: state.members.selectedMember,
+    activeGuild: state.registrationAndLogin.activeGuild
 });
 
 export default connect(mapStateToProps)(GuildMember);

@@ -53,8 +53,10 @@ class Guild extends Component {
     this.props.dispatch(actions.getGuildInfo(this.props.activeGuild, this.props.activeUser.apiKey));
   }*/
   componentWillReceiveProps(nextProps) {
-     if(nextProps.activeGuild !== this.props.activeGuild)
-        this.props.dispatch(actions.getGuildInfo(nextProps.activeGuild, nextProps.activeUser.apiKey));
+    if(nextProps.activeGuild !== this.props.activeGuild)
+      this.props.dispatch(actions.getGuildInfo(nextProps.activeGuild, nextProps.activeUser.apiKey));
+    else if(nextProps.refreshGuild)
+      this.props.dispatch(actions.getGuildInfo(nextProps.activeGuild, nextProps.activeUser.apiKey));
   }
 
   descriptionToggle(){
@@ -105,7 +107,8 @@ const mapStateToProps = (state, props) => ({
     guildDetailsLoading: state.guild.guildDetailsLoading,
     guildUpgradesLoading: state.guild.guildUpgradesLoading,
     guildCoinsLoading: state.guild.guildCoinsLoading,
-    coins: state.guild.coins
+    coins: state.guild.coins,
+    refreshGuild: state.navigation.refreshGuild
 });
 
 export default connect(mapStateToProps)(Guild);

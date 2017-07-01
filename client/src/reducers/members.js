@@ -50,7 +50,7 @@ const members = (state=initialRepositoryState, action) => {
     return Object.assign({}, state, {accountInfo: action.accountInfo, joined: action.joined, memberGuildNames: action.memberGuildNames});
   }
   else if(action.type === actions.DESELECT_MEMBER){
-    return Object.assign({}, state, {selectedMember: false, characters: [], pvpStats: {}, pvpStandings: {}, raids: [], accountInfo: {}, joined: "", memberGuildNames: "", memberDetailsLoading: true, memberPVPStatsLoading: true, memberPVEStatsLoading: true});
+    return Object.assign({}, state, {selectedMember: false, characters: [], pvpStats: {}, pvpStandings: {}, raids: [], accountInfo: {}, joined: "", memberGuildNames: "", memberDetailsLoading: true, memberPVPStatsLoading: true, memberPVEStatsLoading: true, membersLoading: false});
   }
   else if(action.type === actions.RESET_GUILD_MEMBERS){
     return Object.assign({}, state, {membersLoading: true});

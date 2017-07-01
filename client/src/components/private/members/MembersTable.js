@@ -31,8 +31,7 @@ class MembersTable extends Component {
   }
 
   componentDidMount(){
-    this.props.dispatch(actions.getGuildMembers(this.props.activeGuild, this.props.activeUser.apiKey));
-    /*let rows = [];
+    let rows = [];
     for(let i=0; i < this.props.registeredMembers.length; i++){
       const apiKey = this.getAPIKey(this.props, i);
       let date = new Date(this.props.registeredMembers[i].joined);
@@ -46,16 +45,14 @@ class MembersTable extends Component {
     }
     this.setState({ rows: rows });
     console.log(this.state.rows);
-    console.log(rows);*/
+    console.log(rows);
     //this.props.dispatch(actions.getMembersInfo(this.props.activeUser.apiKey));
   }
   componentWillReceiveProps(nextProps){
     /*if(nextProps.selectedMember){
       nextProps.history.push("/dashboard/members/"+nextProps.accountInfo.name.toLowerCase());
     }*/
-    if(nextProps.activeGuild !== this.props.activeGuild)
-      this.props.dispatch(actions.getGuildMembers(nextProps.activeGuild, nextProps.activeUser.apiKey));
-    else if(this.props.registeredMembers !== nextProps.registeredMembers){
+    if(this.props.registeredMembers !== nextProps.registeredMembers){
       let rows = [];
       for(let i=0; i < nextProps.registeredMembers.length; i++){
         const apiKey = this.getAPIKey(nextProps, i);
@@ -82,9 +79,6 @@ class MembersTable extends Component {
     const options = statsValue.split('|');
     this.props.dispatch(actions.selectMember(options[0], this.props.registeredMembers));
     this.props.history.push("/dashboard/members/"+encodeURIComponent((this.props.registeredMembers[parseInt(options[1])].name).toLowerCase()));
-  }
-  componentWillUnmount(){
-    this.props.dispatch(actions.resetGuildMembers());
   }
   render() {
     /*if(this.props.selectedMember){

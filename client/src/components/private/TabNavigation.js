@@ -1,7 +1,9 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {Tabs, Tab} from 'material-ui/Tabs';
 // From https://github.com/oliviertassinari/react-swipeable-views
 //import SwipeableViews from 'react-swipeable-views';
+import * as actions from '../../actions/navigationActions';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import SwipeableRoutes from "react-swipeable-routes";
@@ -42,7 +44,17 @@ class TabNavigation extends React.Component {
     else
       this.setState({value: "guild"});
   }
-  
+  handleRefresh(event){
+    switch(event.value){
+      case "guild":
+        this.props.dispatch(actions.refreshGuild());
+      case "members":
+        this.props.dispatch(actions.refreshMembers());
+      case "team":
+        this.props.dispatch(actions.refreshTeam());
+    }
+    this.props.dispatch()
+  }
   handleChange = (value) => {
     console.log(this.props.location.pathname);
     if("dashboard/"+value === this.props.location.pathname)
@@ -52,12 +64,18 @@ class TabNavigation extends React.Component {
           value: value,
       });
 
-      if(value === "guild")
+      if(value === "guild"){
+        this.props.dispatch(actions.clearRefresh());
         this.props.history.push('/dashboard/guild');
-      else if(value === "members")
+      }
+      else if(value === "members"){
+        this.props.dispatch(actions.clearRefresh());
         this.props.history.push('/dashboard/members');
-      else if(value === "teams")
+      }
+      else if(value === "teams"){
+        this.props.dispatch(actions.clearRefresh());
         this.props.history.push('/dashboard/teams');
+      }
     }
 /*this.setState({
           slideIndex: value,
@@ -110,4 +128,8 @@ TabNavigation.propTypes = {
     location: PropTypes.object
 };
 
-export default withRouter(TabNavigation);
+const mapStateToProps = (state, props) => ({
+
+});
+
+export default withRouter(connect(mapStateToProps)(TabNavigation));

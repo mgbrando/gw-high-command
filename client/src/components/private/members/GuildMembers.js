@@ -16,14 +16,19 @@ class GuildMembers extends Component {
 
     //this.displayPage = this.displayPage.bind(this);
   }
-  /*componentDidMount(){
+  componentDidMount(){
     //if()
     this.props.dispatch(actions.getGuildMembers(this.props.activeGuild, this.props.activeUser.apiKey));
   }
   componentWillReceiveProps(nextProps) {
-     if(nextProps.activeGuild !== this.props.activeGuild)
-        this.props.dispatch(actions.getGuildMembers(nextProps.activeGuild, nextProps.activeUser.apiKey));
-  }*/
+    if(nextProps.activeGuild !== this.props.activeGuild)
+      this.props.dispatch(actions.getGuildMembers(nextProps.activeGuild, nextProps.activeUser.apiKey));
+    else if(nextProps.refreshMembers)
+      this.props.dispatch(actions.getGuildMembers(nextProps.activeGuild, nextProps.activeUser.apiKey));
+  }
+  componentWillUnmount(){
+    this.props.dispatch(actions.resetGuildMembers());
+  }
   /*componentDidMount(){
     //this.props.dispatch(actions.getMembersInfo(this.props.activeUser.apiKey));
   }*/
@@ -45,7 +50,8 @@ class GuildMembers extends Component {
 
 const mapStateToProps = (state, props) => ({
   guildDetails: state.guild.guildDetails,
-  activeGuild: state.registrationAndLogin.activeGuild
+  activeGuild: state.registrationAndLogin.activeGuild,
+  refreshMembers: state.navigation.refreshMembers
 });
 
 export default withRouter(connect(mapStateToProps)(GuildMembers));
