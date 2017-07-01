@@ -11,12 +11,13 @@ const initialRepositoryState = {
     selectedTeam: null,
     selectedTeamInfo: {},
     teamLoading: true,
-    teamsLoading: true
+    teamsLoading: true,
+    refreshTeams: false
 };
 
 const teams = (state=initialRepositoryState, action) => {
 	if(action.type === actions.GET_TEAMS_SUCCESS){
-		return Object.assign({}, state, {guildTeams: action.teams, teamsLoading: false});
+		return Object.assign({}, state, {guildTeams: action.teams, teamsLoading: false, refreshTeams: false});
 	}
     else if(action.type === actions.SELECT_TEAM){
         return Object.assign({}, state, {selectedTeamInfo: action.team, selectedTeam: true, teamLoading: false, teamsLoading:true});
@@ -27,6 +28,10 @@ const teams = (state=initialRepositoryState, action) => {
     else if(action.type === actions.RESET_GUILD_TEAMS){
         return Object.assign({}, state, {teamsLoading: true});
     }
+    else if(action.type === actions.REFRESH_TEAMS){
+        return Object.assign({}, state, {refreshTeams: true, teamsLoading: true});
+    }
+
 	return state;
 };
 

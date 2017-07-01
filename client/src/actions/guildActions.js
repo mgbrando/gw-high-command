@@ -21,11 +21,14 @@ export const getGuildInfo = (guildID, access_token) => {
         .then(response => response.json())
         .then(_accountInfo => {
             console.log(_accountInfo.guilds);*/
-        return Promise.all([
-            dispatch(getGuildDetails(guildID, access_token)),
-            dispatch(getGuildCoins(guildID, access_token)),
-            dispatch(getGuildUpgrades(guildID, access_token))
-        ]);
+        let promises = [];
+        promises.push(dispatch(getGuildDetails(guildID, access_token)));
+        promises.push(dispatch(getGuildCoins(guildID, access_token)));
+        promises.push(dispatch(getGuildUpgrades(guildID, access_token)));
+        Promise.all(promises)
+        .then(() => {
+            return dispatch(resetGuildRefresh());
+        });
         //});
         /*.then(() => dispatch);
         await dispatch(getGuildDetails(accountInfo.guilds[0]));
@@ -33,6 +36,16 @@ export const getGuildInfo = (guildID, access_token) => {
         return;*/
     };
 };
+
+export const REFRESH_GUILD = 'REFRESH_GUILD';
+export const refreshGuild = () => ({
+  type: REFRESH_GUILD
+});
+
+export const RESET_GUILD_REFRESH = 'RESET_GUILD_REFRESH';
+export const resetGuildRefresh = () => ({
+    type: RESET_GUILD_REFRESH
+});
 
 export const SET_GUILD_COINS_SUCCESS = 'SET_GUILD_COINS_SUCCESS';
 export const setGuildCoinsSuccess = coins => ({

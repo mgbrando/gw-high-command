@@ -71,7 +71,7 @@ class Dashboard extends Component {
       return (<div className="dashboard">
         <WelcomeBar user={this.props.activeUser} activeGuild={this.props.activeGuild} logOut={this.logOut} togglePanel={this.togglePanel} />
         <main className="main-content">
-          <TabNavigation/>
+          <TabNavigation activeUser={this.props.activeUser} activeGuild={this.props.activeGuild} />
           <SideBar
             title={this.state.sidePanel.section}
             open={this.state.sidePanel.open}

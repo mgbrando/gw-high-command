@@ -1,4 +1,5 @@
 import * as actions from '../actions/navigationActions';
+import * as guildActions from '../actions/guildActions';
 
 const initialRepositoryState = {
 	page: "rankSelection", 
@@ -10,20 +11,23 @@ const initialRepositoryState = {
 
 const navigation = (state=initialRepositoryState, action) => {
 	if(action.type === actions.REFRESH_GUILD){
-		return Object.assign({}, state, {refreshGuild: true});
+		return Object.assign({}, state, {refreshGuild: true, refreshMembers: false, refreshTeams: false});
 	}
 	/*else if(action.type === actions.SET_SELECTED_MEMBER_SUCCESS){
 		return Object.assign({}, state, {accountInfo: action.accountInfo, joined: action.joined, characters: action.characters, pvpStats: action.pvpStats, pvpStandings: action.pvpStandings, raids: action.raids, selectedMember: true});
 	}*/
   	else if(action.type === actions.REFRESH_MEMBERS){
-    return Object.assign({}, state, {refreshMembers: true});
+    return Object.assign({}, state, {refreshMembers: true, refreshGuild: false, refreshTeams: false});
   	}
   	else if(action.type === actions.REFRESH_TEAMS){
-    	return Object.assign({}, state, {refreshTeams: true});
+    	return Object.assign({}, state, {refreshTeams: true, refreshMembers: false, refreshGuild: false});
   	}
   	else if(action.type === actions.CLEAR_REFRESH){
     	return Object.assign({}, state, {refreshGuild: false, refreshMembers: false, refreshTeams: false});
   	}
+	else if(action.type === actions.RESET_REFRESH){
+		return Object.assign({}, state, {guildDetailsLoading: true, guildUpgradesLoading: true, guildCoinsLoading: true});
+	}
 	return state;
 };
 

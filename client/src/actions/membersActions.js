@@ -178,6 +178,16 @@ export const selectMember = (apiKey, registeredMembers) => {
   }
 }
 
+export const REFRESH_MEMBERS = 'REFRESH_MEMBERS';
+export const refreshMembers = () => ({
+  type: REFRESH_MEMBERS
+});
+
+export const RESET_MEMBERS_REFRESH = 'RESET_MEMBERS_REFRESH';
+export const resetMembersRefresh = () => ({
+    type: RESET_MEMBERS_REFRESH
+});
+
 export const RESET_GUILD_MEMBERS = 'RESET_GUILD_MEMBERS';
 export const resetGuildMembers = () => ({
   type: RESET_GUILD_MEMBERS

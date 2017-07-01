@@ -51,7 +51,7 @@ class GuildTeams extends Component {
 const mapStateToProps = (state, props) => ({
   guildDetails: state.guild.guildDetails,
   activeGuild: state.registrationAndLogin.activeGuild,
-  refreshTeams: state.navigation.refreshTeams
+  refreshTeams: state.teams.refreshTeams
   /*selectedMember: state.members.selectedMember,
   characters: state.members.characters*/
 });

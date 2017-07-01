@@ -108,7 +108,7 @@ const mapStateToProps = (state, props) => ({
     guildUpgradesLoading: state.guild.guildUpgradesLoading,
     guildCoinsLoading: state.guild.guildCoinsLoading,
     coins: state.guild.coins,
-    refreshGuild: state.navigation.refreshGuild
+    refreshGuild: state.guild.refreshGuild
 });
 
 export default connect(mapStateToProps)(Guild);

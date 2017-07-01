@@ -21,12 +21,13 @@ const initialRepositoryState = {
   characters: [],
   pvpStats: {},
   pvpStandings: {},
-  raids: []
+  raids: [],
+  refreshMembers: false
 };
 
 const members = (state=initialRepositoryState, action) => {
 	if(action.type === actions.GET_GUILD_MEMBERS_SUCCESS){
-		return Object.assign({}, state, {registeredMembers: action.registeredMembers, unregisteredMembers: action.unregisteredMembers, membersLoading: false});
+		return Object.assign({}, state, {registeredMembers: action.registeredMembers, unregisteredMembers: action.unregisteredMembers, membersLoading: false, refreshMembers: false});
 	}
 	/*else if(action.type === actions.SET_SELECTED_MEMBER_SUCCESS){
 		return Object.assign({}, state, {accountInfo: action.accountInfo, joined: action.joined, characters: action.characters, pvpStats: action.pvpStats, pvpStandings: action.pvpStandings, raids: action.raids, selectedMember: true});
@@ -54,6 +55,12 @@ const members = (state=initialRepositoryState, action) => {
   }
   else if(action.type === actions.RESET_GUILD_MEMBERS){
     return Object.assign({}, state, {membersLoading: true});
+  }
+  else if(action.type === actions.REFRESH_MEMBERS){
+    return Object.assign({}, state, {refreshMembers: true, membersLoading: true});
+  }
+  else if(action.type === actions.RESET_MEMBERS_REFRESH){
+    return Object.assign({}, state, {refreshMembers: false});
   }
 	return state;
 };

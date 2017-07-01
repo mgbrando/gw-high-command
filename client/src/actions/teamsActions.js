@@ -33,6 +33,16 @@ export const getGuildTeams = (guildID, access_token) => {
   }	
 };
 
+export const REFRESH_TEAMS = 'REFRESH_TEAMS';
+export const refreshTeams = () => ({
+  type: REFRESH_TEAMS
+});
+
+export const RESET_TEAMS_REFRESH = 'RESET_TEAMS_REFRESH';
+export const resetTeamsRefresh = () => ({
+    type: RESET_TEAMS_REFRESH
+});
+
 export const RESET_GUILD_TEAMS = 'RESET_GUILD_TEAMS';
 export const resetGuildTeams = () => ({
   type: RESET_GUILD_TEAMS

@@ -51,7 +51,7 @@ class GuildMembers extends Component {
 const mapStateToProps = (state, props) => ({
   guildDetails: state.guild.guildDetails,
   activeGuild: state.registrationAndLogin.activeGuild,
-  refreshMembers: state.navigation.refreshMembers
+  refreshMembers: state.members.refreshMembers
 });
 
 export default withRouter(connect(mapStateToProps)(GuildMembers));

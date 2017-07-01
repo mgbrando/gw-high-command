@@ -3,7 +3,10 @@ import {connect} from 'react-redux';
 import {Tabs, Tab} from 'material-ui/Tabs';
 // From https://github.com/oliviertassinari/react-swipeable-views
 //import SwipeableViews from 'react-swipeable-views';
-import * as actions from '../../actions/navigationActions';
+//import * as actions from '../../actions/navigationActions';
+import * as guildActions from '../../actions/guildActions';
+import * as membersActions from '../../actions/membersActions';
+import * as teamsActions from '../../actions/teamsActions';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import SwipeableRoutes from "react-swipeable-routes";
@@ -29,6 +32,8 @@ class TabNavigation extends React.Component {
     this.state = {
       value: "guild",
     };
+
+    this.handleRefresh = this.handleRefresh.bind(this);
   }
 
   componentDidMount(){
@@ -44,16 +49,23 @@ class TabNavigation extends React.Component {
     else
       this.setState({value: "guild"});
   }
-  handleRefresh(event){
-    switch(event.value){
-      case "guild":
-        this.props.dispatch(actions.refreshGuild());
-      case "members":
-        this.props.dispatch(actions.refreshMembers());
-      case "team":
-        this.props.dispatch(actions.refreshTeam());
+  handleRefresh = (event) => {
+    console.log(event.target.textContent);
+    console.log(event.currentTarget.value);
+    const value = (event.target.textContent).toLowerCase();
+    if("/dashboard/"+value === this.props.location.pathname){
+      switch(value){
+        case "guild":
+          //this.props.dispatch(guildActions.getGuildInfo(this.props.activeGuild, this.props.activeUser.apiKey));
+          this.props.dispatch(guildActions.refreshGuild());
+        case "members":
+          //this.props.dispatch(membersActions.getGuildMembers(this.props.activeGuild, this.props.activeUser.apiKey));
+          this.props.dispatch(membersActions.refreshMembers());
+        case "teams":
+          //this.props.dispatch(teamsActions.getGuildTeams(this.props.activeGuild, this.props.activeUser.apiKey));
+          this.props.dispatch(teamsActions.refreshTeams());
+      }
     }
-    this.props.dispatch()
   }
   handleChange = (value) => {
     console.log(this.props.location.pathname);
@@ -65,15 +77,15 @@ class TabNavigation extends React.Component {
       });
 
       if(value === "guild"){
-        this.props.dispatch(actions.clearRefresh());
+        //this.props.dispatch(actions.clearRefresh());
         this.props.history.push('/dashboard/guild');
       }
       else if(value === "members"){
-        this.props.dispatch(actions.clearRefresh());
+        //this.props.dispatch(actions.clearRefresh());
         this.props.history.push('/dashboard/members');
       }
       else if(value === "teams"){
-        this.props.dispatch(actions.clearRefresh());
+        //this.props.dispatch(actions.clearRefresh());
         this.props.history.push('/dashboard/teams');
       }
     }
@@ -110,6 +122,7 @@ class TabNavigation extends React.Component {
     return (
       <div>
         <Tabs
+          onTouchTap={this.handleRefresh}
           onChange={this.handleChange}
           value={this.state.value}
           className="tabNavigation"
