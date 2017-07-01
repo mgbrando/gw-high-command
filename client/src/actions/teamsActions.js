@@ -33,6 +33,10 @@ export const getGuildTeams = (guildID, access_token) => {
   }	
 };
 
+export const RESET_GUILD_TEAMS = 'RESET_GUILD_TEAMS';
+export const resetGuildTeams = () => ({
+  type: RESET_GUILD_TEAMS
+});
 //Team Details
 export const GET_TEAM_DETAILS_SUCCESS = 'GET_TEAM_DETAILS_SUCCESS';
 export const getTeamDetailsSuccess = teamDetails => ({

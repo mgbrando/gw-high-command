@@ -18,7 +18,10 @@ class GuildTeam extends Component {
     this.deselectTeam = this.deselectTeam.bind(this);
   }
   componentWillReceiveProps(nextProps){
-    if(Object.keys(this.props.selectedTeamInfo).length === 0 && this.props.selectedTeamInfo.constructor === Object){
+    if(nextProps.activeGuild !== this.props.activeGuild){
+      this.deselectTeam();
+    }
+    else if(Object.keys(this.props.selectedTeamInfo).length === 0 && this.props.selectedTeamInfo.constructor === Object){
       if(this.props.guildTeams !== nextProps.guildTeams){
         const selectedTeam = nextProps.guildTeams.filter(team => {
           return team.name.toLowerCase() === decodeURIComponent(nextProps.match.params.team);
@@ -99,7 +102,8 @@ const mapStateToProps = (state, props) => ({
     displayTeamPVPStats: state.teams.displayTeamPVPStats,
     displayTeamRecentMatches:state.teams.displayTeamRecentMatches,
     selectedTeam: state.teams.selectedTeam,
-    teamLoading: state.teams.teamLoading
+    teamLoading: state.teams.teamLoading,
+    activeGuild: state.registrationAndLogin.activeGuild
 });
 
 export default connect(mapStateToProps)(GuildTeam);

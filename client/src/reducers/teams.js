@@ -24,6 +24,9 @@ const teams = (state=initialRepositoryState, action) => {
     else if(action.type === actions.DESELECT_TEAM){
         return Object.assign({}, state, {selectedTeam: false, selectedTeamInfo: {}, teamDetails: {}, teamPVPStats: {}, teamRecentMatches: [], teamLoading: true});
     }
+    else if(action.type === actions.RESET_GUILD_TEAMS){
+        return Object.assign({}, state, {teamsLoading: true});
+    }
 	return state;
 };
 

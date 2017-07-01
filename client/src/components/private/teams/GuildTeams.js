@@ -24,7 +24,7 @@ class GuildTeams extends Component {
      if(nextProps.activeGuild !== this.props.activeGuild)
         this.props.dispatch(actions.getGuildTeams(nextProps.activeGuild, nextProps.activeUser.apiKey));
      //if(nextProps.selectedMember === true)
-  }
+  }*/
   /*componentDidMount(){
     //this.props.dispatch(actions.getMembersInfo(this.props.activeUser.apiKey));
   }*/

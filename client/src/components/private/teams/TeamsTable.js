@@ -29,7 +29,7 @@ class TeamsTable extends Component {
 
   componentDidMount(){
     this.props.dispatch(actions.getGuildTeams(this.props.activeGuild, this.props.activeUser.apiKey));
-        /*let rows = [];
+    /*    let rows = [];
         for(let i=0; i < this.props.guildTeams.length; i++){
           //const apiKey = this.getAPIKey(nextProps, i);
           let rating = 'N/A';
@@ -44,7 +44,7 @@ class TeamsTable extends Component {
         }
         this.setState({ rows: rows });
         console.log(this.state.rows);
-        console.log(rows);*/
+        console.log(rows); */
   }
   componentWillReceiveProps(nextProps){
     /*if(nextProps.selectedTeam){
@@ -84,7 +84,9 @@ class TeamsTable extends Component {
     this.props.dispatch(actions.selectTeam(this.props.guildTeams[teamIndex]));
     this.props.history.push("/dashboard/teams/"+encodeURIComponent((this.props.guildTeams[teamIndex].name).toLowerCase()));
   }
-
+  componentWillUnmount(){
+    this.props.dispatch(actions.resetGuildTeams());
+  }
   render() {
     /*if(this.props.selectedTeam){
       const url="/dashboard/teams/"+encodeURIComponent((this.props.selectedTeamInfo.name).toLowerCase());
@@ -136,7 +138,6 @@ const mapStateToProps = (state, props) => ({
   selectedTeam: state.teams.selectedTeam,
   selectedTeamInfo: state.teams.selectedTeamInfo,
   teamsLoading: state.teams.teamsLoading,
-  guildDetails: state.guild.guildDetails,
   activeGuild: state.registrationAndLogin.activeGuild,
   activeUser: state.registrationAndLogin.activeUser
   //accountInfo: state.members.accountInfo

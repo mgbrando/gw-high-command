@@ -24,7 +24,10 @@ class GuildMember extends Component {
     this.deselectMember = this.deselectMember.bind(this);
   }
   componentWillReceiveProps(nextProps){
-    if(Object.keys(this.props.accountInfo).length === 0 && this.props.accountInfo.constructor === Object){
+    if(nextProps.activeGuild !== this.props.activeGuild){
+      this.deselectMember();
+    }
+    else if(Object.keys(this.props.accountInfo).length === 0 && this.props.accountInfo.constructor === Object){
       if(this.props.registeredMembers !== nextProps.registeredMembers){
         const selectedMember = nextProps.registeredMembers.filter(member => {
           return member.name.toLowerCase() === decodeURIComponent(nextProps.match.params.member);

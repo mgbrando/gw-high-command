@@ -178,6 +178,11 @@ export const selectMember = (apiKey, registeredMembers) => {
   }
 }
 
+export const RESET_GUILD_MEMBERS = 'RESET_GUILD_MEMBERS';
+export const resetGuildMembers = () => ({
+  type: RESET_GUILD_MEMBERS
+});
+
 export const DESELECT_MEMBER = 'DESELECT_MEMBER';
 export const deselectMember = () => ({
   type: DESELECT_MEMBER

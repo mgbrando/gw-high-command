@@ -50,7 +50,7 @@ class MembersTable extends Component {
     //this.props.dispatch(actions.getMembersInfo(this.props.activeUser.apiKey));
   }
   componentWillReceiveProps(nextProps){
-    /*else if(nextProps.selectedMember){
+    /*if(nextProps.selectedMember){
       nextProps.history.push("/dashboard/members/"+nextProps.accountInfo.name.toLowerCase());
     }*/
     if(nextProps.activeGuild !== this.props.activeGuild)
@@ -83,7 +83,9 @@ class MembersTable extends Component {
     this.props.dispatch(actions.selectMember(options[0], this.props.registeredMembers));
     this.props.history.push("/dashboard/members/"+encodeURIComponent((this.props.registeredMembers[parseInt(options[1])].name).toLowerCase()));
   }
-
+  componentWillUnmount(){
+    this.props.dispatch(actions.resetGuildMembers());
+  }
   render() {
     /*if(this.props.selectedMember){
       const url="/dashboard/members/"+encodeURIComponent((this.props.accountInfo.name).toLowerCase());
@@ -92,14 +94,13 @@ class MembersTable extends Component {
       );
     }
     else{*/
-    if(this.props.teamsLoading){
+    if(this.props.membersLoading){
       return (
       <section className="memberLoadingScreen">
           <CircularProgress size={80} thickness={5} />
       </section>
       );
     }
-
     return (
       <section className="membersTable">
         <SectionBar title="Guild Members" />
@@ -132,7 +133,8 @@ const mapStateToProps = (state, props) => ({
   callsFinished: state.members.callsFinished,
   guildDetails: state.guild.guildDetails,
   activeGuild: state.registrationAndLogin.activeGuild,
-  activeUser: state.registrationAndLogin.activeUser
+  activeUser: state.registrationAndLogin.activeUser,
+  membersLoading: state.members.membersLoading
 });
 
 export default withRouter(connect(mapStateToProps)(MembersTable));
