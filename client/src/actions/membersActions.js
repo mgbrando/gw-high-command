@@ -1,7 +1,7 @@
 //import 'whatwg-fetch';
 import 'isomorphic-fetch';
 
-export const getGuildMembers = (guildID, access_token) => {
+export const getGuildMembers = (guildID, access_token, selectedMember=false) => {
   return dispatch => {
     let registeredMembers;
     let unregisteredMembers;
@@ -42,13 +42,22 @@ export const getGuildMembers = (guildID, access_token) => {
                   })
                 })
                 .then(response => {
-                  if(response.status === 204)
+                  if(response.status === 204){
+                    if(selectedMember){
+                      dispatch(refreshMember());
+                      dispatch(selectMember(access_token, registeredMembers));
+                    }
                     return dispatch(getGuildMembersSuccess(registeredMembers, unregisteredMembers));
+                  }
                   else
                     throw Error(response.message);
                 })
               }
               else{
+                if(selectedMember){
+                  dispatch(refreshMember());
+                  dispatch(selectMember(access_token, registeredMembers));
+                }
                 return dispatch(getGuildMembersSuccess(registeredMembers, unregisteredMembers));
               }
           })
@@ -173,10 +182,15 @@ export const selectMember = (apiKey, registeredMembers) => {
     });*/  
     Promise.all(promises)
     .then(() => {
-      return dispatch(setSelectedMember(true));
+      return dispatch(setSelectedMember(true, apiKey));
     });
   }
 }
+
+export const REFRESH_MEMBER = 'REFRESH_MEMBER';
+export const refreshMember = () => ({
+  type: REFRESH_MEMBER
+});
 
 export const REFRESH_MEMBERS = 'REFRESH_MEMBERS';
 export const refreshMembers = () => ({
@@ -199,9 +213,10 @@ export const deselectMember = () => ({
 });
 
 export const SET_SELECTED_MEMBER_SUCCESS = 'SET_SELECTED_MEMBER_SUCCESS';
-export const setSelectedMember = selectedMember => ({
+export const setSelectedMember = (selectedMember, selectedMemberAPIKey) => ({
   type: SET_SELECTED_MEMBER_SUCCESS,
-  selectedMember
+  selectedMember,
+  selectedMemberAPIKey
 });
 
 export const SET_SELECTED_CHARACTERS_SUCCESS = 'SET_SELECTED_CHARACTERS_SUCCESS';

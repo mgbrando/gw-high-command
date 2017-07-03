@@ -22,6 +22,7 @@ const initialRepositoryState = {
   pvpStats: {},
   pvpStandings: {},
   raids: [],
+  selectedMemberAPIKey: "",
   refreshMembers: false
 };
 
@@ -33,7 +34,7 @@ const members = (state=initialRepositoryState, action) => {
 		return Object.assign({}, state, {accountInfo: action.accountInfo, joined: action.joined, characters: action.characters, pvpStats: action.pvpStats, pvpStandings: action.pvpStandings, raids: action.raids, selectedMember: true});
 	}*/
   else if(action.type === actions.SET_SELECTED_MEMBER_SUCCESS){
-    return Object.assign({}, state, {selectedMember: action.selectedMember, memberDetailsLoading: false, memberPVPStatsLoading: false, memberPVEStatsLoading: false, membersLoading: true});
+    return Object.assign({}, state, {selectedMember: action.selectedMember, memberDetailsLoading: false, memberPVPStatsLoading: false, memberPVEStatsLoading: false, membersLoading: true, selectedMemberAPIKey: action.selectedMemberAPIKey, refreshMember: false});
   }
   else if(action.type === actions.SET_SELECTED_CHARACTERS_SUCCESS){
     return Object.assign({}, state, {characters: action.characters});
@@ -58,6 +59,9 @@ const members = (state=initialRepositoryState, action) => {
   }
   else if(action.type === actions.REFRESH_MEMBERS){
     return Object.assign({}, state, {refreshMembers: true, membersLoading: true});
+  }
+  else if(action.type === actions.REFRESH_MEMBER){
+    return Object.assign({}, state, {refreshMember: true, memberDetailsLoading: true, memberPVPStatsLoading: true, memberPVEStatsLoading: true});
   }
   else if(action.type === actions.RESET_MEMBERS_REFRESH){
     return Object.assign({}, state, {refreshMembers: false});

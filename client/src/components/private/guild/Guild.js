@@ -71,6 +71,11 @@ class Guild extends Component {
       </section>
       );
     }
+
+    /*if(this.props.guildUpgrades.length > 20){
+      const guildUpgrades 
+    }*/
+
     return (
       <section className="guild">
         <SectionBar title="Guild Details" />

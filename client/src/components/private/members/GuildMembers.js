@@ -23,8 +23,11 @@ class GuildMembers extends Component {
   componentWillReceiveProps(nextProps) {
     if(nextProps.activeGuild !== this.props.activeGuild)
       this.props.dispatch(actions.getGuildMembers(nextProps.activeGuild, nextProps.activeUser.apiKey));
-    else if(nextProps.refreshMembers)
-      this.props.dispatch(actions.getGuildMembers(nextProps.activeGuild, nextProps.activeUser.apiKey));
+    else if(nextProps.refreshMembers){
+      this.props.dispatch(actions.getGuildMembers(nextProps.activeGuild, nextProps.activeUser.apiKey, this.props.selectedMember));
+    }
+    /*else if(nextProps.refreshMember && !nextProps.refreshMembers && selectedMember)
+      this.props.dispatch(actions.selectMember(this.props.selectedMemberAPIKey, this.props.registeredMembers));*/
   }
   componentWillUnmount(){
     this.props.dispatch(actions.resetGuildMembers());
@@ -51,7 +54,11 @@ class GuildMembers extends Component {
 const mapStateToProps = (state, props) => ({
   guildDetails: state.guild.guildDetails,
   activeGuild: state.registrationAndLogin.activeGuild,
-  refreshMembers: state.members.refreshMembers
+  registeredMembers: state.members.registeredMembers,
+  refreshMembers: state.members.refreshMembers,
+  selectedMember: state.members.selectedMember,
+  selectedMemberAPIKey: state.members.selectedMemberAPIKey,
+  accountInfo: state.members.accountInfo
 });
 
 export default withRouter(connect(mapStateToProps)(GuildMembers));

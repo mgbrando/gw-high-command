@@ -7,6 +7,7 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
 import {List, ListItem, makeSelectable} from 'material-ui/List';
+import PieChart from '../PieChart';
 
 function MemberPVPStats(props){
 
@@ -49,6 +50,7 @@ function MemberPVPStats(props){
             <h2 className="sectionHeader">sPvP win ratios</h2>
             <div className="left50">
               <h3>Ranked</h3>
+              
             </div>
             <div className="right50">
               <h3>Unranked</h3>

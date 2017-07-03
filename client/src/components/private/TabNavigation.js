@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import SwipeableRoutes from "react-swipeable-routes";
 import { Switch } from 'react-router';
+import 'string.prototype.startswith';
 import './Dashboard.css';
 
 const styles = {
@@ -53,17 +54,20 @@ class TabNavigation extends React.Component {
     console.log(event.target.textContent);
     console.log(event.currentTarget.value);
     const value = (event.target.textContent).toLowerCase();
-    if("/dashboard/"+value === this.props.location.pathname){
+    if(this.props.location.pathname.startsWith("/dashboard/"+value)){
       switch(value){
         case "guild":
           //this.props.dispatch(guildActions.getGuildInfo(this.props.activeGuild, this.props.activeUser.apiKey));
           this.props.dispatch(guildActions.refreshGuild());
+          break;
         case "members":
           //this.props.dispatch(membersActions.getGuildMembers(this.props.activeGuild, this.props.activeUser.apiKey));
           this.props.dispatch(membersActions.refreshMembers());
+          break;
         case "teams":
           //this.props.dispatch(teamsActions.getGuildTeams(this.props.activeGuild, this.props.activeUser.apiKey));
           this.props.dispatch(teamsActions.refreshTeams());
+          break;
       }
     }
   }

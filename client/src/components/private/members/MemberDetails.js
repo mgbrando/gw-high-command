@@ -39,7 +39,7 @@ function MemberDetails(props){
           <h2 className="memberName">{props.accountInfo.name}</h2>
           <List className="membersDetailsList">
             <ListItem primaryText="Member Since " secondaryText={props.joined} disabled={true}/>
-            <ListItem primaryText="Guilds " secondaryText={props.memberGuildNames} disabled={true}/>
+            <ListItem primaryText="Guilds " secondaryText={props.memberGuildNames} secondaryTextLines={2} disabled={true}/>
           </List>
           <List className="membersDetailsList">
             <ListItem primaryText="Player Access " secondaryText={access} disabled={true}/>
