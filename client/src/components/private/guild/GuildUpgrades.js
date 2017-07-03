@@ -7,13 +7,11 @@ import FlatButton from 'material-ui/FlatButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
-/*import {List, ListItem, makeSelectable} from 'material-ui/List';*/
-import {List, ListItem} from 'react-native-elements';
+import {List, ListItem, makeSelectable} from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
-import {wrapState} from '../SelectableList';
-import { View, FlatList } from 'react-native';
+import SelectableList from '../SelectableList';
 import './Guild.css';
 
 /*let SelectableList = List;
@@ -76,54 +74,6 @@ function GuildUpgrades(props){
     );
   }
   else if(props.display){
-    const completedUpgradesList = (<List key={"completedUpgradesView"}><FlatList
-      key={"completeUpgradesList"}
-      data={props.guildCompletedUpgrades}
-      renderItem={({item}) => (<ListItem
-                key={item.id} 
-                className="completedUpgrade"
-                primaryText={item.name}
-                primaryTogglesNestedList={true}
-                leftAvatar={<Avatar src={item.icon}/>}
-                nestedItems={[
-                  <ListItem
-                    key={1}
-                    disabled={true}
-                    primaryText={item.type}
-                    secondaryText={item.description}
-                    secondaryTextLines={2}
-                  />
-                ]}
-              />)}
-        horizontal={false}
-        numColumns={2}
-        ItemSeparatorComponent={<Divider />}
-      /></List>);
-    console.log(completedUpgradesList);
-    const upgradesList = (<List key={"upgradesView"}><FlatList
-      key={"upgradesList"}
-      data={props.guildUpgrades}
-      renderItem={({item}) => (<ListItem 
-                key={item.id}
-                className="upgrade"
-                primaryText={item.name}
-                primaryTogglesNestedList={true}
-                leftAvatar={<Avatar src={item.icon}/>}
-                nestedItems={[
-                  <ListItem
-                    key={1}
-                    disabled={true}
-                    primaryText={item.type}
-                    secondaryText={item.description}
-                    secondaryTextLines={2}
-                  />
-                ]}
-              />)} 
-        horizontal={false}
-        numColumns={2}
-        ItemSeparatorComponent={<Divider />}
-      /></List>);
-    console.log(upgradesList);
     let count=0;
     const completedUpgradeComponentsTwo = props.guildCompletedUpgrades.map((upgrade) => {
       return (<ListItem 
@@ -167,7 +117,13 @@ function GuildUpgrades(props){
     const upgradeComponentsTwo = upgradeComponentsOne.splice(0, (count/2));
     console.log(upgradeComponentsOne);
 
-     /*       <div className="upgradeList">
+    return (
+      <div className="guildUpgrades">
+        <Paper className="infoSection" zDepth={2}>
+          <Paper className="upgrades completedUpgrades" zDepth={5}>
+            <h1 className="sectionHeader">Complete</h1>
+            <div className="upgradesLists">
+            <div className="upgradeList">
               <SelectableList defaultValue={3}>
                 {completedUpgradeComponentsOne}
               </SelectableList>
@@ -176,8 +132,16 @@ function GuildUpgrades(props){
               <SelectableList defaultValue={3}>
                 {completedUpgradeComponentsTwo}
               </SelectableList>
-            </div>*/
-           /* <div className="upgradeList">
+            </div>
+            <div className="seeMore">
+                <span>See More Upgrades...</span>
+            </div>
+            </div>
+          </Paper>
+          <Paper className="upgrades incompleteUpgrades" zDepth={5}>
+            <h1 className="sectionHeader">Incomplete</h1>
+            <div className="upgradesLists">
+            <div className="upgradeList">
               <SelectableList defaultValue={3}>
                 {upgradeComponentsOne}
               </SelectableList>
@@ -186,18 +150,11 @@ function GuildUpgrades(props){
               <SelectableList defaultValue={3}>
                 {upgradeComponentsTwo}
               </SelectableList>
-            </div>*/
-
-    return (
-      <div className="guildUpgrades">
-        <Paper className="infoSection" zDepth={2}>
-          <Paper className="upgrades completedUpgrades" zDepth={5}>
-            <h1 className="sectionHeader">Complete</h1>
-              {completedUpgradesList}
-          </Paper>
-          <Paper className="upgrades incompleteUpgrades" zDepth={5}>
-            <h1 className="sectionHeader">Incomplete</h1>
-              {upgradesList}
+            </div>
+            <div className="seeMore">
+                <span>See More Upgrades...</span>
+            </div>
+            </div>
           </Paper>
         </Paper>
       </div>

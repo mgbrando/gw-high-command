@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
-import { FlatList } from 'react-native';
 import PropTypes from 'prop-types';
 import {List, ListItem, makeSelectable} from 'material-ui/List';
 
-//let SelectableList = List;
+let SelectableList = List;
 
-export function wrapState(ComposedComponent) {
+function wrapState(ComposedComponent) {
   return class SelectableList extends Component {
     static propTypes = {
       children: PropTypes.node.isRequired,
@@ -37,6 +36,6 @@ export function wrapState(ComposedComponent) {
   };
 }
 
-//SelectableList = wrapState(SelectableList);
+SelectableList = wrapState(SelectableList);
 
-//export default SelectableList;
+export default SelectableList;

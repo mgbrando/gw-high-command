@@ -24,7 +24,7 @@ class GuildTeams extends Component {
     if(nextProps.activeGuild !== this.props.activeGuild)
       this.props.dispatch(actions.getGuildTeams(nextProps.activeGuild, nextProps.activeUser.apiKey));
     else if(nextProps.refreshTeams)
-      this.props.dispatch(actions.getGuildTeams(nextProps.activeGuild, nextProps.activeUser.apiKey));
+      this.props.dispatch(actions.getGuildTeams(nextProps.activeGuild, nextProps.activeUser.apiKey, this.props.selectedTeam, this.props.selectedTeamInfo.id));
      //if(nextProps.selectedMember === true)
   }
   /*componentDidMount(){
@@ -51,7 +51,9 @@ class GuildTeams extends Component {
 const mapStateToProps = (state, props) => ({
   guildDetails: state.guild.guildDetails,
   activeGuild: state.registrationAndLogin.activeGuild,
-  refreshTeams: state.teams.refreshTeams
+  refreshTeams: state.teams.refreshTeams,
+  selectedTeam: state.teams.selectedTeam,
+  selectedTeamInfo: state.teams.selectedTeamInfo
   /*selectedMember: state.members.selectedMember,
   characters: state.members.characters*/
 });

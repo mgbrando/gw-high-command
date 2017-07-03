@@ -1,7 +1,7 @@
 //import 'whatwg-fetch';
 import 'isomorphic-fetch';
 
-export const getGuildMembers = (guildID, access_token, selectedMember=false) => {
+export const getGuildMembers = (guildID, access_token, selectedMember=false, selectedMemberAPIKey=null) => {
   return dispatch => {
     let registeredMembers;
     let unregisteredMembers;
@@ -12,8 +12,8 @@ export const getGuildMembers = (guildID, access_token, selectedMember=false) => 
 
           Promise.all([registeredMembersPromise, unregisteredMembersPromise])
           .then(members => {
-              let registeredMembers = []; //members[0].map(member => Object.assign({}, member));
-              let unregisteredMembers = members[1].map(member => Object.assign({}, member));
+              registeredMembers = []; //members[0].map(member => Object.assign({}, member));
+              unregisteredMembers = members[1].map(member => Object.assign({}, member));
 
               for(let i=0; i < members[0].length; i++){
                 unregisteredMembers = unregisteredMembers.filter(member => {
@@ -43,23 +43,27 @@ export const getGuildMembers = (guildID, access_token, selectedMember=false) => 
                 })
                 .then(response => {
                   if(response.status === 204){
-                    if(selectedMember){
-                      dispatch(refreshMember());
-                      dispatch(selectMember(access_token, registeredMembers));
-                    }
                     return dispatch(getGuildMembersSuccess(registeredMembers, unregisteredMembers));
                   }
                   else
                     throw Error(response.message);
                 })
+                .then(() => {
+                  if(selectedMember){
+                    dispatch(refreshMember());
+                    return dispatch(selectMember(selectedMemberAPIKey, registeredMembers));
+                  }
+                });
               }
               else{
-                if(selectedMember){
-                  dispatch(refreshMember());
-                  dispatch(selectMember(access_token, registeredMembers));
-                }
                 return dispatch(getGuildMembersSuccess(registeredMembers, unregisteredMembers));
               }
+          })
+          .then(() => {
+            if(selectedMember){
+              dispatch(refreshMember());
+              return dispatch(selectMember(selectedMemberAPIKey, registeredMembers));
+            }
           })
           .catch(error => dispatch(getGuildMembersFailure(error.message)))                             
     /*.then(_registeredMembers => {

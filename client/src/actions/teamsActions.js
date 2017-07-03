@@ -24,11 +24,25 @@ export const getTeamsFailure = error => ({
 	error
 });
 
-export const getGuildTeams = (guildID, access_token) => {
+export const getGuildTeams = (guildID, access_token, selectedTeam = false, teamID = null) => {
   return dispatch => {
+    let currentTeam;
+    let guildTeams;
     fetch('https://api.guildwars2.com/v2/guild/'+guildID+'/teams?access_token='+access_token)
     .then(response => response.json())
-    .then(teams => dispatch(getTeamsSuccess(teams)))
+    .then(teams => {
+      guildTeams = teams;
+      return dispatch(getTeamsSuccess(teams));
+    })
+    .then(() => {
+      if(selectedTeam){
+        currentTeam = guildTeams.filter((team) => {
+          return team.id ===teamID;
+        });
+        dispatch(refreshTeam());
+        return dispatch(selectTeam(currentTeam[0]));
+      }
+    })
     .catch(error => dispatch(getTeamsFailure(error)));
   }	
 };
@@ -36,6 +50,11 @@ export const getGuildTeams = (guildID, access_token) => {
 export const REFRESH_TEAMS = 'REFRESH_TEAMS';
 export const refreshTeams = () => ({
   type: REFRESH_TEAMS
+});
+
+export const REFRESH_TEAM = 'REFRESH_TEAM';
+export const refreshTeam = () => ({
+  type: REFRESH_TEAM
 });
 
 export const RESET_TEAMS_REFRESH = 'RESET_TEAMS_REFRESH';

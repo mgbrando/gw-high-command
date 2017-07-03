@@ -31,7 +31,9 @@ const teams = (state=initialRepositoryState, action) => {
     else if(action.type === actions.REFRESH_TEAMS){
         return Object.assign({}, state, {refreshTeams: true, teamsLoading: true});
     }
-
+  else if(action.type === actions.REFRESH_TEAM){
+    return Object.assign({}, state, {refreshTeam: true, teamLoading: true});
+  }
 	return state;
 };
 

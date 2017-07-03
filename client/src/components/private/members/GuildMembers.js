@@ -24,7 +24,7 @@ class GuildMembers extends Component {
     if(nextProps.activeGuild !== this.props.activeGuild)
       this.props.dispatch(actions.getGuildMembers(nextProps.activeGuild, nextProps.activeUser.apiKey));
     else if(nextProps.refreshMembers){
-      this.props.dispatch(actions.getGuildMembers(nextProps.activeGuild, nextProps.activeUser.apiKey, this.props.selectedMember));
+      this.props.dispatch(actions.getGuildMembers(nextProps.activeGuild, nextProps.activeUser.apiKey, this.props.selectedMember, this.props.selectedMemberAPIKey));
     }
     /*else if(nextProps.refreshMember && !nextProps.refreshMembers && selectedMember)
       this.props.dispatch(actions.selectMember(this.props.selectedMemberAPIKey, this.props.registeredMembers));*/
