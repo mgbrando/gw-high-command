@@ -32,9 +32,11 @@ class TabNavigation extends React.Component {
     super(props);
     this.state = {
       value: "guild",
+      fix: false
     };
 
     this.handleRefresh = this.handleRefresh.bind(this);
+    this.fixBar = this.fixBar.bind(this);
   }
 
   componentDidMount(){
@@ -42,6 +44,7 @@ class TabNavigation extends React.Component {
     if(values[values.length-1] === "dashboard")
       values[values.length-1] = "guild"
     this.setState({value: values[values.length-1]});*/
+    window.addEventListener('scroll',this.fixBar);
     const pathname = this.props.location.pathname;
     if(pathname.includes("dashboard/members"))
       this.setState({value: "members"});
@@ -69,6 +72,16 @@ class TabNavigation extends React.Component {
           this.props.dispatch(teamsActions.refreshTeams());
           break;
       }
+    }
+  }
+  componentWillUnmount(){
+    window.removeEventListener('scroll',this.fixBar);
+  }
+  fixBar(){
+    if(window.scrollY > 140)
+      this.setState({fix: true});
+    else if(window.scrollY <= 140){
+      this.setState({fix: false});
     }
   }
   handleChange = (value) => {
@@ -123,13 +136,14 @@ class TabNavigation extends React.Component {
   };
 
   render() {
+    let classFix=this.state.fix?"fixTabs":"";
     return (
       <div>
         <Tabs
           onTouchTap={this.handleRefresh}
           onChange={this.handleChange}
           value={this.state.value}
-          className="tabNavigation"
+          className={"tabNavigation "+classFix}
         >
           <Tab label="Guild" value="guild" />
           <Tab label="Members" value="members" />

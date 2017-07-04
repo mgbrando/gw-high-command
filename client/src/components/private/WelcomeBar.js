@@ -22,23 +22,34 @@ class WelcomeBar extends Component {
     super(props);
 
     this.state = {
-      valueSingle: ""
+      valueSingle: "",
+      fix: false
     };
 
     this.handleChangeSingle = this.handleChangeSingle.bind(this);
+    this.fixBar = this.fixBar.bind(this);
   }
 
   componentDidMount(){
+    window.addEventListener('scroll',this.fixBar);
     this.setState({valueSingle: this.props.activeGuild});
   }
-
+  componentWillUnmount(){
+    window.removeEventListener('scroll',this.fixBar);
+  }
   handleChangeSingle(event, value){
     //console.log(this.state.valueSingle);
     this.setState({valueSingle: value});
 
     this.props.dispatch(actions.setActiveGuild(value));
   }
-
+  fixBar(){
+    if(window.scrollY > 140)
+      this.setState({fix: true});
+    else if(window.scrollY <= 140){
+      this.setState({fix: false});
+    }
+  }
   /*handleOpenMenu = () => {
     this.setState({
       openMenu: true
@@ -57,8 +68,9 @@ class WelcomeBar extends Component {
       return (<MenuItem value={guild.id} primaryText={guild.name} key={count++} />);
     });
     //for(let i=0; i < activeUserGuilds.length; i++)
+    let classFix=this.state.fix?"fix":"";
   return (
-    <div className="welcomeBar">
+    <div className={"welcomeBar "+classFix} ref="fixedWelcome">
       <AppBar
         title={<span>Welcome, {this.props.user.username}!</span>}
         iconElementLeft={        

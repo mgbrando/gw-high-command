@@ -81,6 +81,9 @@
   text-align: center;
   width: 50%;
 }
+.left50{
+  height: 300px;
+}
 .sectionHeader{
   text-align: center;
   font-size: 1.5em;

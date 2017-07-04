@@ -70,7 +70,6 @@ class Dashboard extends Component {
                       (<Route exact path='/dashboard' render={() => <Redirect to="/dashboard/guild" />} key={3} />)];
       return (<div className="dashboard">
         <WelcomeBar user={this.props.activeUser} activeGuild={this.props.activeGuild} logOut={this.logOut} togglePanel={this.togglePanel} />
-        <main className="main-content">
           <TabNavigation activeUser={this.props.activeUser} activeGuild={this.props.activeGuild} />
           <SideBar
             title={this.state.sidePanel.section}
@@ -78,6 +77,7 @@ class Dashboard extends Component {
             togglePanel={this.togglePanel}
             handleChangeSingle={this.handleChangeSingle}
          />
+        <main className="main-content">
           {routes}
         </main>
       </div>

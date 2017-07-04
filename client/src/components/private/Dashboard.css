@@ -21,3 +21,22 @@
 	fill: white;
 	vertical-align: middle;
 }
+@media (max-width: 600px) {
+  .facet_sidebar {
+    display: none;
+  }
+}
+.fix{
+	top: 0;
+	position: fixed;
+	width: 100%;
+	z-index: 9999999999;
+	margin-bottom: 0;
+}
+.fixTabs{
+	top: 64;
+	margin-top: -76px;
+	position: fixed;
+	width: 100%;
+	z-index: 999999999;
+}

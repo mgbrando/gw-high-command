@@ -7,7 +7,7 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
 import {List, ListItem, makeSelectable} from 'material-ui/List';
-import PieChart from '../PieChart';
+import Piechart from '../piechart/Piechart';
 
 function MemberPVPStats(props){
 
@@ -28,6 +28,18 @@ function MemberPVPStats(props){
   else{
     memberPVPStandings = props.pvpStandings;
   }*/
+  const aggregatePVPStats = Object.keys(props.pvpStats.aggregate).map((stat) => {
+    console.log(props.pvpStats.aggregate[stat]);
+    return {value: props.pvpStats.aggregate[stat], label: stat};
+  });
+  const rankedPVPStats = Object.keys(props.pvpStats.ladders.ranked).map((stat) => {
+    console.log(props.pvpStats.ladders.ranked[stat]);
+    return {value: props.pvpStats.ladders.ranked[stat], label: stat};
+  });
+  const unrankedPVPStats = Object.keys(props.pvpStats.ladders.unranked).map((stat) => {
+    return {value: props.pvpStats.ladders.ranked[stat], label: stat};
+  });
+
   return (
       <div className="memberPVPStats">
         <Paper className="infoSection" zDepth={2}>
@@ -50,10 +62,23 @@ function MemberPVPStats(props){
             <h2 className="sectionHeader">sPvP win ratios</h2>
             <div className="left50">
               <h3>Ranked</h3>
-              
+              <Piechart 
+                x={100}
+                y={100}
+                outerRadius={100}
+                innerRadius={50}
+                data={aggregatePVPStats}
+              />
             </div>
             <div className="right50">
               <h3>Unranked</h3>
+              <Piechart 
+                x={50}
+                y={50}
+                outerRadius={50}
+                innerRadius={25}
+                data={unrankedPVPStats}
+              />
             </div>
           </div>
           <div>
