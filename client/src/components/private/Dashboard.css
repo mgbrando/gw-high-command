@@ -30,7 +30,7 @@
 	top: 0;
 	position: fixed;
 	width: 100%;
-	z-index: 9999999999;
+	z-index: 1102;
 	margin-bottom: 0;
 }
 .fixTabs{
@@ -38,5 +38,5 @@
 	margin-top: -76px;
 	position: fixed;
 	width: 100%;
-	z-index: 999999999;
+	z-index: 1101;
 }

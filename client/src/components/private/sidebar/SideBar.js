@@ -56,7 +56,7 @@ function SideBar(props) {
 
     return (
       <div className="sideBar">
-        <Drawer width={300} openSecondary={true} open={props.open} >
+        <Drawer width={300} openSecondary={true} open={props.open}>
           <AppBar
             title={props.title}
             iconElementLeft={        
