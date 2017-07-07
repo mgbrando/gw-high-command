@@ -15,6 +15,7 @@ class Guild extends Component {
     super(props);
 
     this.descriptionToggle = this.descriptionToggle.bind(this);
+    this.onAvatarLoad = this.onAvatarLoad.bind(this);
   }
 
   /*displayPage(){
@@ -63,6 +64,10 @@ class Guild extends Component {
     this.props.dispatch(actions.descriptionToggle());
   }
 
+  onAvatarLoad(){
+    
+  }
+
   render() {
     if(this.props.guildDetailsLoading || this.props.guildUpgradesLoading || this.props.guildCoinsLoading){
       return (
@@ -88,7 +93,8 @@ class Guild extends Component {
         <SectionBar title="Upgrades" />
         <GuildUpgrades 
           loading={this.props.guildUpgradesLoading} 
-          display={this.props.displayGuildUpgrades} 
+          display={this.props.displayGuildUpgrades}
+          onAvatarLoad={this.onAvatarLoad}
           guildUpgrades={this.props.guildUpgrades} 
           guildCompletedUpgrades={this.props.guildCompletedUpgrades}
           descriptionToggle={this.descriptionToggle}

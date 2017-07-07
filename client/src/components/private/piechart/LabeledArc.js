@@ -6,6 +6,7 @@ class LabeledArc extends Arc {
     render() {
         let [labelX, labelY] = this.arc.centroid(this.props.data),
             labelTranslate = `translate(${labelX}, ${labelY})`;
+        //if(labelX)
  
         return (
             <g>

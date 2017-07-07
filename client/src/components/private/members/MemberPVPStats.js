@@ -8,6 +8,10 @@ import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
 import {List, ListItem, makeSelectable} from 'material-ui/List';
 import Piechart from '../piechart/Piechart';
+import SimplePieChart from 'react-simple-pie-chart';
+import BarChart from 'react-bar-chart';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
 
 function MemberPVPStats(props){
 
@@ -28,17 +32,121 @@ function MemberPVPStats(props){
   else{
     memberPVPStandings = props.pvpStandings;
   }*/
-  const aggregatePVPStats = Object.keys(props.pvpStats.aggregate).map((stat) => {
+  /*const aggregatePVPStats = Object.keys(props.pvpStats.aggregate).map((stat) => {
+    console.log(props.pvpStats.aggregate[stat]);
+    let color;
+    switch(colorCount++){
+      case 0:
+        color='blue';
+        break; 
+      case 1:
+        color='green';
+        break;
+      case 2:
+        color='red';
+        break;
+      case 3:
+        color='orange';
+        break;
+      case 4:
+        color='yellow';
+        break;
+      default:
+        color: 'black'
+        break;
+    }
+    return {value: props.pvpStats.aggregate[stat], color: color};
+  });*/
+  /*const aggregatePVPStats2 = Object.keys(props.pvpStats.aggregate).map((stat) => {
     console.log(props.pvpStats.aggregate[stat]);
     return {value: props.pvpStats.aggregate[stat], label: stat};
-  });
-  const rankedPVPStats = Object.keys(props.pvpStats.ladders.ranked).map((stat) => {
-    console.log(props.pvpStats.ladders.ranked[stat]);
-    return {value: props.pvpStats.ladders.ranked[stat], label: stat};
-  });
-  const unrankedPVPStats = Object.keys(props.pvpStats.ladders.unranked).map((stat) => {
-    return {value: props.pvpStats.ladders.ranked[stat], label: stat};
-  });
+  });*/
+  const margin = {top: 20, right: 20, bottom: 30, left: 40};
+  //let colorCount = 0;
+  //let barChartHeader='';
+  let stats;
+  let barChart;
+  switch(props.pvpTypeValue){
+    case 1:
+      //barChartHeader = 'Aggregate';
+      if(props.hasStatistics(props.pvpStats.aggregate)){
+        stats = Object.keys(props.pvpStats.aggregate).map((stat) => {
+          console.log(props.pvpStats.aggregate[stat]);
+          return {value: props.pvpStats.aggregate[stat], text: stat};
+        });
+      }
+      else
+        stats = 'No aggregate stats available';
+      break;
+    case 2:
+      //barChartHeader = 'Ranked';
+      if(props.hasStatistics(props.pvpStats.ladders.ranked)){
+        stats = Object.keys(props.pvpStats.ladders.ranked).map((stat) => {
+          console.log(props.pvpStats.ladders.ranked[stat]);
+          return {value: props.pvpStats.ladders.ranked[stat], text: stat};
+        });
+      }
+      else
+        stats = 'No ranked stats available';
+      break;
+    case 3:
+      //barChartHeader = 'Unranked';
+      if(props.hasStatistics(props.pvpStats.ladders.unranked)){
+        stats = Object.keys(props.pvpStats.ladders.unranked).map((stat) => {
+          return {value: props.pvpStats.ladders.unranked[stat], text: stat};
+        });
+      }
+      else
+        stats = 'No unranked stats available'; 
+      break;
+    default:
+      //barChartHeader = 'Aggregate';
+      if(props.hasStatistics(props.pvpStats.aggregate)){
+        stats = Object.keys(props.pvpStats.aggregate).map((stat) => {
+          console.log(props.pvpStats.aggregate[stat]);
+          return {value: props.pvpStats.aggregate[stat], text: stat};
+        });
+      }
+      else
+        stats = 'No aggregate stats available';
+      break;
+    }
+
+    const barChartStats = Array.isArray(stats) ? (<BarChart
+                  width={500}
+                  height={300}
+                  margin={margin}
+                  data={stats}
+                />) :
+                (<div>{stats}</div>);
+  //colorCount = 0;
+  let characterPieCharts = [];
+  let characterCount = 0;
+  for(let property in props.pvpStats.professions){
+    const character = Object.keys(props.pvpStats.professions[property]).map(stat => {
+      return {value: props.pvpStats.professions[property][stat], label: props.pvpStats.professions[property][stat]}
+    });
+    characterPieCharts.push(<div className="characterChart" key={characterCount++}><h4>{property.charAt(0).toUpperCase() + property.slice(1)}</h4><Piechart 
+                x={150}
+                y={75}
+                outerRadius={50}
+                innerRadius={10}
+                data={character}
+              /></div>);
+  }
+           /*   <Piechart 
+                x={100}
+                y={100}
+                outerRadius={100}
+                innerRadius={50}
+                data={aggregatePVPStats}
+              />*/
+          /*              <SimplePieChart 
+                className="memberChart"
+                size={50}
+                style={{width: '50px', height: '50px'}}
+                slices={aggregatePVPStats}
+              />*/
 
   return (
       <div className="memberPVPStats">
@@ -58,32 +166,20 @@ function MemberPVPStats(props){
             <ListItem primaryText="sPvP Rank: " secondaryText={props.pvpStats.rank || 'N/A'} />
             <ListItem primaryText="WvW Rank: " secondaryText={props.wvwRank || 'N/A'} />
           </List>
-          <div>
+          <div className="textCenter overallChart">
             <h2 className="sectionHeader">sPvP win ratios</h2>
-            <div className="left50">
-              <h3>Ranked</h3>
-              <Piechart 
-                x={100}
-                y={100}
-                outerRadius={100}
-                innerRadius={50}
-                data={aggregatePVPStats}
-              />
-            </div>
-            <div className="right50">
-              <h3>Unranked</h3>
-              <Piechart 
-                x={50}
-                y={50}
-                outerRadius={50}
-                innerRadius={25}
-                data={unrankedPVPStats}
-              />
+            <div className='barChartDisplay'>
+              <h3><DropDownMenu value={props.pvpTypeValue} onChange={props.handlePVPTypeChange}>
+                <MenuItem value={1} primaryText="Aggregate" />
+                <MenuItem value={2} primaryText="Ranked" />
+                <MenuItem value={3} primaryText="Unranked" />
+              </DropDownMenu></h3>
+              {barChartStats}
             </div>
           </div>
           <div>
-            <h2 className="sectionHeader">sPvP win ratios by character</h2>
-            <span>placeholder</span>
+            <h2 className="sectionHeader">sPvP win ratios by character (all seasons)</h2>
+            {characterPieCharts}
           </div>
           </Paper>
         </Paper>
@@ -95,7 +191,24 @@ else{
   //<FlatButton label="Log Out" onClick={props.logOut}/>
 }
 }
-
+/*          <div className="left50">
+              <h3>Ranked</h3>
+              <BarChart
+                  width={500}
+                  height={200}
+                  margin={margin}
+                  data={rankedPVPStats}
+              />
+            </div>
+            <div className="right50">
+              <h3>Unranked</h3>
+              <BarChart
+                  width={500}
+                  height={200}
+                  margin={margin}
+                  data={unrankedPVPStats}
+              />
+            </div>*/
 /*      <AppBar
         title={<span>{props.title}</span>}
         iconElementLeft={<span></span>}

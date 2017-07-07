@@ -7,10 +7,12 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import {List, ListItem, makeSelectable} from 'material-ui/List';
 import Paper from 'material-ui/Paper';
+import './GuildTeams.css';
 
 function TeamRecentMatches(props){
   let teamColor;
-  let opponentColor; 
+  let opponentColor;
+  let count = 0; 
   const recentMatchListItems = props.matches.map(match => {
     teamColor = match.team.toLowerCase();
     if(teamColor = "blue"){
@@ -18,25 +20,32 @@ function TeamRecentMatches(props){
     }
     else
       opponentColor = "blue";
+    /*let resultClass ='';
+    switch(match.result.toLowerCase()){
+      case 'defeat':
+        resultClass = 'defeat';
+        break;
+      case 'forfeit':
+        resultClass = 'forfeit'
+    }*/
 
-    let count = 0;
     return (<ListItem 
               primaryText={
-                            <div className="matchElement">
+                            <div className={"matchElement "+match.result.toLowerCase()}>
                               <div className="matchDetail">
-                                <span className="matchResult">match.result</span>
+                                <div className="matchResult">{match.result}</div>
                               </div>
                               <div className="matchDetail">
-                                <h5>Team Score</h5>
-                                <span>match.scores[teamColor]</span>
+                                  <h5>Team Score</h5>
+                                  <span>{match.scores[teamColor]}</span>
                               </div>
                               <div className="matchDetail">
-                                <h5>Opponent's Score</h5>
-                                <span>match.scores[opponentColor]</span>
+                                  <h5>Opponent's Score</h5>
+                                  <span>{match.scores[opponentColor]}</span>
                               </div>
                               <div className="matchDetail">
-                                <h5>Type</h5>
-                                <span>match.rating_type</span>
+                                  <h5>Type</h5>
+                                  <span>{match.rating_type}</span>
                               </div>
                             </div>
                           } 

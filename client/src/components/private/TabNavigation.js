@@ -57,7 +57,8 @@ class TabNavigation extends React.Component {
     console.log(event.target.textContent);
     console.log(event.currentTarget.value);
     const value = (event.target.textContent).toLowerCase();
-    if(this.props.location.pathname.startsWith("/dashboard/"+value)){
+    //if(this.props.location.pathname.startsWith("/dashboard/"+value)){
+      if("/dashboard/"+value === this.props.location.pathname){
       switch(value){
         case "guild":
           //this.props.dispatch(guildActions.getGuildInfo(this.props.activeGuild, this.props.activeUser.apiKey));
@@ -73,6 +74,13 @@ class TabNavigation extends React.Component {
           break;
       }
     }
+    else if(this.props.location.pathname.startsWith("/dashboard/"+value)){
+      if(value === 'members')
+        this.props.dispatch(membersActions.deselectMember());
+      else if(value === 'teams')
+        this.props.dispatch(teamsActions.deselectTeam());
+      this.props.history.push('/dashboard/'+value);
+    }
   }
   componentWillUnmount(){
     window.removeEventListener('scroll',this.fixBar);
@@ -86,9 +94,15 @@ class TabNavigation extends React.Component {
   }
   handleChange = (value) => {
     console.log(this.props.location.pathname);
-    if("dashboard/"+value === this.props.location.pathname)
+    if("/dashboard/"+value === this.props.location.pathname)
       return;
     else{
+      this.setState({
+          value: value,
+      });
+      this.props.history.push('/dashboard/'+value);
+    }
+    /*else{
       this.setState({
           value: value,
       });
@@ -105,7 +119,7 @@ class TabNavigation extends React.Component {
         //this.props.dispatch(actions.clearRefresh());
         this.props.history.push('/dashboard/teams');
       }
-    }
+    }*/
 /*this.setState({
           slideIndex: value,
         });

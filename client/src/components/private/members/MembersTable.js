@@ -43,6 +43,17 @@ class MembersTable extends Component {
                   <TableRowColumn style={{textAlign: 'center'}}><button className="statsButton" type="button" name="statsButton" value={apiKey+"|"+i} onClick={this.statsClick}><img className="statsImage" src={pieChart} /></button></TableRowColumn>
                 </TableRow>);
     }
+      let secondCount = rows.length;
+      for(let j=0; j < this.props.unregisteredMembers.length; j++){
+        let date = new Date(this.props.unregisteredMembers[j].joined);
+        const joinDate = (date.getMonth()+1)+'/'+date.getDate()+'/'+date.getFullYear();
+        rows.push(<TableRow className="memberRow" key={secondCount++}>
+                  <TableRowColumn style={{textAlign: 'center'}}>{this.props.unregisteredMembers[j].name}</TableRowColumn>
+                  <TableRowColumn style={{textAlign: 'center'}}>{this.props.unregisteredMembers[j].rank}</TableRowColumn>
+                  <TableRowColumn style={{textAlign: 'center'}}>{joinDate}</TableRowColumn>
+                  <TableRowColumn style={{textAlign: 'center'}}>N/A</TableRowColumn>
+                </TableRow>);
+        }
     this.setState({ rows: rows });
     console.log(this.state.rows);
     console.log(rows);
@@ -63,6 +74,17 @@ class MembersTable extends Component {
                   <TableRowColumn style={{textAlign: 'center'}}>{nextProps.registeredMembers[i].rank}</TableRowColumn>
                   <TableRowColumn style={{textAlign: 'center'}}>{joinDate}</TableRowColumn>
                   <TableRowColumn style={{textAlign: 'center'}}><button className="statsButton" type="button" name="statsButton" value={apiKey+"|"+i} onClick={this.statsClick}><img className="statsImage" src={pieChart} /></button></TableRowColumn>
+                </TableRow>);
+        }
+      let secondCount = rows.length;
+      for(let j=0; j < nextProps.unregisteredMembers.length; j++){
+        let date = new Date(nextProps.unregisteredMembers[j].joined);
+        const joinDate = (date.getMonth()+1)+'/'+date.getDate()+'/'+date.getFullYear();
+        rows.push(<TableRow className="memberRow" key={secondCount++}>
+                  <TableRowColumn style={{textAlign: 'center'}}>{nextProps.unregisteredMembers[j].name}</TableRowColumn>
+                  <TableRowColumn style={{textAlign: 'center'}}>{nextProps.unregisteredMembers[j].rank}</TableRowColumn>
+                  <TableRowColumn style={{textAlign: 'center'}}>{joinDate}</TableRowColumn>
+                  <TableRowColumn style={{textAlign: 'center'}}>N/A</TableRowColumn>
                 </TableRow>);
         }
       this.setState({ rows: rows });
@@ -90,7 +112,7 @@ class MembersTable extends Component {
     else{*/
     if(this.props.membersLoading){
       return (
-      <section className="memberLoadingScreen">
+      <section className="membersLoadingScreen">
           <CircularProgress size={80} thickness={5} />
       </section>
       );

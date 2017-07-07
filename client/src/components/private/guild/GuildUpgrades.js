@@ -12,6 +12,9 @@ import Avatar from 'material-ui/Avatar';
 import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
 import SelectableList from '../SelectableList';
+import UpgradeAvatar from './UpgradeAvatar';
+import Photo from 'material-ui/svg-icons/image/photo';
+//import DragonHead from '../../assets/
 import './Guild.css';
 
 /*let SelectableList = List;
@@ -47,8 +50,12 @@ function wrapState(ComposedComponent) {
     }
   };
 }
-
 SelectableList = wrapState(SelectableList);*/
+
+function avatarLoaded(){
+
+}
+
 
 const style = {
   height: 100,
@@ -81,7 +88,7 @@ function GuildUpgrades(props){
                 className="completedUpgrade"
                 primaryText={upgrade.name}
                 primaryTogglesNestedList={true}
-                leftAvatar={<Avatar src={upgrade.icon}/>}
+                leftAvatar={<Avatar src={upgrade.icon} />}
                 nestedItems={[
                   <ListItem
                     key={1}
@@ -102,7 +109,7 @@ function GuildUpgrades(props){
                 className="upgrade"
                 primaryText={upgrade.name}
                 primaryTogglesNestedList={true}
-                leftAvatar={<Avatar src={upgrade.icon}/>}
+                leftAvatar={<Avatar src={upgrade.icon} />}
                 nestedItems={[
                   <ListItem
                     key={1}
@@ -133,9 +140,6 @@ function GuildUpgrades(props){
                 {completedUpgradeComponentsTwo}
               </SelectableList>
             </div>
-            <div className="seeMore">
-                <span>See More Upgrades...</span>
-            </div>
             </div>
           </Paper>
           <Paper className="upgrades incompleteUpgrades" zDepth={5}>
@@ -151,9 +155,6 @@ function GuildUpgrades(props){
                 {upgradeComponentsTwo}
               </SelectableList>
             </div>
-            <div className="seeMore">
-                <span>See More Upgrades...</span>
-            </div>
             </div>
           </Paper>
         </Paper>
@@ -165,6 +166,9 @@ function GuildUpgrades(props){
   }
   //<FlatButton label="Log Out" onClick={props.logOut}/>
 }
+            /*<div className="seeMore">
+                <span>See More Upgrades...</span>
+            </div>*/
  /*     <AppBar
         title={<span>{props.title}</span>}
         iconElementLeft={<span></span>}

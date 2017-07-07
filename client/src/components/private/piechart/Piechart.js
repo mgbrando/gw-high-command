@@ -9,9 +9,11 @@ class Piechart extends Component {
         this.pie = d3.pie()
                      .value((d) => d.value);
         this.colors = d3.scaleOrdinal(d3.schemeCategory10);
+        this.arcGenerator = this.arcGenerator.bind(this);
     }
  
     arcGenerator(d, i) {
+        console.log('INSIDE ARC GENERATOR');
         return (
             <LabeledArc key={`arc-${i}`}
                         data={d}
@@ -26,9 +28,11 @@ class Piechart extends Component {
             translate = `translate(${this.props.x}, ${this.props.y})`;
  
         return (
-            <g transform={translate}>
-                {pie.map((d, i) => this.arcGenerator(d, i))}
-            </g>
+            <svg className="pieChart">
+                <g transform={translate}>
+                    {pie.map((d, i) => this.arcGenerator(d, i))}
+                </g>
+            </svg>
         )
     }
 }

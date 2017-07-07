@@ -90,7 +90,7 @@ class TeamsTable extends Component {
     }*/
     if(this.props.teamsLoading){
       return (
-      <section className="teamLoadingScreen">
+      <section className="teamsLoadingScreen">
           <CircularProgress size={80} thickness={5} />
       </section>
       );
