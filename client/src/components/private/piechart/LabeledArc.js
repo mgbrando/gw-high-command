@@ -5,7 +5,7 @@ import Arc from './Arc';
 class LabeledArc extends Arc {
     render() {
         let [labelX, labelY] = this.arc.centroid(this.props.data),
-            labelTranslate = `translate(${labelX}, ${labelY})`;
+            labelTranslate = `translate(${labelX*2}, ${labelY*2})`;
         //if(labelX)
  
         return (

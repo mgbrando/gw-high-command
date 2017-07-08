@@ -17,7 +17,7 @@ class GuildLog extends Component {
     }
 
     this.getLog = this.getLog.bind(this);
-    this.grabLog = this.grabLog.bind(this);
+    //this.grabLog = this.grabLog.bind(this);
   }
 
   componentWillMount(){
@@ -29,6 +29,7 @@ class GuildLog extends Component {
   }
   componentDidMount(){
     //if(this.props.log.length === 0){
+      this.props.dispatch(actions.clearLog());
       setInterval(this.getLog, 5000);
       /*if()
       setInterval(this.props.dispatch(actions.getNewLogEntries(this.props.activeGuild, this.props.activeUser.apiKey, this.props.log[this.props.log.length-1].id)), 5000);*/
@@ -37,6 +38,11 @@ class GuildLog extends Component {
       this.props.dispatch(actions.getLogEntries(this.props.activeGuild, this.props.activeUser.apiKey));
     }
     this.getLog();*/
+  }
+  componentWillReceiveProps(nextProps){
+    if(this.props.activeGuild !== nextProps.activeGuild){
+      nextProps.dispatch(actions.clearLog());
+    }
   }
   /*componentDidUpdate(){
     if(this.state.shouldCallInterval){
@@ -51,10 +57,10 @@ class GuildLog extends Component {
      // setInterval(this.props.dispatch(actions.getLogEntries(this.props.activeGuild, this.props.activeUser.apiKey, this.props.log[this.props.log.length-1].id)) ,5000);
   }*/
 
-  grabLog = async () => {
+  /*grabLog = async () => {
     await this.props.dispatch(actions.getLogEntries(this.props.activeGuild, this.props.activeUser.apiKey));
     setInterval(this.props.dispatch(actions.getNewLogEntries(this.props.activeGuild, this.props.activeUser.apiKey, this.props.log[this.props.log.length-1].id)), 5000);
-  };
+  };*/
 
   getLog(){
     this.props.dispatch(actions.getLogEntries(this.props.activeGuild, this.props.activeUser.apiKey, this.props.log));

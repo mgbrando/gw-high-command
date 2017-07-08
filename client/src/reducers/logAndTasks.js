@@ -5,7 +5,7 @@ const initialRepositoryState = {
 	tasks: [],
 	logLoading: true,
 	tasksLoading: true,
-	logHasBeenFetched: true,
+	logHasBeenFetched: false,
 	addTaskSuccessMessage: "",
 	removeTaskSuccessMessage: "",
 	snackBarMessage: "",
@@ -28,6 +28,9 @@ const logAndTasks = (state=initialRepositoryState, action) => {
 	}
 	else if(action.type === actions.REMOVE_TASK_SUCCESS){
 		return Object.assign({}, state, {tasks: action.tasks});
+	}
+	else if(action.type === actions.CLEAR_LOG){
+		return Object.assign({}, state, {log: [], logHasBeenFetched: false});
 	}
 	return state;
 };

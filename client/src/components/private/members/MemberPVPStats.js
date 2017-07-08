@@ -122,18 +122,51 @@ function MemberPVPStats(props){
   //colorCount = 0;
   let characterPieCharts = [];
   let characterCount = 0;
+  let charactersWithStats =[];
   for(let property in props.pvpStats.professions){
+    charactersWithStats.push(property.charAt(0).toUpperCase() + property.slice(1));
     const character = Object.keys(props.pvpStats.professions[property]).map(stat => {
       return {value: props.pvpStats.professions[property][stat], label: props.pvpStats.professions[property][stat]}
     });
-    characterPieCharts.push(<div className="characterChart" key={characterCount++}><h4>{property.charAt(0).toUpperCase() + property.slice(1)}</h4><Piechart 
-                x={150}
-                y={75}
-                outerRadius={50}
-                innerRadius={10}
-                data={character}
-              /></div>);
+    characterPieCharts.push(<div className="characterChart" 
+                                 key={property}>
+                                 <h4>{property.charAt(0).toUpperCase() + property.slice(1)}</h4>
+                                 <Piechart 
+                                    x={150}
+                                    y={75}
+                                    outerRadius={50}
+                                    innerRadius={10}
+                                    data={character}
+                                  />
+                            </div>);
   }
+  const charactersWithoutStats = props.characters.filter(character => {
+    return charactersWithStats.indexOf(character.profession) === -1 ? true : false; 
+  });
+  charactersWithoutStats = charactersWithoutStats.map(character => {
+    return {character.profession};
+  });
+  /*const noStatsData = [
+                        {value: 0, label: 'wins'}, 
+                        {value: 0, label: 'losses'}, 
+                        {value: 0, label: 'desertions'}, 
+                        {value: 0, label: 'byes'}, 
+                        {value: 0, label: 'forfeits'}
+                      ];*/
+  for(let i = 0; i < charactersWithoutStats.length; i++){
+    characterPieCharts.push(<div className="characterChart" 
+                                 key={charactersWithoutStats[i].profession.toLowerCase()}>
+                              <h4>{charactersWithoutStats[i].profession}</h4>
+                              <div><span>No PVP data recorded for this profession</span></div>
+                            </div>);
+  }
+
+  const allCharacters=[...charactersWithStats, ...charactersWithoutStats];
+  allCharacters.sort(props.sortCharacters);
+  let allCharactersCount = 1;
+  allCharacters = allCharacters.map(character => {
+    <MenuItem value={allCharactersCount++} primaryText={character} />
+  });
            /*   <Piechart 
                 x={100}
                 y={100}
@@ -179,7 +212,12 @@ function MemberPVPStats(props){
           </div>
           <div>
             <h2 className="sectionHeader">sPvP win ratios by character (all seasons)</h2>
-            {characterPieCharts}
+            <div className="pieChartDisplay">
+              <h3><DropDownMenu value={props.professionTypeValue} onChange={props.handleProfessionChange}>
+                {allCharacters}
+              </DropDownMenu></h3>
+              {characterPieCharts}
+            </div>
           </div>
           </Paper>
         </Paper>

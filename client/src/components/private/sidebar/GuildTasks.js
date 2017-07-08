@@ -59,6 +59,9 @@ class GuildTasks extends Component {
       else if((this.props.tasks.length - nextProps.tasks.length) > 1)
         this.setState({snackBarMessage: "Removed "+(this.props.tasks.length - nextProps.tasks.length)+" tasks from task list", snackBarOpen: true});
     }
+    if(this.props.activeGuild !== nextProps.activeGuild){
+      nextProps.dispatch(actions.getTasks(nextProps.activeGuild));
+    }
   }
   /*componentWillMount(){
     let worker = new logWorker();
@@ -242,7 +245,8 @@ class GuildTasks extends Component {
           {taskListItems}
         </List>
         <Snackbar
-          style={{width: '100%'}}
+          className="snackBar"
+          style={{width: '300px'}}
           open={this.state.snackBarOpen}
           message={this.state.snackBarMessage}
           autoHideDuration={4000}

@@ -15,7 +15,7 @@ function RegistrationSuccess(props){
     this.props.onSubmit();
   }*/
   let guilds = [];
-  for(let i=0; i < props.guilds; i++){
+  for(let i=0; i < props.guilds.length; i++){
     console.log(props.guilds[i].guildName);
     guilds.push(props.guilds[i].guildName);
   }

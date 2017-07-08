@@ -22,14 +22,17 @@ class GuildMember extends Component {
     super(props);
 
     this.state = {
-      pvpTypeValue: 1
+      pvpTypeValue: 1,
+      professionTypeValue: 1
     };
 
     console.log("In GuildMember");
     this.deselectMember = this.deselectMember.bind(this);
     this.refreshMember = this.refreshMember.bind(this);
     this.handlePVPTypeChange = this.handlePVPTypeChange.bind(this);
+    this.handleProfessionChange = this.handleProfessionChange.bind(this);
     this.hasStatistics = this.hasStatistics.bind(this);
+    this.sortCharacters = this.sortCharacters.bind(this);
   }
   componentWillReceiveProps(nextProps){
     if(nextProps.activeGuild !== this.props.activeGuild){
@@ -54,6 +57,9 @@ class GuildMember extends Component {
   handlePVPTypeChange(event, selectedIndex, menuItem){
     this.setState({pvpTypeValue: menuItem});
   }
+  handleProfessionChange(event, selectedIndex, menuItem){
+    this.setState({professionTypeValue: menuItem});
+  }
   hasStatistics(stats){
     if(stats.wins !== 0 || 
       stats.losses !== 0 ||
@@ -64,6 +70,15 @@ class GuildMember extends Component {
     }
     else 
       return false;
+  }
+  sortCharacters(professionA, professionB){
+    let {wins, losses} = this.props.pvpStats.professions[professionA];
+    const winPercentageA = wins/(wins + losses) * 100;
+    winPercentageA = Math.round(winPercentageA * 100) / 100;
+    {wins, losses} = this.props.pvpStats.professions[professionB];
+    const winPercentageB = wins/(wins + losses) * 100;
+    winPercentageB = Math.round(winPercentageB * 100) / 100;
+    return winPercentageB - winPercentageA;
   }
   /*componentWillUnmount(){
     this.deselectMember();
@@ -106,7 +121,11 @@ class GuildMember extends Component {
           display={this.props.displayMemberPVPStats} 
           pvpTypeValue={this.state.pvpTypeValue}
           handlePVPTypeChange = {this.handlePVPTypeChange}
+          professionTypeValue = {this.professionTypeValue}
+          handleProfessionChange = {this.handleProfessionChange}
           hasStatistics={this.hasStatistics}
+          characters={this.props.characters}
+          sortCharacters={this.props.sortCharacters}
         />
         <SectionBar title="PvE Stats" />
         <MemberPVEStats 

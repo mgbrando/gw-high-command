@@ -1,6 +1,7 @@
 import React from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import Subheader from 'material-ui/Subheader';
 //import React, { Component } from 'react';
 //import {connect} from 'react-redux';
 //import {Link} from 'react-router';
@@ -28,8 +29,8 @@ function UserNameAndPasswordForm(props){
 	 if(props.type === 'loginCredentials'){
         return (
           <div className="leaderLoginCredentials">
-            <h2>Login Credentials</h2>
               <form className="userNameAndPasswordForm" onSubmit={props.registerGuildLeader}>
+                <Subheader>Login Credentials</Subheader>
                 <TextField
                   hintText="Must be 8 characters long"
                   floatingLabelText="Username"

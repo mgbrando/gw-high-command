@@ -52,3 +52,7 @@
 	width: 100%;
 	word-wrap: break-word;
 }
+.snackBar > div{
+	width: 100% !important;
+	text-align: center;
+}

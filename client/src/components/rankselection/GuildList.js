@@ -85,12 +85,11 @@ class GuildList extends Component {
 	render(){
 		let guilds = [];
 		for(let i = 0; i < this.props.guilds.length; i++){
-			guilds.push(<ListItem className="guildChoice" innerDivStyle={{paddingLeft: 40}} key={i} primaryText={this.props.guilds[i].guildName+' ['+this.props.guilds[i].guildTag+']'} leftCheckbox={<Checkbox onClick={this.toggleGuild} value={this.props.guilds[i].guildId}/>} />); //onCheck={}
+			guilds.push(<ListItem className="guildChoice" innerDivStyle={{paddingLeft: 40}} key={i} primaryText={this.props.guilds[i].guildName+' ['+this.props.guilds[i].guildTag+']'} leftCheckbox={<Checkbox className="guildCheckBox" onClick={this.toggleGuild} value={this.props.guilds[i].guildId}/>} />); //onCheck={}
 		}
 		if(this.props.isLeader){
 			return (
 				<div className="guildListContainer">
-					<h2>{this.props.title}</h2>
 					<List className="guildList">
 						<Subheader>Select guilds to create for this application</Subheader>
 						{guilds}
@@ -101,7 +100,6 @@ class GuildList extends Component {
 		else{
 			return (
 				<div className="guildListContainer">
-					<h2>{this.props.title}</h2>
 					<List className="guildList">
 						<Subheader>Select guilds before moving on to link your API Key</Subheader>
 						{guilds}

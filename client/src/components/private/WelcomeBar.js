@@ -12,6 +12,7 @@ import ActionNoteAdd from 'material-ui/svg-icons/action/note-add';
 import ActionList from 'material-ui/svg-icons/action/list';
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 import * as actions from '../../actions/registrationAndLoginActions';
+import { withRouter } from 'react-router';
 import './Dashboard.css';
 
 //iconElementLeft={<IconButton><NavigationClose /></IconButton>}
@@ -37,11 +38,17 @@ class WelcomeBar extends Component {
   componentWillUnmount(){
     window.removeEventListener('scroll',this.fixBar);
   }
+
   handleChangeSingle(event, value){
     //console.log(this.state.valueSingle);
     this.setState({valueSingle: value});
-
     this.props.dispatch(actions.setActiveGuild(value));
+    if(this.props.location.pathname.startsWith('/dashboard/members') && this.props.location.pathname !== '/dashboard/members'){
+      this.props.history.replace('/dashboard/members');
+    }
+    else if(this.props.location.pathname.startsWith('/dashboard/teams') && this.props.location.pathname !== '/dashboard/teams'){
+      this.props.history.replace('/dashboard/teams');
+    }
   }
   fixBar(){
     if(window.scrollY > 140)
@@ -138,4 +145,4 @@ const mapStateToProps = (state, props) => ({
   activeUserGuilds: state.registrationAndLogin.activeUserGuilds
 });
 
-export default connect(mapStateToProps)(WelcomeBar);
+export default withRouter(connect(mapStateToProps)(WelcomeBar));

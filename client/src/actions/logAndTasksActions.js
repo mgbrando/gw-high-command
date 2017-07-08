@@ -1,6 +1,16 @@
 //import 'whatwg-fetch';
 import 'isomorphic-fetch';
 
+export const CLEAR_LOG = 'CLEAR_LOG';
+export const clearLog = () => ({
+  type: CLEAR_LOG
+});
+
+/*export const CLEAR_TASKS = 'CLEAR_LOG';
+export const clearLog = () => ({
+  type: CLEAR_LOG,
+});*/
+
 export const REMOVE_TASK_SUCCESS = 'REMOVE_TASK_SUCCESS';
 export const removeTaskSuccess = tasks => ({
   type: REMOVE_TASK_SUCCESS,

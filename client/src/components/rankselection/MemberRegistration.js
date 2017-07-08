@@ -10,6 +10,14 @@ import GuildList from './GuildList';
 import LeaderLoginCredentials from './LeaderLoginCredentials';
 import UserNameAndPasswordForm from './UserNameAndPasswordForm';
 import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
+import {
+  Step,
+  Stepper,
+  StepLabel,
+} from 'material-ui/Stepper';
+import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
+import ExpandTransition from 'material-ui/internal/ExpandTransition';
 //import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
 import './RankSelection.css';
@@ -24,6 +32,7 @@ class MemberRegistration extends Component {
 
   constructor(props) {
     super(props);
+
     //remember you have the method getPage as a prop
     this.validateAPIKey = this.validateAPIKey.bind(this);
     //this.addMemberToGuilds = this.addMemberToGuilds.bind(this);
@@ -34,9 +43,14 @@ class MemberRegistration extends Component {
     this.changeSection = this.changeSection.bind(this);
     this.getAPIKeyInput = this.getAPIKeyInput.bind(this);
     this.registerGuildLeader = this.registerGuildLeader.bind(this);
+    this.handlePrev = this.handlePrev.bind(this);
+    this.handleNext = this.handleNext.bind(this);
   }
   componentWillMount(){
     this.props.dispatch(actions.getMemberRank(this.props.match.params.rank));
+  }
+  componentWillUnmount(){
+    this.props.dispatch(actions.registrationReset());
   }
   validateAPIKey(){
     /*action to check for an account with the apiKey and the store the api key
@@ -127,9 +141,101 @@ class MemberRegistration extends Component {
     //Action to set isValidMember to false and memberGuilds to []
     this.props.getPage('rankSelection');
   }
+  handleNext = () => {
+    const {stepIndex, isLeader} = this.props;
+    /*const {stepIndex} = this.state;
+    if (!this.state.loading) {
+      this.dummyAsync(() => this.setState({
+        loading: false,
+        stepIndex: stepIndex + 1,
+        finished: stepIndex >= 2,
+      }));
+    }*/
+    if((stepIndex >= 1 && !isLeader)){
+      this.props.dispatch(actions.completeMemberRegistration(this.props.memberName, this.props.memberApiKey, this.props.selectedMemberGuilds));
+    } 
+    else if(stepIndex >= 2 && isLeader){
+        this.props.dispatch(actions.registerGuildLeader(this.props.usernameInput, this.props.passwordInput, this.props.confirmPasswordInput,
+        this.props.memberName, this.props.memberApiKey, this.props.selectedMemberGuilds));
+    }
+    else
+      this.props.dispatch(actions.changeSection(stepIndex+1, isLeader));
+  };
 
-  render() {
-    if(this.props.memberRegistrationSection === "registrationSuccess"){
+  handlePrev = () => {
+    /*const {stepIndex} = this.state;
+    if (!this.state.loading) {
+      this.dummyAsync(() => this.setState({
+        loading: false,
+        stepIndex: stepIndex - 1,
+      }));
+    }*/
+    this.props.dispatch(actions.changeSection(this.props.stepIndex-1));
+  };
+  getStepContent(stepIndex) {
+    switch(stepIndex){
+      case 0:
+        return(
+          <div className="">
+            <div className="MemberRegistrationHeader">
+              <h2>Registration</h2>
+            </div>
+            <KeySubmissionForm 
+              apiKey={this.props.memberApiKey} 
+              getAPIKeyInput={this.getAPIKeyInput} 
+              validateAPIKey={this.validateAPIKey}
+              memberValidationMessage={this.props.memberValidationMessage}
+            />
+          </div>  
+        );
+      case 1:
+        return(
+          <div className="">
+            <div className="MemberRegistrationHeader">
+              <h2>Registration</h2>
+            </div>
+            <GuildList 
+              title="Registered Guilds" 
+              guildIds={this.props.memberGuildChoices} 
+            />
+          </div>  
+        );
+      case 2:
+        if(this.props.isLeader){
+          return(
+            <div className="">
+              <div className="MemberRegistrationHeader">
+                <h2>Registration</h2>
+              </div>
+              <UserNameAndPasswordForm 
+                type="loginCredentials"
+                getUsernameInput = {this.getUsernameInput}
+                getPasswordInput = {this.getPasswordInput}
+                getConfirmPasswordInput = {this.getConfirmPasswordInput}
+                usernameErrorMessage={this.props.usernameErrorMessage}
+                passwordErrorMessage={this.props.passwordErrorMessage}
+                confirmPasswordErrorMessage={this.props.confirmPasswordErrorMessage}
+                registerGuildLeader={this.registerGuildLeader}
+                passwordDisabled={this.props.passwordDisabled}
+                confirmPasswordDisabled={this.props.confirmPasswordDisabled}
+                credentialsSubmitDisabled={this.props.credentialsSubmitDisabled}
+                usernameValue={this.props.usernameInput}
+                passwordValue={this.props.passwordInput}
+                confirmPasswordValue={this.props.confirmPasswordInput}
+              />
+            </div>  
+          );
+        }
+      default:
+        return 'Something went horribly wrong.';
+    }
+  }
+
+  renderContent() {
+    const {finished, stepIndex} = this.props;
+    const contentStyle = {margin: '0 16px', overflow: 'hidden'};
+
+    if (finished) {
       return(
         <div className="MemberRegistration">
           <div className="MemberRegistrationHeader">
@@ -139,168 +245,65 @@ class MemberRegistration extends Component {
         </div>
       );
     }
-    else if(this.props.memberRegistrationSection === "guildSelection" && this.props.isLeader){
-      return(
-        <div className="MemberRegistration">
-          <div className="MemberRegistrationHeader">
-            <h2>Registration</h2>
-          </div>
-          <GuildList 
-            title="Registered Guilds" 
-            guildIds={this.props.memberGuildChoices} 
-            />
-        <SectionNavigation 
-            previous={true} 
-            next={true} 
-            nextButtonDisabled={this.props.nextButtonDisabled}
-            changeSection={this.changeSection}
-            previousSection="keySubmission"
-            nextSection="loginCredentials"
-          />
-        </div>  
-      );
-    }
-    else if(this.props.memberRegistrationSection === "guildSelection"){
-      return(
-        <div className="MemberRegistration">
-          <div className="MemberRegistrationHeader">
-            <h2>Registration</h2>
-          </div>
-          <GuildList 
-            title="Registered Guilds" 
-            guildIds={this.props.memberGuildChoices} 
-            />
-        <SectionNavigation 
-            previous={true} 
-            next={true} 
-            nextButtonDisabled={this.props.nextButtonDisabled}
-            changeSection={this.changeSection}
-            previousSection="keySubmission"
-            nextSection="registrationSuccess"
-          />
-        </div>  
-      );
-    }
-/*    else if(this.props.memberRegistrationSection === "loginCredentials"){
-      return(
-        <div className="MemberRegistration">
-          <div className="MemberRegistrationHeader">
-            <h2>Registration</h2>
-          </div>
-          <LeaderLoginCredentials
-            title="Registered Guilds" 
-            guildIds={this.props.memberGuildChoices} 
-            />
-        <SectionNavigation 
-            previous={true} 
-            next={true} 
-            nextButtonDisabled={this.props.nextButtonDisabled}
-            changeSection={this.changeSection}
-            previousSection="guildSelection"
-            nextSection="registrationSuccess"
-          />
-        </div>  
-      );
-    }*/
-    else if(this.props.memberRegistrationSection === "loginCredentials"){
-      return(
-        <div className="MemberRegistration">
-          <div className="MemberRegistrationHeader">
-            <h2>Registration</h2>
-          </div>
-          <UserNameAndPasswordForm 
-            type="loginCredentials"
-            getUsernameInput = {this.getUsernameInput}
-            getPasswordInput = {this.getPasswordInput}
-            getConfirmPasswordInput = {this.getConfirmPasswordInput}
-            usernameErrorMessage={this.props.usernameErrorMessage}
-            passwordErrorMessage={this.props.passwordErrorMessage}
-            confirmPasswordErrorMessage={this.props.confirmPasswordErrorMessage}
-            registerGuildLeader={this.registerGuildLeader}
-            passwordDisabled={this.props.passwordDisabled}
-            confirmPasswordDisabled={this.props.confirmPasswordDisabled}
-            credentialsSubmitDisabled={this.props.credentialsSubmitDisabled}
-            usernameValue={this.props.usernameInput}
-            passwordValue={this.props.passwordInput}
-            confirmPasswordValue={this.props.confirmPasswordInput}
-          />
-        <SectionNavigation 
-            previous={true} 
-            next={true} 
-            nextButtonDisabled={this.props.nextButtonDisabled}
-            changeSection={this.changeSection}
-            previousSection="guildSelection"
-            nextSection="registrationSuccess"
-          />
-        </div>  
-      );
-    }
-    else{
-      return(
-        <div className="MemberRegistration">
-          <div className="MemberRegistrationHeader">
-            <h2>Registration</h2>
-          </div>
-          <KeySubmissionForm 
-            apiKey={this.props.memberApiKey} 
-            getAPIKeyInput={this.getAPIKeyInput} 
-            validateAPIKey={this.validateAPIKey}
-            memberValidationMessage={this.props.memberValidationMessage}
-          />
-          <SectionNavigation 
-            previous={false} 
-            next={true} 
-            nextButtonDisabled={this.props.nextButtonDisabled}
-            changeSection={this.changeSection}
-            nextSection="guildSelection"
-          />
-        </div>  
-      );
-    }
-  }
-/*Goes at 84
-        <BottomNavigation selectedIndex={this.state.selectedIndex}>
-          <BottomNavigationItem
-            label="Previous"
-            icon={previousIconButton}
-            onTouchTap={() => this.select(0)}
-          />
-          <BottomNavigationItem
-            label="Next"
-            icon={nextIconButton}
-            onTouchTap={() => this.select(1)}
-          />
-        </BottomNavigation>
-*/
-/*  Goes at 102  
-        <BottomNavigation selectedIndex={this.state.selectedIndex}>
-          <BottomNavigationItem
-            label="Next"
-            icon={nextIconButton}
-            onTouchTap={() => this.select(2)}
-          />
-        </BottomNavigation>       
-*/
-  //<Link to="/" className="backButton"><button type="button">Back</button></Link>
-  //<Link to="/" className="backButton"><button type="button">Back</button></Link>
-  /*  return (
+
+    return (
       <div className="MemberRegistration">
-        {this.props.children}
-        <Link to="/" className="backButton"><button type="button">Back</button></Link>
-        <Link to="/" className="backButton"><button type="button">Back</button></Link>
-        <div className="MemberRegistrationHeader">
-          <h2>Member Registration</h2>
+        <div>{this.getStepContent(stepIndex)}</div>
+        <div style={{marginTop: 24, marginBottom: 12}}>
+          <FlatButton
+            label="Back"
+            disabled={this.props.backButtonDisabled}
+            onTouchTap={this.handlePrev}
+            style={{marginRight: 12}}
+          />
+          <RaisedButton
+            label={((stepIndex === 1 && !this.props.isLeader) || (stepIndex === 2 && this.props.isLeader)) ? 'Finish' : 'Next'}
+            disabled={this.props.nextButtonDisabled}
+            primary={true}
+            onTouchTap={this.handleNext}
+          />
         </div>
-        <form onSubmit={event => {event.preventDefault(); this.validateMemberAPIKey(event.target.value);}}>
-          <label htmlFor="memberApiKey">Enter your API Key</label>
-          <input id="memberApiKey" type="text" name="memberApiKey" placeholder={this.props.memberApiKey} required />
-          <button type="submit">Submit</button>
-          {this.showGuilds()}
-        </form>
-        <GuildSelectionForm />
       </div>
     );
-  }*/
+  }
+
+  render() {
+    const {loading, stepIndex} = this.props;
+    const additionalStep = this.props.isLeader ? (<Step><StepLabel>Submit login credentials</StepLabel></Step>) : false;
+    if(additionalStep)
+      return (
+        <div className="stepper" style={{width: '100%', maxWidth: 700, margin: 'auto'}}>
+          <Stepper activeStep={stepIndex}>
+            <Step>
+              <StepLabel>Submit API Key</StepLabel>
+            </Step>
+            <Step>
+              <StepLabel>Select guilds to register</StepLabel>
+            </Step>
+            {additionalStep}
+          </Stepper>
+          <ExpandTransition loading={loading} open={true}>
+            {this.renderContent()}
+          </ExpandTransition>
+        </div>
+      );
+    else
+      return (
+        <div className="stepper" style={{width: '100%', maxWidth: 700, margin: 'auto'}}>
+          <Stepper activeStep={stepIndex}>
+            <Step>
+              <StepLabel>Submit API Key</StepLabel>
+            </Step>
+            <Step>
+              <StepLabel>Select guilds to register</StepLabel>
+            </Step>
+          </Stepper>
+          <ExpandTransition loading={loading} open={true}>
+            {this.renderContent()}
+          </ExpandTransition>
+        </div>
+      );
+  }
 }
 
 const mapStateToProps = (state, props) => ({
@@ -327,7 +330,12 @@ const mapStateToProps = (state, props) => ({
     credentialsSubmitDisabled: state.registrationAndLogin.credentialsSubmitDisabled,
     usernameErrorMessage: state.registrationAndLogin.usernameErrorMessage,
     passwordErrorMessage: state.registrationAndLogin.passwordErrorMessage,
-    confirmPasswordErrorMessage: state.registrationAndLogin.confirmPasswordErrorMessage
+    confirmPasswordErrorMessage: state.registrationAndLogin.confirmPasswordErrorMessage,
+    loading: state.registrationAndLogin.loading,
+    finished: state.registrationAndLogin.finished,
+    stepIndex: state.registrationAndLogin.stepIndex,
+    backButtonDisabled: state.registrationAndLogin.backButtonDisabled,
+    nextButtonDisabled: state.registrationAndLogin.nextButtonDisabled
     //passwordValue: state.registrationAndLogin.passwordValue
 });
 

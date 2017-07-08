@@ -2,12 +2,10 @@ import * as actions from '../actions/registrationAndLoginActions';
 
 const initialRepositoryState = {
 	guildId: "",
-	//members: [],
 	isLeader: false,
 	isValidMember: false,
 	memberGuildChoices: [],
 	selectedMemberGuilds: [],
-	//selectedGuilds: [],
 	memberApiKey: "",
 	memberApiKeyInput: "",
 	memberName: "",
@@ -20,27 +18,25 @@ const initialRepositoryState = {
 	addMemberMessage: {},
 	leaderValidationMessage: {},
 	registerGuildLeaderMessage: {},
-	nextButtonDisabled: true,
-	memberRegistrationSection: "keySubmission",
 	guilds: [],
 	getGuildErrorMessage: "",
-	//credentialsSubmitDisabled: true,
 	usernameErrorMessage: "",
 	passwordErrorMessage: "",
 	confirmPasswordErrorMessage: "",
-	//validationErrors: ["", "", ""],
 	passwordDisabled: true,
     confirmPasswordDisabled: true,
     credentialsSubmitDisabled: true,
-    //usernameTakenError: ""
-    //passwordValue: "", 
-    //confirmPasswordValue: ""
     activeUser: {},
     authorizationErrorMessage: "",
     isAuthenticated: false,
     authorizationChecked: false,
     activeUserGuilds: [],
-    activeGuild: ""
+    activeGuild: "",
+    loading: false,
+    finished: false,
+    stepIndex: 0,
+    backButtonDisabled: true,
+    nextButtonDisabled: true
 };
 
 const registrationAndLogin = (state=initialRepositoryState, action) => {
@@ -86,7 +82,7 @@ const registrationAndLogin = (state=initialRepositoryState, action) => {
 		return Object.assign({}, state, {isValidLeader: false, leaderValidationMessage: {type: 'invalid', message:action.message}});
 	}
 	else if(action.type === actions.VALIDATE_LEADER_KEY_SUCCESS){
-		return Object.assign({}, state, {isValidLeader: true, leaderApiKey: action.leaderApiKey, leaderValidationMessage: {type: 'success', message:action.message}});
+		return Object.assign({}, state, {isValidLeader: true, leaderApiKey: action.leaderApiKey, leaderValidationMessage: {type: 'success', message:action.message}, nextButtonDisabled: false});
 	}
 	else if(action.type === actions.REGISTER_GUILD_LEADER_SUCCESS){
 		return Object.assign({}, state, {registerGuildLeaderMessage: {type: 'success', message:action.message}});
@@ -95,16 +91,42 @@ const registrationAndLogin = (state=initialRepositoryState, action) => {
 		return Object.assign({}, state, {registerGuildLeaderMessage: {type: 'error', message:action.error}});
 	}
 	else if(action.type === actions.SWITCH_TO_REGISTRATION_SUCCESS){
-		return Object.assign({}, state, {memberRegistrationSection: "registrationSuccess", nextButtonDisabled: true});
+		return Object.assign({}, state, {
+			stepIndex: 0, 
+			backButtonDisabled: true, 
+			nextButtonDisabled: true, 
+			finished:true,
+			isValidMember: false,
+			memberGuildChoices: [],
+			memberApiKey: "",
+			memberApiKeyInput: "",
+			isValidLeader: false,
+			leaderApiKey: "",
+			usernameInput: "",
+			passwordInput: "",
+			confirmPasswordInput: "",
+			memberValidationMessage: "",
+			addMemberMessage: {},
+			leaderValidationMessage: {},
+			registerGuildLeaderMessage: {},
+			guilds: [],
+			usernameErrorMessage: "",
+			passwordErrorMessage: "",
+			confirmPasswordErrorMessage: "",
+			passwordDisabled: true,
+    		confirmPasswordDisabled: true,
+    		credentialsSubmitDisabled: true
+    	});
 	}
 	else if(action.type === actions.SWITCH_TO_GUILD_SELECTION){
-		return Object.assign({}, state, {memberRegistrationSection: "guildSelection", nextButtonDisabled: true});
+		return Object.assign({}, state, {stepIndex: 1, selectedMemberGuilds: [], backButtonDisabled: false, nextButtonDisabled: true});
 	}
 	else if(action.type === actions.SWITCH_TO_KEY_SUBMISSION){
-		return Object.assign({}, state, {memberRegistrationSection: "keySubmission", nextButtonDisabled: true, guilds: []});
+		return Object.assign({}, state, {stepIndex: 0, backButtonDisabled: true, nextButtonDisabled: true, guilds: [],
+		memberName: '', memberApiKey: '', memberValidationMessage: '', memberGuildChoices: ''});
 	}
 	else if(action.type === actions.SWITCH_TO_LOGIN_CREDENTIALS){
-		return Object.assign({}, state, {memberRegistrationSection: "loginCredentials", nextButtonDisabled: true, guilds: []});
+		return Object.assign({}, state, {stepIndex: 2, nextButtonDisabled: true, guilds: []});
 	}
 	else if(action.type === actions.GET_MEMBER_KEY_INPUT){
 		//console.log(action.apiKey);
@@ -139,6 +161,43 @@ const registrationAndLogin = (state=initialRepositoryState, action) => {
 	}
 	else if(action.type === actions.SET_ACTIVE_GUILD){
 		return Object.assign({}, state, {activeGuild: action.guild});
+	}
+	else if(action.type === actions.CHANGE_SECTION_SUCCESS){
+		return Object.assign({}, state, {stepIndex: action.stepIndex, backButtonDisabled: ((action.stepIndex === 0) ? true : false)});
+	}
+	else if(action.type === actions.LOAD_FINISH_SCREEN_SUCCESS){
+		return Object.assign({}, state, {stepIndex: 0, finished: true});
+	}
+	else if(action.type === actions.RESET_REGISTRATION){
+		return Object.assign({}, state, {
+			stepIndex: 0, 
+			backButtonDisabled: true, 
+			nextButtonDisabled: true, 
+			finished: false, 
+			isLeader: false,
+			isValidMember: false,
+			memberGuildChoices: [],
+			selectedMemberGuilds: [],
+			memberApiKey: "",
+			memberApiKeyInput: "",
+			memberName: "",
+			isValidLeader: false,
+			leaderApiKey: "",
+			usernameInput: "",
+			passwordInput: "",
+			confirmPasswordInput: "",
+			memberValidationMessage: "",
+			addMemberMessage: {},
+			leaderValidationMessage: {},
+			registerGuildLeaderMessage: {},
+			guilds: [],
+			usernameErrorMessage: "",
+			passwordErrorMessage: "",
+			confirmPasswordErrorMessage: "",
+			passwordDisabled: true,
+    		confirmPasswordDisabled: true,
+    		credentialsSubmitDisabled: true
+		});
 	}
 	return state;
 };

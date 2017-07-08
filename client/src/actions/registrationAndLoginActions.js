@@ -2,9 +2,28 @@
 import 'isomorphic-fetch';
 import $ from 'jquery';
 import { getCookie, setCookie, expireCookie, removeCookie } from 'redux-cookie';
-//import { CookiesProvider, withCookies, Cookies } from 'react-cookie';
-//import Cookies from 'universal-cookie';
 
+export const RESET_REGISTRATION = 'RESET_REGISTRATION';
+export const registrationReset = () => ({
+    type: RESET_REGISTRATION
+});
+
+export const changeSection = (stepIndex, isLeader=false) => {
+  return dispatch => {
+    if(stepIndex ===0){
+      return dispatch(switchToKeySubmissionSection());
+    }
+    else if(stepIndex === 1){
+      return dispatch(switchToGuildSelectionSection());
+    }
+    else if(stepIndex === 2 && isLeader){
+      return dispatch(switchToLoginCredentialsSection());
+    }
+    else{
+      return dispatch(switchToRegistrationSuccessSection());
+    }
+  } 
+};
 
 export const SET_ACTIVE_GUILD = 'SET_ACTIVE_GUILD';
 export const setActiveGuild = guild => ({
@@ -72,10 +91,6 @@ export const registerGuildLeader = (username, password, confirmPassword, handleN
   return dispatch => {
     const validationErrors = ["", "", ""];
     if(username.length >= 8 && password.length >= 8 && confirmPassword === password){
-      /*fetch('/api/leaders?username='+username)
-      .then(response => response.json())
-      .then(_response => {
-        if(_response.unique){*/
           console.log(guilds);
           fetch('/api/register', {
             method: 'POST',
@@ -99,15 +114,10 @@ export const registerGuildLeader = (username, password, confirmPassword, handleN
            // }
             else
               return dispatch(switchToRegistrationSuccessSection());
-            //console.log(message);
-            //return dispatch(setValidCredentials(username, password, confirmPassword));
         })
         .catch(err =>{
           return dispatch(setInvalidCredentials());
-        //}
-        //validationErrors[0] = 'Username already exists';
-        //return dispatch(setInvalidCredentials(validationErrors));
-      });    
+        });    
     }
     else{
       if(username.length <= 8){
@@ -180,19 +190,6 @@ export const validateMemberAPIKey = access_token => {
 };
 
 //Leader Key Validation
-/*export const VALIDATE_LEADER_KEY_FAILURE = 'VALIDATE_LEADER_KEY_FAILURE';
-export const validateLeaderKeyError = (errorResponse) => ({
-  type: VALIDATE_LEADER_KEY_FAILURE,
-  errorResponse
-});*/
-
-/*export const VALIDATE_LEADER_KEY_SUCCESS = 'VALIDATE_LEADER_KEY_SUCCESS';
-export const validateLeaderKeySuccess = (memberName, memberApiKey, memberGuildChoices) => ({
-  type: VALIDATE_MEMBER_KEY_SUCCESS,
-  memberName,
-  memberApiKey,
-  memberGuildChoices
-});*/
 
 export const validateLeaderAPIKey = access_token => {
   return dispatch => {
@@ -268,44 +265,6 @@ export const addMemberToGuilds = (member, guilds) => {
   }	
 };
 
-
-//Leader Key Validation
-/*export const VALIDATE_LEADER_KEY_FAILURE = 'VALIDATE_LEADER_KEY_FAILURE';
-export const validateLeaderKeyError = error => ({
-	type: VALIDATE_LEADER_KEY_FAILURE,
-	error
-});
-
-export const VALIDATE_LEADER_KEY_NOT_LEADER = 'VALIDATE_LEADER_KEY_NOT_LEADER';
-export const validateLeaderKeyNotLeader = (message = 'Invalid Token') => ({
-	type: VALIDATE_LEADER_KEY_NOT_LEADER,
-	message
-});
-
-export const VALIDATE_LEADER_KEY_SUCCESS = 'VALIDATE_LEADER_KEY_SUCCESS';
-export const validateLeaderKeySuccess = (successResponse, leaderApiKey, message = 'Valid leader token') => ({
-	type: VALIDATE_LEADER_KEY_SUCCESS,
-	successResponse,
-	leaderApiKey,
-	message
-});
-
-export const validateLeaderAPIKey = access_token => {
-  return dispatch => {
-    fetch('https://api.guildwars2.com/v2/account?access_token=${access_token}')
-    .then(response => response.json())
-    .then(responseObject => {
-    	if(Object.keys(responseObject) === 1)
-    		return dispatch(validateLeaderKeyError(responseObject));
-    	else if(responseObject.guild_leader.length === 0)
-    		return dispatch(validateLeaderKeyNotLeader());
-    	else{
-    		return dispatch(validateLeaderKeySuccess(responseObject, access_token));
-    	}
-    });
-  }	
-};*/
-
 //Add Member Key to guilds - (change localhost:8080 dependent on config file)
 export const REGISTER_GUILD_LEADER_SUCCESS = 'REGISTER_GUILD_LEADER_SUCCESS';
 export const registerGuildLeaderSuccess = message => ({
@@ -317,26 +276,6 @@ export const registerGuildLeaderFailure = error => ({
 	type: REGISTER_GUILD_LEADER_FAILURE
 });
 
-/*export const registerGuildLeader = (apiKey, userName, password) => {
-  return dispatch => {
-    fetch('http://localhost:8080/leaders', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-      	apiKey,
-        userName,
-        password
-      })
-    })
-    .then(response => response.json())
-    .then(() => {
-    	return dispatch(registerGuildLeaderSuccess('Successfully registered as a guild leader.'));
-    })
-    .catch(error => dispatch(registerGuildLeaderFailure(error)))
-  }	
-};*/
 export const LOGOUT_USER = 'LOGOUT_USER';
 export const logOutUser = () => ({
   type: LOGOUT_USER
@@ -413,7 +352,6 @@ export const authenticationCleared = (user, guilds, activeGuild) => ({
   user,
   guilds,
   activeGuild
-  //welcomeMessage
 });
 
 export const AUTHENTICATION_FAILED = 'AUTHENTICATION_FAILED';
@@ -457,40 +395,6 @@ export const checkAuthentication = () => {
       console.log(error.message);
       return dispatch(authenticationFailed(error.message));
     });
-
-    /*fetch('/api/authorization', myInit)
-    .then(response => {
-      if(response.status === 401)
-        throw new Error('User not authenticated');
-      else if(response.status === 200 || response.status === 304){
-        console.log("RESPUSER: "+response.user);
-        return response.json();
-      }
-      else
-        throw new Error('Internal service error');
-    })
-    .then(_response => {
-
-      let currentUserKey = _response.user.apiKey;
-      fetch('https://api.guildwars2.com/v2/account?access_token='+currentUserKey)
-      .then(response => response.json())
-      .then(accountInfo => {
-        let guildPromises = [];
-        for(let i=0; i < accountInfo.guilds.length; i++){
-          guildPromises.push(fetch('https://api.guildwars2.com/v2/guild/'+accountInfo.guilds[i]+'?access_token='+currentUserKey)
-                              .then(response => response.json()));
-        }
-
-        Promise.all(guildPromises)
-        .then(guilds => {
-          return dispatch(authenticationCleared(_response.user, guilds, guilds[0].id));
-        });
-      })       
-    })
-    .catch((error) => {
-      console.log(error.message);
-      return dispatch(authenticationFailed(error.message));
-    });*/
   }
 };
 
@@ -553,17 +457,6 @@ export const changeMemberRegistrationSection = (section, leader=false) => {
 
       }
       else{
-        //queryParameters
-        /*fetch('/api/guilds/members', {
-          method: 'PUT',
-          headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          apiKey,
-          memberName
-        })
-      });*/
 		    return dispatch(switchToRegistrationSuccessSection());
       }
     }
@@ -590,34 +483,13 @@ export const getGuildFailure = errorMessage => ({
 
 export const getGuilds = guildId => {
   return dispatch => {
-  	//let fetchPromises = [];
-  	let apiCall='https://api.guildwars2.com/v2/guild/';
-  	//Come back to this with the callable functions
-  	//for(let i = 0; i < guildIds.length; i++){
-  		//fetchPromises.push(fetch(apiCall+guildIds[0]).then(guild => {return {guildId: guild.id, guildName: guild.name};}));
-  		//fetchPromises.push(() => fetch(apiCall+guildIds[i]));
-  		//this["promise"+i]=
-  		/*	.then(guild => {
-  				return {guildId: guild.id, guildName: guild.name};
-  			}));*/
+  
+  let apiCall='https://api.guildwars2.com/v2/guild/';
 	fetch(apiCall+guildId)
-		.then(response => response.json())//apiCall+guildId)
+		.then(response => response.json())
 		.then(guild => { 
 			return dispatch(getGuildSuccess({guildId: guild.id, guildName: guild.name, guildTag: guild.tag}));
 		});
-		//.catch(error => {return dispatch(getGuildFailure(error));})//+guildId+'. '+'ERROR: '+error)));
-  	//Promise.all(fetchPromises.map(p => {
-  		/*p.then(guildValues => {
-  			console.log(guildValues);
-  		})*/
-  	//	console.dir(p);
-  	//}))
-  	/*.then(guilds =>{
-  		const gID=guilds[0].id;
-  		const gName=guilds[0].name;
-  		return dispatch(saveGuilds(guilds));
-  	})*/
-  	//.catch(err => err);
   }	
 };
 export const CHANGE_SELECTED_GUILDS = 'CHANGE_SELECTED_GUILDS';
@@ -626,27 +498,6 @@ export const changeSelectedGuilds = (selectedGuilds, nextArrowDisabled) => ({
   selectedGuilds,
   nextArrowDisabled
 });
-
-/*export const selectGuild = (selectedGuilds, guild) => {
-  return dispatch => dispatch(changeSelectedGuilds([...selectedGuilds, guild], false));
-};
-
-export const deselectGuild = (selectedGuilds, guild) => {
-  return dispatch => {
-    for(let i=0; i < selectedGuilds.length; i++){
-      if(selectedGuilds[i].guildId === guild.guildId){
-        selectedGuilds.splice(i, 1);
-        break;
-      }
-    }*/
-    /*const index = selectedGuilds.indexOf(guildId);
-    selectedGuilds.splice(index, 1);*/
-   /* if(selectedGuilds.length === 0)
-      return dispatch(changeSelectedGuilds(selectedGuilds, true));
-    else
-      return dispatch(changeSelectedGuilds(selectedGuilds, false));
-  } 
-};*/
 
 export const toggleGuild = (selectedGuilds, guilds, guildId) => {
   return dispatch => {
@@ -668,12 +519,6 @@ export const toggleGuild = (selectedGuilds, guilds, guildId) => {
         break;
       }
     }
-    /*const index = selectedGuilds.indexOf(guildId);
-    selectedGuilds.splice(index, 1);*/
-    /*if(selectedGuilds.length === 0)
-      return dispatch(changeSelectedGuilds(selectedGuilds, true));
-    else
-      return dispatch(changeSelectedGuilds(selectedGuilds, false));*/
     return dispatch(changeSelectedGuilds([...selectedGuilds, guild], false));
   } 
 };
