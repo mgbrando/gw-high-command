@@ -23,7 +23,10 @@ class GuildMember extends Component {
 
     this.state = {
       pvpTypeValue: 1,
-      professionTypeValue: 1
+      professionTypeValue: "",
+      charactersWithStats: [],
+      charactersWithoutStats: [],
+      characterData: null
     };
 
     console.log("In GuildMember");
@@ -33,6 +36,28 @@ class GuildMember extends Component {
     this.handleProfessionChange = this.handleProfessionChange.bind(this);
     this.hasStatistics = this.hasStatistics.bind(this);
     this.sortCharacters = this.sortCharacters.bind(this);
+    this.setProfessionTypeValue = this.setProfessionTypeValue.bind(this);
+  }
+  componentDidMount(){
+    let charactersWithStats =[];
+    for(let property in this.props.pvpStats.professions){
+      charactersWithStats.push(property.charAt(0).toUpperCase() + property.slice(1));
+    }
+    let charactersWithoutStats = this.props.characters.filter(character => {
+      return (charactersWithStats.indexOf(character.profession) === -1) ? true : false;
+    });
+    charactersWithoutStats = charactersWithoutStats.map(character => {
+      return character.profession;
+    });
+    charactersWithStats.sort(this.sortCharacters);
+    if(this.state.professionTypeValue === ""){
+      this.setProfessionTypeValue(charactersWithStats[0]);
+    }
+    const characterData = Object.keys(this.props.pvpStats.professions[this.state.professionTypeValue.toLowerCase()]).map(stat => {
+      return {value: this.props.pvpStats.professions[this.state.professionTypeValue.toLowerCase()][stat], label: this.props.pvpStats.professions[this.state.professionTypeValue.toLowerCase()][stat]}
+    });
+    this.setState({charactersWithStats: charactersWithStats, charactersWithoutStats: charactersWithoutStats, 
+    characterData: characterData});
   }
   componentWillReceiveProps(nextProps){
     if(nextProps.activeGuild !== this.props.activeGuild){
@@ -47,6 +72,9 @@ class GuildMember extends Component {
       }
     }
   }
+  /*componentDidMount(){
+    this.setState
+  }*/
   deselectMember(){
     this.props.dispatch(actions.deselectMember());
     this.props.history.push('/dashboard/members');
@@ -72,13 +100,19 @@ class GuildMember extends Component {
       return false;
   }
   sortCharacters(professionA, professionB){
+    professionA = professionA.toLowerCase();
+    professionB = professionB.toLowerCase();
     let {wins, losses} = this.props.pvpStats.professions[professionA];
-    const winPercentageA = wins/(wins + losses) * 100;
+    let winPercentageA = wins/(wins + losses) * 100;
     winPercentageA = Math.round(winPercentageA * 100) / 100;
-    {wins, losses} = this.props.pvpStats.professions[professionB];
-    const winPercentageB = wins/(wins + losses) * 100;
+    wins = this.props.pvpStats.professions[professionB].wins;
+    losses = this.props.pvpStats.professions[professionB].losses;
+    let winPercentageB = wins/(wins + losses) * 100;
     winPercentageB = Math.round(winPercentageB * 100) / 100;
     return winPercentageB - winPercentageA;
+  }
+  setProfessionTypeValue(professionType){
+    this.setState({professionTypeValue: professionType});
   }
   /*componentWillUnmount(){
     this.deselectMember();
@@ -121,11 +155,12 @@ class GuildMember extends Component {
           display={this.props.displayMemberPVPStats} 
           pvpTypeValue={this.state.pvpTypeValue}
           handlePVPTypeChange = {this.handlePVPTypeChange}
-          professionTypeValue = {this.professionTypeValue}
+          professionTypeValue = {this.state.professionTypeValue}
           handleProfessionChange = {this.handleProfessionChange}
           hasStatistics={this.hasStatistics}
-          characters={this.props.characters}
-          sortCharacters={this.props.sortCharacters}
+          charactersWithStats={this.state.charactersWithStats}
+          charactersWithoutStats={this.state.charactersWithoutStats}
+          characterData={this.state.characterData}
         />
         <SectionBar title="PvE Stats" />
         <MemberPVEStats 

@@ -120,12 +120,15 @@ function MemberPVPStats(props){
                 />) :
                 (<div>{stats}</div>);
   //colorCount = 0;
-  let characterPieCharts = [];
+
+
+  /*let characterPieCharts = [];
   let characterCount = 0;
   let charactersWithStats =[];
   for(let property in props.pvpStats.professions){
     charactersWithStats.push(property.charAt(0).toUpperCase() + property.slice(1));
-    const character = Object.keys(props.pvpStats.professions[property]).map(stat => {
+  }*/
+  /*  const character = Object.keys(props.pvpStats.professions[property]).map(stat => {
       return {value: props.pvpStats.professions[property][stat], label: props.pvpStats.professions[property][stat]}
     });
     characterPieCharts.push(<div className="characterChart" 
@@ -139,13 +142,13 @@ function MemberPVPStats(props){
                                     data={character}
                                   />
                             </div>);
-  }
-  const charactersWithoutStats = props.characters.filter(character => {
-    return charactersWithStats.indexOf(character.profession) === -1 ? true : false; 
+  }*/
+  /*let charactersWithoutStats = props.characters.filter(character => {
+    return (charactersWithStats.indexOf(character.profession) === -1) ? true : false;
   });
   charactersWithoutStats = charactersWithoutStats.map(character => {
-    return {character.profession};
-  });
+    return character.profession;
+  });*/
   /*const noStatsData = [
                         {value: 0, label: 'wins'}, 
                         {value: 0, label: 'losses'}, 
@@ -153,20 +156,45 @@ function MemberPVPStats(props){
                         {value: 0, label: 'byes'}, 
                         {value: 0, label: 'forfeits'}
                       ];*/
-  for(let i = 0; i < charactersWithoutStats.length; i++){
+  /*for(let i = 0; i < charactersWithoutStats.length; i++){
     characterPieCharts.push(<div className="characterChart" 
-                                 key={charactersWithoutStats[i].profession.toLowerCase()}>
-                              <h4>{charactersWithoutStats[i].profession}</h4>
+                                 key={charactersWithoutStats[i].toLowerCase()}>
+                              <h4>{charactersWithoutStats[i]}</h4>
                               <div><span>No PVP data recorded for this profession</span></div>
                             </div>);
-  }
+  }*/
 
-  const allCharacters=[...charactersWithStats, ...charactersWithoutStats];
-  allCharacters.sort(props.sortCharacters);
-  let allCharactersCount = 1;
+  /*charactersWithStats.sort(props.sortCharacters);
+  if(props.professionTypeValue === ""){
+    props.setProfessionTypeValue(charactersWithStats[0]);
+  }
+  const character = Object.keys(props.pvpStats.professions[props.professionTypeValue.toLowerCase()]).map(stat => {
+    return {value: props.pvpStats.professions[props.professionTypeValue.toLowerCase()][stat], label: props.pvpStats.professions[props.professionTypeValue.toLowerCase()][stat]}
+  });*/
+  const characterPieChart = (props.charactersWithStats.indexOf(props.professionTypeValue) === -1) ? 
+    (<div className="characterChart"> 
+      <h4>{props.professionTypeValue}</h4>
+      <div><span>No PVP data recorded for this profession</span></div>
+    </div>) : 
+    (<div className="characterChart">
+      <h4>{props.professionTypeValue}</h4>
+        <Piechart 
+          x={150}
+          y={75}
+          outerRadius={50}
+          innerRadius={10}
+          data={props.characterData}
+        />
+    </div>);
+
+  const allCharacters=[...props.charactersWithStats, ...props.charactersWithoutStats];
+  //allCharacters.sort(props.sortCharacters);
+  //let allCharactersCount = 1;
   allCharacters = allCharacters.map(character => {
-    <MenuItem value={allCharactersCount++} primaryText={character} />
+    console.log(character);
+    return (<MenuItem value={character} primaryText={character} />);
   });
+
            /*   <Piechart 
                 x={100}
                 y={100}
@@ -216,7 +244,7 @@ function MemberPVPStats(props){
               <h3><DropDownMenu value={props.professionTypeValue} onChange={props.handleProfessionChange}>
                 {allCharacters}
               </DropDownMenu></h3>
-              {characterPieCharts}
+              {characterPieChart}
             </div>
           </div>
           </Paper>
