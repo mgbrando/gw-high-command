@@ -1,0 +1,125 @@
+/*.App {
+
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  height: 100px;
+  padding: 20px;
+  background-image: url("./assets/gw2-banner.jpg");
+  background-repeat: no-repeat;
+  background-position: right;
+  box-shadow: 0px 4px 4px black;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}*/
+.teamName, .seasonRating{
+  text-align: center;
+  margin: 5px;
+  font-style: italic;
+  font-weight: normal;
+}
+.teamDetailsInfo, .teamPVPStatsInfo, .teamRecentMatchesInfo{
+  padding: 10px;
+}
+.teamSPVPSection{
+  width: 50%;
+  text-align: center;
+  display: inline-block;
+  height: 260px;
+  vertical-align: top;
+}
+.teamSPVPSection:first-of-type{
+  display: block;
+  width: 100%;
+}
+.teamMembersList{
+  text-align: center;
+}
+.statsButton{
+  cursor: pointer !important;
+}
+.teamLoadingSpinnerSection, .teamsLoadingScreen{
+  background-color: white;
+  text-align: center;
+}
+.teamLoadingScreen{
+  /*background-color: white;
+  text-align: center;*/
+  /*position: absolute;
+  z-index: 999999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;*/
+}
+.matchElement{
+  width: 90%;
+  margin: 0 auto;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 15px;
+  height: 74px;
+  padding-top: 20px;
+  color: white;
+    /*padding-top: 20px;
+    padding-bottom: 20px;*/
+  /*line-height: 74px;*/
+}
+.matchDetail:first-child > div.matchResult{
+  font-weight: bold;
+  font-size: 35px;
+  /*line-height: 72px;*/
+  /*margin-bottom: 28.5px;*/
+}
+.matchDetail{
+  display: inline-block;
+  width: 25%;
+} 
+.matchDetail h5{
+  margin-bottom: 5px;
+  margin: 0;
+}
+.defeat{
+  background-color: red;
+}
+.victory{
+  background-color: green;
+}
+.desertion{
+  background-color: purple;
+}
+.bye{
+  background-color: blue;
+}
+.forfeit{
+  background-color: orange;
+}
+.teamStatistics{
+  margin-bottom: 15px;
+}
+.teamScore, .opponentScore, .matchType, .matchResult{
+  /*height: 35px;*/
+  /*padding-top: 20px;*/
+}
+@media screen and (max-width: 549px){
+  .matchDetail:first-of-type{
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .matchElement{
+    height: 110px;
+  }
+}

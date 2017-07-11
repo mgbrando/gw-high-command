@@ -1,0 +1,159 @@
+.RankSelection, .MemberRegistration, .LeaderLogin{
+  width: 80%;
+  margin: 20px auto;
+  margin-top: 0;
+  text-align: center;
+  max-width: 700px;
+  min-height: 350px;
+  border: 2px solid black;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.90);
+}
+a.backButton{
+  text-align: left;
+  display: block;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+.MemberRegistration button, .LeaderLogin button, .MemberRegistration input, .LeaderLogin input{
+  font-size: 18px;
+}
+.MemberRegistration form, .LeaderLogin form{
+  margin: 0 auto;
+  width: 300px;
+}
+.MemberRegistration form label, .MemberRegistration form input, .MemberRegistration form button,
+.LeaderLogin form label, .LeaderLogin form input, .LeaderLogin form button{
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+
+.MemberRegistration form input{
+  width: 250px;
+}
+
+.RankSelection h2{
+  color: white;
+  height: 71px;
+  background-color: #C92626;
+  border-bottom: 1px solid #979797;
+  line-height: 73px;
+  margin: 0;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.RankSelection h2 span{
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+.buttonContainer{
+  /*padding-top: 170px;
+  vertical-align: middle;*/
+  padding-top: 100px;
+}
+.buttonContainer button{
+  width: 45%;
+  height: 60px;
+  background-color: #B13E3E;
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  border: 1px solid white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.leaderButtonContainer{
+  margin-right: 5%;
+}
+/*.guildList:nth-child(2){
+  width: 100%;
+}*/
+/*.guildList div label.guildChoice{
+  width: 200px;
+  margin: 0 auto;
+  margin-left: auto !important;
+}*/
+.guildCheckBox{
+  /*display: inline-block !important;
+  margin-right: 15px;
+  vertical-align: middle;*/
+}
+.guildChoice > div:nth-of-type(2){
+  /*display: inline-block;*/
+}
+.userNameAndPasswordForm, .keySubmissionForm{
+  background-color: white;
+  border: 1px solid black;
+  padding: 20px;
+  border-radius: 15px;
+}
+.userNameAndPasswordForm, .leaderLogin{
+  margin-bottom: 10px;
+  padding-top: 0;
+}
+.loginButton, .validateButton{
+  margin-top: 15px;
+}
+#memberApiKey{
+  margin-bottom: 0px;
+}
+.stepper{
+  margin-top: 15px !important;
+  border: 2px solid black;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.90);
+}
+.MemberRegistrationHeader > h2{
+  margin-bottom: 10px;
+}
+.LeaderLogin, .RankSelection{
+  margin-top: 15px;
+}
+@media screen and (max-width: 634px){
+  .LeaderLogin, .MemberRegistration{
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .stepLabel{
+    font-size: 0 !important;
+  }
+}
+/*.guildCheckbox > input{
+  margin-right: 15px !important;
+}*/
+/*.guildChoice{
+  padding: 20px 0 !important;
+}*/
+/*.memberButtonContainer{
+
+}*/
+/*.buttonContainer button:first-child{
+  margin-right: 5%;
+}*/
+/*.App-header{
+  background-image: url("./assets/gw2-banner.jpg"));
+}*/
+/*.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}*/
+
+/*.App-header {
+  height: 100px;
+  padding: 20px;
+  background-image: url("./assets/gw2-banner.jpg");
+  background-repeat: no-repeat;
+  background-position: right;
+  box-shadow: 0px 4px 4px black;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}*/

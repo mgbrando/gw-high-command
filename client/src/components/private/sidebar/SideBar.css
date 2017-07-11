@@ -1,0 +1,58 @@
+.sliderLabel{
+	text-align: center;
+	margin-top: -24px;
+}
+.addTaskHeader{
+	padding-bottom: 0;
+}
+.red1{
+	background-color: #FF0000;
+}
+.red2{
+	background-color: #F80000;
+}
+.red3{
+	background-color: #F00000;
+}
+.red4{
+	background-color: #E80000;
+}
+.red5{
+	background-color: #E00000;
+}
+.red6{
+	background-color: #D80000;
+}
+.red7{
+	background-color: #D00000;
+}
+.red8{
+	background-color: #C00000;
+}
+.red9{
+	background-color: #C00000;
+}
+.red10{
+	background-color: #B80000;
+}
+.listItemText{
+	color: white !important;
+	word-wrap: break-word;
+	width: 95%;
+}
+.listItemIcon{
+	fill: white !important;
+	vertical-align: bottom;
+	display: inline-block;
+}
+.taskList{
+	margin-top: 20px;
+}
+.logEntry{
+	width: 100%;
+	word-wrap: break-word;
+}
+.snackBar > div{
+	width: 100% !important;
+	text-align: center;
+}

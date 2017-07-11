@@ -1,0 +1,252 @@
+/*.App {
+
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  height: 100px;
+  padding: 20px;
+  background-image: url("./assets/gw2-banner.jpg");
+  background-repeat: no-repeat;
+  background-position: right;
+  box-shadow: 0px 4px 4px black;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}*/
+
+/*.onTeam .appBar .leftIcon{
+  color: green;
+}*/
+.onTeam, .onTeam .appBar, .onTeam .appBar >div, .title > div{
+  height: 50px !important;
+  line-height: 50px;
+}
+/*.onTeam{
+  margin-top: 15px;
+}*/
+.onTeam .appBar{
+  background-color: #D8D8D8 !important;
+  border: 1px solid #979797 !important;
+}
+.onTeam .appBar div:first-child{
+  margin-top: 0px !important;
+  vertical-align: bottom !important;
+}
+.onTeam .appBar div:first-child .leftIcon{
+  height: 100%;
+}
+.onTeam .appBar div:nth-child(2){
+  color: black !important;
+}
+/*.onTeam .appBar div{
+  height: 50px !important;
+  line-height: 50px !important;
+}*/
+.greenRectIcon{
+  height: 24px;
+  width: 40px;
+  vertical-align: middle;
+}
+/*.appBar > div{
+  height: 100% !important;
+}*/
+.membersDetailsList{
+  box-sizing: border-box;
+  display: inline-block;
+  width: 50%;
+  text-align: center;
+}
+.statsImage{
+  width: 40px;
+  height: 40px;
+}
+.memberRow{
+  height: 40px;
+}
+.memberName{
+  text-align: center;
+  margin: 5px;
+  font-style: italic;
+  font-weight: normal;
+}
+.charactersList{
+  text-align: center;
+}
+.raidListLeft, .raidListRight, .membersPVPStatsList, .left50, .right50{
+  display: inline-block;
+  text-align: center;
+  width: 50%;
+}
+.left50{
+  height: 300px;
+}
+.sectionHeader{
+  text-align: center;
+  font-size: 1.5em;
+}
+.memberDetailsInfo, .memberPVPStatsInfo, .memberPVEStatsInfo{
+  padding: 10px;
+}
+.membersPVPStatsList{
+  display: -ms-flex;
+  display: -webkit-flex;
+  display: flex;
+  width: 50%;
+  display: inline-block;
+}
+.infoSection:first-child, .infoSection:nth-child(2){
+  margin-bottom: 15px;
+}
+
+.completeTeamsTable th, .completeTeamsTable td{
+  text-align: center;
+}
+.refreshArrow{
+  vertical-align: middle !important;
+  fill: white !important;
+}
+.backNavigation{
+  margin-top: -15px;
+}
+/*.backNavigation .loading{
+  margin-bottom: 16px;
+}*/
+.memberLoadingSpinnerSection, .membersLoadingScreen{
+  background-color: white;
+  text-align: center;
+}
+.backSection{
+  height: 36px;
+  cursor: pointer;
+  background-color: #C92626;
+  border: 2px solid white;
+  color: white;
+  fill: white;
+  border-radius: 10px;
+  margin-top: -2px;
+  /*-moz-box-shadow:    5px 5px 5px #666;
+  -webkit-box-shadow: 5px 5px 5px #666;
+  box-shadow:         5px 5px 5px #666;*/
+}
+.backNavigation > .appBar{
+  background-color: #D8D8D8 !important;
+  border: 1px solid #979797 !important;;
+  height: 48px;
+}
+.returnTo{
+  font-size: 20px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.memberLoadingScreen{
+  /*background-color: white;
+  text-align: center;*/
+  /*position: absolute;
+  z-index: 999999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;*/
+}
+.memberChart{
+  width: 50px;
+  height: 50px;
+}
+
+rect.bar:first-of-type{
+  fill: green !important;
+}
+rect.bar:nth-of-type(2){
+  fill: red !important;
+}
+rect.bar:nth-of-type(3){
+  fill: purple !important;
+}
+rect.bar:nth-of-type(4){
+  fill: blue !important;
+}
+rect.bar:nth-of-type(5){
+  fill: orange !important;
+}
+.characterChart,{
+  text-align: center;
+  display: inline-block;
+  width: 90%;
+  margin: 0 auto;
+  height: 300px;
+}
+.characterChart h4{
+  margin-bottom: 0;
+}
+.pieChart g g text{
+  color: white;
+}
+.charactersList > div > div{
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+  /*height: 20px !important;*/
+}
+.overallChart{
+  margin-bottom: 40px;
+}
+.barChartDisplay > h3, .pieChartDisplay > h3{
+  margin-bottom: 0;
+}
+/*.barChartDisplay > svg{
+  text-align: center;
+}*/
+.pieChartDisplay{
+  text-align: center;
+}
+/*.characterChart{
+  height: 100%;
+}*/
+.pieChart{
+  /*width: 500px;
+  height: 400px;*/
+  /*width: 100%;*/
+  width: 100%;
+  height: 400px;
+}
+@media screen and (max-width: 634px){
+  /*> th:nth-of-type(2), th:nth-of-type(3)*/
+  .tableColumnToHide{
+    display: none;
+  }
+  .main-content{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .membersTable, .teamsTable{
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+/*@media screen and (min-width: 551px){
+  .barChartDisplay > svg{
+    width: 500px !important;
+  }
+}*/
+/*.subDetails{
+  font-size: 14px;
+  line-height: 18px;
+  height: 36px;
+  margin: 4px 0px 0px;
+    color: rgba(0, 0, 0, 0.541176);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}*/
