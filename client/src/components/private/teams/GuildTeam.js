@@ -38,7 +38,7 @@ class GuildTeam extends Component {
     }
   }
   componentWillUnmount(){
-    this.deselectTeam();
+    this.props.dispatch(actions.deselectTeam());
   }
   deselectTeam(){
     this.props.dispatch(actions.deselectTeam());

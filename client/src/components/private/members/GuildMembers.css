@@ -98,6 +98,13 @@
 .memberDetailsInfo, .memberPVPStatsInfo, .memberPVEStatsInfo{
   padding: 10px;
 }
+.membersPVPStatsList{
+  display: -ms-flex;
+  display: -webkit-flex;
+  display: flex;
+  width: 50%;
+  display: inline-block;
+}
 .infoSection:first-child, .infoSection:nth-child(2){
   margin-bottom: 15px;
 }
@@ -172,10 +179,12 @@ rect.bar:nth-of-type(4){
 rect.bar:nth-of-type(5){
   fill: orange !important;
 }
-
-.characterChart{
+.characterChart,{
   text-align: center;
   display: inline-block;
+  width: 90%;
+  margin: 0 auto;
+  height: 300px;
 }
 .characterChart h4{
   margin-bottom: 0;
@@ -194,6 +203,9 @@ rect.bar:nth-of-type(5){
 .barChartDisplay > h3, .pieChartDisplay > h3{
   margin-bottom: 0;
 }
+/*.barChartDisplay > svg{
+  text-align: center;
+}*/
 .pieChartDisplay{
   text-align: center;
 }
@@ -201,7 +213,10 @@ rect.bar:nth-of-type(5){
   height: 100%;
 }*/
 .pieChart{
-  width: 500px;
+  /*width: 500px;
+  height: 400px;*/
+  /*width: 100%;*/
+  width: 100%;
   height: 400px;
 }
 @media screen and (max-width: 634px){
@@ -218,6 +233,11 @@ rect.bar:nth-of-type(5){
     padding-right: 15px;
   }
 }
+/*@media screen and (min-width: 551px){
+  .barChartDisplay > svg{
+    width: 500px !important;
+  }
+}*/
 /*.subDetails{
   font-size: 14px;
   line-height: 18px;

@@ -28,7 +28,7 @@ class Piechart extends Component {
             translate = `translate(${this.props.x}, ${this.props.y})`;
  
         return (
-            <svg className="pieChart">
+            <svg className="pieChart" viewBox="0 0 400 400">
                 <g transform={translate}>
                     {pie.map((d, i) => this.arcGenerator(d, i))}
                 </g>

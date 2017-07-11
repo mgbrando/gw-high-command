@@ -12,7 +12,7 @@ class LabeledArc extends Arc {
         let [labelX, labelY] = this.arc.centroid(this.props.data),
             labelTranslate = `translate(${labelX}, ${labelY})`;
         let [labelX2, labelY2] = this.arc.centroid(this.props.data),
-            labelTranslate2 = `translate(${labelX2*1.5}, ${labelY2*1.5})`;
+            labelTranslate2 = `translate(${labelX2*1.75}, ${labelY2*1.75})`;
         //if(labelX)
  
         return (

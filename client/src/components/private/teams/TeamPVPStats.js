@@ -38,7 +38,7 @@ function TeamPVPStats(props){
         if(typeof props.aggregatePVPStats === 'object'){  
           stats = Object.keys(props.aggregatePVPStats).map((stat) => {
             //console.log(props.pvpStats.aggregate[stat]);
-            return {value: props.aggregatePVPStats[stat], text: stat};
+            return {value: props.aggregatePVPStats[stat], text: stat.charAt(0).toUpperCase()};
           });
         }
         else
@@ -60,7 +60,7 @@ function TeamPVPStats(props){
         if(typeof props.rankedPVPStats === 'object'){
           stats = Object.keys(props.rankedPVPStats).map((stat) => {
             //console.log(props.pvpStats.aggregate[stat]);
-            return {value: props.rankedPVPStats[stat], text: stat};
+            return {value: props.rankedPVPStats[stat], text: stat.charAt(0).toUpperCase()};
           });
         }
         else
@@ -70,7 +70,7 @@ function TeamPVPStats(props){
         if(typeof props.unrankedPVPStats === 'object'){
           stats = Object.keys(props.unrankedPVPStats).map((stat) => {
             //console.log(props.pvpStats.aggregate[stat]);
-            return {value: props.unrankedPVPStats[stat], text: stat};
+            return {value: props.unrankedPVPStats[stat], text: stat.charAt(0).toUpperCase()};
           });
         }
         else
@@ -80,7 +80,7 @@ function TeamPVPStats(props){
         if(typeof props.aggregatePVPStats === 'object'){
           stats = Object.keys(props.aggregatePVPStats).map((stat) => {
             //console.log(props.pvpStats.aggregate[stat]);
-            return {value: props.aggregatePVPStats[stat], text: stat};
+            return {value: props.aggregatePVPStats[stat], text: stat.charAt(0).toUpperCase()};
           });
         }
         else
@@ -90,7 +90,7 @@ function TeamPVPStats(props){
 
     seasonRating = (typeof props.seasonPVPStats === 'object') ? props.seasonPVPStats.rating : 'N/A';
     const barChartStats = Array.isArray(stats) ? (<BarChart
-                  width={500}
+                  width={270}
                   height={300}
                   margin={margin}
                   data={stats}

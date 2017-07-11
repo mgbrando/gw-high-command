@@ -96,6 +96,20 @@ class TabNavigation extends React.Component {
     console.log(this.props.location.pathname);
     if("/dashboard/"+value === this.props.location.pathname)
       return;
+    else if(this.props.location.pathname.startsWith('/dashboard/members') && this.props.location.pathname !== '/dashboard/members'){
+      this.setState({
+        value: value,
+      });
+      this.props.dispatch(membersActions.deselectMember());
+      this.props.history.replace('/dashboard/'+value);
+    }
+    else if(this.props.location.pathname.startsWith('/dashboard/teams') && this.props.location.pathname !== '/dashboard/teams'){
+      this.setState({
+        value: value,
+      });
+      this.props.dispatch(teamsActions.deselectTeam());
+      this.props.history.replace('/dashboard/'+value);
+    }
     else{
       this.setState({
           value: value,

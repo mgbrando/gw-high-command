@@ -39,7 +39,6 @@ class GuildMember extends Component {
     this.setProfessionTypeValue = this.setProfessionTypeValue.bind(this);
   }
   componentDidMount(){
-
   }
   componentWillReceiveProps(nextProps){
     if(nextProps.activeGuild !== this.props.activeGuild){
@@ -74,9 +73,11 @@ class GuildMember extends Component {
       this.setState({professionTypeValue: charactersWithStats[0], charactersWithStats: charactersWithStats, charactersWithoutStats: charactersWithoutStats, 
       characterData: characterData});
     }
+    /*else if(!nextProps.selectedMember)
+      this.props.history.replace('/dashboard/members');*/
   }
   componentWillUnmount(){
-    this.deselectMember();
+    this.props.dispatch(actions.deselectMember());
   }
   /*componentDidMount(){
     this.setState

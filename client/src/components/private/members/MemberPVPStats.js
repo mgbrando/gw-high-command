@@ -72,7 +72,7 @@ function MemberPVPStats(props){
       if(props.hasStatistics(props.pvpStats.aggregate)){
         stats = Object.keys(props.pvpStats.aggregate).map((stat) => {
           console.log(props.pvpStats.aggregate[stat]);
-          return {value: props.pvpStats.aggregate[stat], text: stat};
+          return {value: props.pvpStats.aggregate[stat], text: stat.charAt(0).toUpperCase()};
         });
       }
       else
@@ -83,7 +83,7 @@ function MemberPVPStats(props){
       if(props.hasStatistics(props.pvpStats.ladders.ranked)){
         stats = Object.keys(props.pvpStats.ladders.ranked).map((stat) => {
           console.log(props.pvpStats.ladders.ranked[stat]);
-          return {value: props.pvpStats.ladders.ranked[stat], text: stat};
+          return {value: props.pvpStats.ladders.ranked[stat], text: stat.charAt(0).toUpperCase()};
         });
       }
       else
@@ -93,7 +93,7 @@ function MemberPVPStats(props){
       //barChartHeader = 'Unranked';
       if(props.hasStatistics(props.pvpStats.ladders.unranked)){
         stats = Object.keys(props.pvpStats.ladders.unranked).map((stat) => {
-          return {value: props.pvpStats.ladders.unranked[stat], text: stat};
+          return {value: props.pvpStats.ladders.unranked[stat], text: stat.charAt(0).toUpperCase()};
         });
       }
       else
@@ -104,7 +104,7 @@ function MemberPVPStats(props){
       if(props.hasStatistics(props.pvpStats.aggregate)){
         stats = Object.keys(props.pvpStats.aggregate).map((stat) => {
           console.log(props.pvpStats.aggregate[stat]);
-          return {value: props.pvpStats.aggregate[stat], text: stat};
+          return {value: props.pvpStats.aggregate[stat], text: stat.charAt(0).toUpperCase()};
         });
       }
       else
@@ -113,7 +113,7 @@ function MemberPVPStats(props){
     }
 
     const barChartStats = Array.isArray(stats) ? (<BarChart
-                  width={500}
+                  width={270}
                   height={300}
                   margin={margin}
                   data={stats}
@@ -180,10 +180,10 @@ function MemberPVPStats(props){
     });
     characterPieChart = (<div className="characterChart">
         <Piechart 
-          x={250}
+          x={200}
           y={200}
-          outerRadius={150}
-          innerRadius={75}
+          outerRadius={130}
+          innerRadius={65}
           data={nonZeroData}
         />
     </div>);
@@ -194,7 +194,7 @@ function MemberPVPStats(props){
     </div>);
   }
 
-    console.log(characterPieChart);
+  console.log(characterPieChart);
   const allCharacters=[...props.charactersWithStats, ...props.charactersWithoutStats];
   //allCharacters.sort(props.sortCharacters);
   let allCharactersCount = 1;
@@ -215,8 +215,7 @@ function MemberPVPStats(props){
                 size={50}
                 style={{width: '50px', height: '50px'}}
                 slices={aggregatePVPStats}
-              />*/
-
+              />*/           
   return (
       <div className="memberPVPStats">
         <Paper className="infoSection" zDepth={2}>
@@ -224,12 +223,12 @@ function MemberPVPStats(props){
           <List className="membersPVPStatsList">
             <ListItem 
               primaryText="Season Standing: " 
-              secondaryText={(Array.isArray(props.pvpStandings) && props.pvpStandings.legnth === 0) ? props.pvpStandings.current.rating : 'N/A' } 
+              secondaryText={(Array.isArray(props.pvpStandings) && props.pvpStandings.length !== 0) ? props.pvpStandings.current.rating : 'N/A' } 
               disabled={true}
             />
             <ListItem 
               primaryText="Season Points: " 
-              secondaryText={ (Array.isArray(props.pvpStandings) && props.pvpStandings.legnth === 0) ? props.pvpStandings.current.points : 'N/A' }
+              secondaryText={ (Array.isArray(props.pvpStandings) && props.pvpStandings.length !== 0) ? props.pvpStandings.current.points : 'N/A' }
               disabled={true}
             />
           </List>

@@ -42,7 +42,7 @@ router.get('/', jsonParser, (req, res) => {
 				for(let i = 0; i < guilds.length; i++){
 					gIDs.push(guilds[i].id);
 				}
-				res.json({guilds: gIDs});
+				res.json({guilds: gIDs.reverse()});
 			})
 			.catch(error => res.status(500).json({message: 'Internal server error - '+error}));
 	}
