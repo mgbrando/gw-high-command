@@ -38,12 +38,12 @@ function MemberDetails(props){
           <h1 className="sectionHeader">Player Handle</h1>
           <h2 className="memberName">{props.accountInfo.name}</h2>
           <List className="membersDetailsList">
-            <ListItem primaryText="Member Since " secondaryText={props.joined} disabled={true}/>
+            <ListItem primaryText="Member Since " secondaryText={props.joined} secondaryTextLines={2} disabled={true}/>
             <ListItem primaryText="Guilds " secondaryText={props.memberGuildNames} secondaryTextLines={2} disabled={true}/>
           </List>
           <List className="membersDetailsList">
-            <ListItem primaryText="Player Access " secondaryText={access} disabled={true}/>
-            <ListItem primaryText="Commander " secondaryText={props.isCommander} disabled={true}/>
+            <ListItem primaryText="Player Access " secondaryText={access} secondaryTextLines={2} disabled={true}/>
+            <ListItem primaryText="Commander " secondaryText={props.isCommander} secondaryTextLines={2} disabled={true}/>
           </List>
           <List className="charactersList">
             Characters

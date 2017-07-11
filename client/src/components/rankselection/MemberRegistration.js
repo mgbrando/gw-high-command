@@ -269,16 +269,16 @@ class MemberRegistration extends Component {
 
   render() {
     const {loading, stepIndex} = this.props;
-    const additionalStep = this.props.isLeader ? (<Step><StepLabel>Submit login credentials</StepLabel></Step>) : false;
+    const additionalStep = this.props.isLeader ? (<Step><StepLabel className="stepLabel">Submit login credentials</StepLabel></Step>) : false;
     if(additionalStep)
       return (
         <div className="stepper" style={{width: '100%', maxWidth: 700, margin: 'auto'}}>
           <Stepper activeStep={stepIndex}>
             <Step>
-              <StepLabel>Submit API Key</StepLabel>
+              <StepLabel className="stepLabel">Submit API Key</StepLabel>
             </Step>
             <Step>
-              <StepLabel>Select guilds to register</StepLabel>
+              <StepLabel className="stepLabel">Select guilds to register</StepLabel>
             </Step>
             {additionalStep}
           </Stepper>
@@ -292,10 +292,10 @@ class MemberRegistration extends Component {
         <div className="stepper" style={{width: '100%', maxWidth: 700, margin: 'auto'}}>
           <Stepper activeStep={stepIndex}>
             <Step>
-              <StepLabel>Submit API Key</StepLabel>
+              <StepLabel className="stepLabel">Submit API Key</StepLabel>
             </Step>
             <Step>
-              <StepLabel>Select guilds to register</StepLabel>
+              <StepLabel className="stepLabel">Select guilds to register</StepLabel>
             </Step>
           </Stepper>
           <ExpandTransition loading={loading} open={true}>

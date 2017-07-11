@@ -114,9 +114,9 @@ export const getGuildDetails = (guildID, access_token) => {
 
 //Guild Upgrades - NEED HELP
 export const GET_GUILD_UPGRADES_SUCCESS = 'GET_GUILD_UPGRADES_SUCCESS';
-export const getGuildUpgradesSuccess = (upgrades, completedUpgrades) => ({
+export const getGuildUpgradesSuccess = (incompleteUpgrades, completedUpgrades) => ({
 	type: GET_GUILD_UPGRADES_SUCCESS,
-	upgrades,
+	incompleteUpgrades,
 	completedUpgrades
 });
 
@@ -185,11 +185,19 @@ export const getGuildUpgrades = (guildID, access_token) => {
     Promise.all([upgradesPromise, guildUpgradesPromise])
     .then(promiseArray => {
     	const [upgrades, completedUpgrades] = promiseArray;
+        const incompleteUpgrades = upgrades.filter(upgrade => {
+            const completed = false;
+            for(let i = 0; i < completedUpgrades.length; i++){
+                if(upgrade.id === completedUpgrades[i].id)
+                    return completed;
+            }
+            return !completed;
+        });
         /*let upgrades = [];
         for(let i=0; i < promiseArray.length-1; i++){
             upgrades = [...upgrades, ...promiseArray[i]];
         }*/
-    	return dispatch(getGuildUpgradesSuccess(upgrades, completedUpgrades));
+    	return dispatch(getGuildUpgradesSuccess(incompleteUpgrades, completedUpgrades));
     })
     .catch(error => dispatch(getGuildUpgradesFailure(error.text)));
   }	

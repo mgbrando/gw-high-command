@@ -37,7 +37,7 @@ class TeamsTable extends Component {
           }
           rows.push(<TableRow className="teamRow" key={i}>
                   <TableRowColumn style={{textAlign: 'center'}}>{this.props.guildTeams[i].name}</TableRowColumn>
-                  <TableRowColumn style={{textAlign: 'center'}}>{rating}</TableRowColumn>
+                  <TableRowColumn className="tableColumnToHide" style={{textAlign: 'center'}}>{rating}</TableRowColumn>
                   <TableRowColumn style={{textAlign: 'center'}}><button className="statsButton" type="button" name="statsButton" value={i} onClick={this.statsClick}><img className="statsImage" src={pieChart} /></button></TableRowColumn>
                 </TableRow>);
         }
@@ -60,7 +60,7 @@ class TeamsTable extends Component {
           }
           rows.push(<TableRow className="teamRow" key={i}>
                   <TableRowColumn style={{textAlign: 'center'}}>{nextProps.guildTeams[i].name}</TableRowColumn>
-                  <TableRowColumn style={{textAlign: 'center'}}>{rating}</TableRowColumn>
+                  <TableRowColumn className="tableColumnToHide" style={{textAlign: 'center'}}>{rating}</TableRowColumn>
                   <TableRowColumn style={{textAlign: 'center'}}><button className="statsButton" type="button" name="statsButton" value={i} onClick={this.statsClick}><img className="statsImage" src={pieChart} /></button></TableRowColumn>
                 </TableRow>);
         }
@@ -112,7 +112,7 @@ class TeamsTable extends Component {
             <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
               <TableRow>
                 <TableHeaderColumn style={{textAlign: 'center'}}>Name</TableHeaderColumn>
-                <TableHeaderColumn style={{textAlign: 'center'}}>Rating</TableHeaderColumn>
+                <TableHeaderColumn className="tableColumnToHide" style={{textAlign: 'center'}}>Rating</TableHeaderColumn>
                 <TableHeaderColumn style={{textAlign: 'center'}}>Stats</TableHeaderColumn>
               </TableRow>
             </TableHeader>

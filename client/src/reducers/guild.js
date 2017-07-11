@@ -25,7 +25,7 @@ const guild = (state=initialRepositoryState, action) => {
 		return Object.assign({}, state, {guildDetailsFailureMessage: action.error});
 	}
 	else if(action.type === actions.GET_GUILD_UPGRADES_SUCCESS){
-		return Object.assign({}, state, {guildUpgrades: action.upgrades, guildCompletedUpgrades: action.completedUpgrades || "None completed", guildUpgradesLoading: false});
+		return Object.assign({}, state, {guildUpgrades: action.incompleteUpgrades || "None incomplete", guildCompletedUpgrades: action.completedUpgrades || "None completed", guildUpgradesLoading: false});
 	}
 	else if(action.type === actions.GET_GUILD_UPGRADES_FAILURE){
 		return Object.assign({}, state, {guildUpgradesFailureMessage: action.error});

@@ -29,7 +29,8 @@ class GuildLog extends Component {
   }
   componentDidMount(){
     //if(this.props.log.length === 0){
-      this.props.dispatch(actions.clearLog());
+      //this.props.dispatch(actions.clearLog());
+      this.getLog();
       setInterval(this.getLog, 5000);
       /*if()
       setInterval(this.props.dispatch(actions.getNewLogEntries(this.props.activeGuild, this.props.activeUser.apiKey, this.props.log[this.props.log.length-1].id)), 5000);*/

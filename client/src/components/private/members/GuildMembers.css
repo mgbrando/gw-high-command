@@ -175,7 +175,6 @@ rect.bar:nth-of-type(5){
 
 .characterChart{
   text-align: center;
-  width: 25%;
   display: inline-block;
 }
 .characterChart h4{
@@ -192,13 +191,42 @@ rect.bar:nth-of-type(5){
 .overallChart{
   margin-bottom: 40px;
 }
-.barChartDisplay > h3{
+.barChartDisplay > h3, .pieChartDisplay > h3{
   margin-bottom: 0;
+}
+.pieChartDisplay{
+  text-align: center;
 }
 /*.characterChart{
   height: 100%;
 }*/
-/*.pieChart{
-  width: 100px;
-  height: 100px;
+.pieChart{
+  width: 500px;
+  height: 400px;
+}
+@media screen and (max-width: 634px){
+  /*> th:nth-of-type(2), th:nth-of-type(3)*/
+  .tableColumnToHide{
+    display: none;
+  }
+  .main-content{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .membersTable, .teamsTable{
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+/*.subDetails{
+  font-size: 14px;
+  line-height: 18px;
+  height: 36px;
+  margin: 4px 0px 0px;
+    color: rgba(0, 0, 0, 0.541176);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }*/

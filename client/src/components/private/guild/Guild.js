@@ -7,6 +7,7 @@ import SectionBar from '../SectionBar';
 import GuildDetails from './GuildDetails';
 import GuildUpgrades from './GuildUpgrades';
 import CircularProgress from 'material-ui/CircularProgress';
+import Pagination from 'material-ui-pagination';
 import './Guild.css';
 
 class Guild extends Component {
@@ -14,8 +15,21 @@ class Guild extends Component {
   constructor(props) {
     super(props);
 
+    this.state={
+      incompleteUpgradesPagination: { total: 1, number: 1, display: 1},
+      completeUpgradesPagination: {total: 1, number: 1, display: 1},
+      enableCompleteUpgradesPagination: false,
+      enableIncompleteUpgradesPagination: false,
+      visibleUpgrades: []
+    };
+
     this.descriptionToggle = this.descriptionToggle.bind(this);
     this.onAvatarLoad = this.onAvatarLoad.bind(this);
+    //this.pageSelection = this.pageSelection.bind(this);
+    this.getIncompletePagination = this.getIncompletePagination.bind(this);
+    this.getCompletePagination = this.getCompletePagination.bind(this);
+    this.selectCompletePage = this.selectCompletePage.bind(this);
+    this.selectIncompletePage = this.selectIncompletePage.bind(this);
   }
 
   /*displayPage(){
@@ -58,6 +72,42 @@ class Guild extends Component {
       this.props.dispatch(actions.getGuildInfo(nextProps.activeGuild, nextProps.activeUser.apiKey));
     else if(nextProps.refreshGuild)
       this.props.dispatch(actions.getGuildInfo(nextProps.activeGuild, nextProps.activeUser.apiKey));
+    if(!this.guildUpgrades || (this.guildUpgrades.length !== nextProps.guildUpgrades.length)){
+      if(nextProps.guildUpgrades.length > 50){
+        let pages;
+        pages = Math.ceil(nextProps.guildUpgrades.length/50);
+        //pages = (nextProps.guildUpgrades.length%50 === 0) ? pages : pages+1;
+        const display = (pages > 10) ? 10 : pages; 
+        if(this.state.enableIncompleteUpgradesPagination)
+          this.setState({incompleteUpgradesPagination: {total: pages, number: this.state.incompleteUpgradesPagination.number, display: display}});
+        else
+          this.setState({incompleteUpgradesPagination: {total: pages, number: this.state.incompleteUpgradesPagination.number, display: display}, 
+            enableIncompleteUpgradesPagination: true
+          });
+      }
+      else{
+        if(this.state.enableIncompleteUpgradesPagination)
+          this.setState({enableIncompleteUpgradesPagination: false});
+      }
+    }
+    if(!this.guildCompletedUpgrades || (this.guildCompletedUpgrades.length !== nextProps.guildCompletedUpgrades.length)){
+      if(nextProps.guildCompletedUpgrades.length > 50){
+        let pages;
+        pages = Math.ceil(nextProps.guildCompletedUpgrades.length/50);
+        //pages = (nextProps.guildCompletedUpgrades.length%50 === 0) ? pages : pages+1;
+        const display = (pages > 10) ? 10 : pages; 
+        if(this.state.enableCompleteUpgradesPagination)
+          this.setState({completeUpgradesPagination: {total: pages, number: this.state.completeUpgradesPagination.number, display: display}});
+        else
+          this.setState({completeUpgradesPagination: {total: pages, number: this.state.completeUpgradesPagination.number, display: display}, 
+            enableCompleteUpgradesPagination: true
+          });
+      }
+      else{
+        if(this.state.enableCompleteUpgradesPagination)
+          this.setState({enableCompleteUpgradesPagination: false});
+      }
+    }
   }
 
   descriptionToggle(){
@@ -66,6 +116,32 @@ class Guild extends Component {
 
   onAvatarLoad(){
     
+  }
+  getIncompletePagination(){
+    return (<Pagination
+          className="pagination"
+          total = { this.state.incompleteUpgradesPagination.total }
+          current = { this.state.incompleteUpgradesPagination.number }
+          display = { this.state.incompleteUpgradesPagination.display }
+          onChange = { number => this.selectIncompletePage(number) }
+        />)
+  }
+  getCompletePagination(){
+    return (<Pagination
+          className="pagination"
+          total = { this.state.completeUpgradesPagination.total }
+          current = { this.state.completeUpgradesPagination.number }
+          display = { this.state.completeUpgradesPagination.display }
+          onChange = { number => this.selectCompletePage(number) }
+        />);
+  }
+  selectIncompletePage(number){
+    const {total, display} = this.state.incompleteUpgradesPagination
+    this.setState({incompleteUpgradesPagination:{total: total, number: number, display: display}});
+  }
+  selectCompletePage(number){
+    const {total, display} = this.state.completeUpgradesPagination
+    this.setState({completeUpgradesPagination:{total: total, number: number, display: display}});
   }
 
   render() {
@@ -80,6 +156,21 @@ class Guild extends Component {
     /*if(this.props.guildUpgrades.length > 20){
       const guildUpgrades 
     }*/
+    let completeUpgrades = [];
+    if(this.state.enableCompleteUpgradesPagination){
+      const pageNumber = this.state.completeUpgradesPagination.number;
+      completeUpgrades = this.props.guildCompletedUpgrades.slice((pageNumber-1)*50, pageNumber*50);
+    }
+    else
+      completeUpgrades = this.props.guildCompletedUpgrades;
+
+    let incompleteUpgrades = [];
+    if(this.state.enableIncompleteUpgradesPagination){
+      const pageNumber = this.state.incompleteUpgradesPagination.number;
+      incompleteUpgrades=this.props.guildUpgrades.slice((pageNumber-1)*50, pageNumber*50);
+    }
+    else
+      incompleteUpgrades=this.props.guildUpgrades;
 
     return (
       <section className="guild">
@@ -95,9 +186,13 @@ class Guild extends Component {
           loading={this.props.guildUpgradesLoading} 
           display={this.props.displayGuildUpgrades}
           onAvatarLoad={this.onAvatarLoad}
-          guildUpgrades={this.props.guildUpgrades} 
-          guildCompletedUpgrades={this.props.guildCompletedUpgrades}
+          guildUpgrades={incompleteUpgrades} 
+          guildCompletedUpgrades={completeUpgrades}
           descriptionToggle={this.descriptionToggle}
+          enableCompleteUpgradesPagination={this.state.enableCompleteUpgradesPagination}
+          enableIncompleteUpgradesPagination={this.state.enableIncompleteUpgradesPagination}
+          getCompletePagination={this.getCompletePagination}
+          getIncompletePagination={this.getIncompletePagination}
         />
       </section>
     );

@@ -124,6 +124,16 @@ function GuildUpgrades(props){
     const upgradeComponentsTwo = upgradeComponentsOne.splice(0, (count/2));
     console.log(upgradeComponentsOne);
 
+    const completePagination= props.enableCompleteUpgradesPagination ?
+        props.getCompletePagination()
+        :
+        (<span></span>);
+
+    const incompletePagination= props.enableIncompleteUpgradesPagination ?
+        props.getIncompletePagination()
+        :
+        (<span></span>);
+
     return (
       <div className="guildUpgrades">
         <Paper className="infoSection" zDepth={2}>
@@ -141,6 +151,7 @@ function GuildUpgrades(props){
               </SelectableList>
             </div>
             </div>
+            {completePagination}
           </Paper>
           <Paper className="upgrades incompleteUpgrades" zDepth={5}>
             <h1 className="sectionHeader">Incomplete</h1>
@@ -156,6 +167,7 @@ function GuildUpgrades(props){
               </SelectableList>
             </div>
             </div>
+            {incompletePagination}
           </Paper>
         </Paper>
       </div>

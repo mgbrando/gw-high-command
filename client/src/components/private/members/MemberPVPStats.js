@@ -168,31 +168,39 @@ function MemberPVPStats(props){
   if(props.professionTypeValue === ""){
     props.setProfessionTypeValue(charactersWithStats[0]);
   }
+
   const character = Object.keys(props.pvpStats.professions[props.professionTypeValue.toLowerCase()]).map(stat => {
     return {value: props.pvpStats.professions[props.professionTypeValue.toLowerCase()][stat], label: props.pvpStats.professions[props.professionTypeValue.toLowerCase()][stat]}
   });*/
-  const characterPieChart = (props.charactersWithStats.indexOf(props.professionTypeValue) === -1) ? 
-    (<div className="characterChart"> 
-      <h4>{props.professionTypeValue}</h4>
-      <div><span>No PVP data recorded for this profession</span></div>
-    </div>) : 
-    (<div className="characterChart">
-      <h4>{props.professionTypeValue}</h4>
+  console.log(props.characterData);
+  let characterPieChart;
+  if(props.characterData){
+    const nonZeroData = props.characterData.filter(statData => {
+      return statData.value > 0;
+    });
+    characterPieChart = (<div className="characterChart">
         <Piechart 
-          x={150}
-          y={75}
-          outerRadius={50}
-          innerRadius={10}
-          data={props.characterData}
+          x={250}
+          y={200}
+          outerRadius={150}
+          innerRadius={75}
+          data={nonZeroData}
         />
     </div>);
+  }
+  else{
+    characterPieChart = (<div className="characterChart"> 
+      <div><span>No PVP data recorded for this profession</span></div>
+    </div>);
+  }
 
+    console.log(characterPieChart);
   const allCharacters=[...props.charactersWithStats, ...props.charactersWithoutStats];
   //allCharacters.sort(props.sortCharacters);
-  //let allCharactersCount = 1;
+  let allCharactersCount = 1;
   allCharacters = allCharacters.map(character => {
     console.log(character);
-    return (<MenuItem value={character} primaryText={character} />);
+    return (<MenuItem key={allCharactersCount++} value={character} primaryText={character} />);
   });
 
            /*   <Piechart 
@@ -217,15 +225,17 @@ function MemberPVPStats(props){
             <ListItem 
               primaryText="Season Standing: " 
               secondaryText={(Array.isArray(props.pvpStandings) && props.pvpStandings.legnth === 0) ? props.pvpStandings.current.rating : 'N/A' } 
+              disabled={true}
             />
             <ListItem 
               primaryText="Season Points: " 
               secondaryText={ (Array.isArray(props.pvpStandings) && props.pvpStandings.legnth === 0) ? props.pvpStandings.current.points : 'N/A' }
+              disabled={true}
             />
           </List>
           <List className="membersPVPStatsList">
-            <ListItem primaryText="sPvP Rank: " secondaryText={props.pvpStats.rank || 'N/A'} />
-            <ListItem primaryText="WvW Rank: " secondaryText={props.wvwRank || 'N/A'} />
+            <ListItem primaryText="sPvP Rank: " secondaryText={props.pvpStats.rank || 'N/A'} disabled={true} />
+            <ListItem primaryText="WvW Rank: " secondaryText={props.wvwRank || 'N/A'} disabled={true} />
           </List>
           <div className="textCenter overallChart">
             <h2 className="sectionHeader">sPvP win ratios</h2>

@@ -10,7 +10,7 @@ import {List, ListItem, makeSelectable} from 'material-ui/List';
 
 function MemberPVEStats(props){
   let count = 0;
-  const raidListItems = props.raids.map(raid => (<ListItem primaryText={raid} key={count++}/>));
+  const raidListItems = props.raids.map(raid => (<ListItem primaryText={raid} disabled={true} key={count++}/>));
   let raidListLeft;
   let raidListRight;
   if(raidListItems.length > 1){

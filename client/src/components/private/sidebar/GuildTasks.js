@@ -60,6 +60,7 @@ class GuildTasks extends Component {
         this.setState({snackBarMessage: "Removed "+(this.props.tasks.length - nextProps.tasks.length)+" tasks from task list", snackBarOpen: true});
     }
     if(this.props.activeGuild !== nextProps.activeGuild){
+      nextProps.dispatch(actions.clearLog());
       nextProps.dispatch(actions.getTasks(nextProps.activeGuild));
     }
   }

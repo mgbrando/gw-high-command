@@ -325,22 +325,32 @@ export const loginGuildLeader = (username, password) => {
     $.ajax(settings)
     .done((_response) => {
       console.log(_response.user);
-
       let currentUserKey = _response.user.apiKey;
-      fetch('https://api.guildwars2.com/v2/account?access_token='+currentUserKey)
-      .then(response => response.json())
-      .then(accountInfo => {
-        let guildPromises = [];
-        for(let i=0; i < accountInfo.guilds.length; i++){
-          guildPromises.push(fetch('https://api.guildwars2.com/v2/guild/'+accountInfo.guilds[i]+'?access_token='+currentUserKey)
-                              .then(response => response.json()));
+      let queryString = '?';
+      for(let j=0; j < _response.user.guildIds.length; j++){
+        if(j === 0){
+          queryString+=`guildids=${_response.user.guildIds[0]}`;
         }
+        else
+          queryString+=`&guildids=${_response.user.guildIds[j]}`;
+      }
+      /*fetch('https://api.guildwars2.com/v2/account?access_token='+currentUserKey)
+      .then(response => response.json())
+      .then(accountInfo => {*/
+      fetch('/api/guilds'+queryString)
+        .then(response => response.json())
+        .then(guildsResponse => {
+          let guildPromises = [];
+          for(let i=0; i < guildsResponse.guilds.length; i++){
+            guildPromises.push(fetch('https://api.guildwars2.com/v2/guild/'+guildsResponse.guilds[i]+'?access_token='+currentUserKey)
+                              .then(response => response.json()));
+          }
 
-        Promise.all(guildPromises)
-        .then(guilds => {
-          return dispatch(authenticationCleared(_response.user, guilds, guilds[0].id));
+          Promise.all(guildPromises)
+          .then(guilds => {
+            return dispatch(authenticationCleared(_response.user, guilds, guilds[0].id));
+          });
         });
-      })
     })
     .catch(error => dispatch(authenticationFailed(error.message)));
   };	

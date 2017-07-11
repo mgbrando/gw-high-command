@@ -38,8 +38,8 @@ class MembersTable extends Component {
       const joinDate = (date.getMonth()+1)+'/'+date.getDate()+'/'+date.getFullYear();
       rows.push(<TableRow className="memberRow" key={i}>
                   <TableRowColumn style={{textAlign: 'center'}}>{this.props.registeredMembers[i].name}</TableRowColumn>
-                  <TableRowColumn style={{textAlign: 'center'}}>{this.props.registeredMembers[i].rank}</TableRowColumn>
-                  <TableRowColumn style={{textAlign: 'center'}}>{joinDate}</TableRowColumn>
+                  <TableRowColumn className="tableColumnToHide" style={{textAlign: 'center'}}>{this.props.registeredMembers[i].rank}</TableRowColumn>
+                  <TableRowColumn className="tableColumnToHide" style={{textAlign: 'center'}}>{joinDate}</TableRowColumn>
                   <TableRowColumn style={{textAlign: 'center'}}><button className="statsButton" type="button" name="statsButton" value={apiKey+"|"+i} onClick={this.statsClick}><img className="statsImage" src={pieChart} /></button></TableRowColumn>
                 </TableRow>);
     }
@@ -49,8 +49,8 @@ class MembersTable extends Component {
         const joinDate = (date.getMonth()+1)+'/'+date.getDate()+'/'+date.getFullYear();
         rows.push(<TableRow className="memberRow" key={secondCount++}>
                   <TableRowColumn style={{textAlign: 'center'}}>{this.props.unregisteredMembers[j].name}</TableRowColumn>
-                  <TableRowColumn style={{textAlign: 'center'}}>{this.props.unregisteredMembers[j].rank}</TableRowColumn>
-                  <TableRowColumn style={{textAlign: 'center'}}>{joinDate}</TableRowColumn>
+                  <TableRowColumn className="tableColumnToHide" style={{textAlign: 'center'}}>{this.props.unregisteredMembers[j].rank}</TableRowColumn>
+                  <TableRowColumn className="tableColumnToHide" style={{textAlign: 'center'}}>{joinDate}</TableRowColumn>
                   <TableRowColumn style={{textAlign: 'center'}}>N/A</TableRowColumn>
                 </TableRow>);
         }
@@ -71,9 +71,9 @@ class MembersTable extends Component {
         const joinDate = (date.getMonth()+1)+'/'+date.getDate()+'/'+date.getFullYear();
         rows.push(<TableRow className="memberRow" key={i}>
                   <TableRowColumn style={{textAlign: 'center'}}>{nextProps.registeredMembers[i].name}</TableRowColumn>
-                  <TableRowColumn style={{textAlign: 'center'}}>{nextProps.registeredMembers[i].rank}</TableRowColumn>
-                  <TableRowColumn style={{textAlign: 'center'}}>{joinDate}</TableRowColumn>
-                  <TableRowColumn style={{textAlign: 'center'}}><button className="statsButton" type="button" name="statsButton" value={apiKey+"|"+i} onClick={this.statsClick}><img className="statsImage" src={pieChart} /></button></TableRowColumn>
+                  <TableRowColumn className="tableColumnToHide" style={{textAlign: 'center'}}>{nextProps.registeredMembers[i].rank}</TableRowColumn>
+                  <TableRowColumn className="tableColumnToHide" style={{textAlign: 'center'}}>{joinDate}</TableRowColumn>
+                  <TableRowColumn style={{textAlign: 'center', padding: 0}}><button className="statsButton" type="button" name="statsButton" value={apiKey+"|"+i} onClick={this.statsClick}><img className="statsImage" src={pieChart} /></button></TableRowColumn>
                 </TableRow>);
         }
       let secondCount = rows.length;
@@ -82,8 +82,8 @@ class MembersTable extends Component {
         const joinDate = (date.getMonth()+1)+'/'+date.getDate()+'/'+date.getFullYear();
         rows.push(<TableRow className="memberRow" key={secondCount++}>
                   <TableRowColumn style={{textAlign: 'center'}}>{nextProps.unregisteredMembers[j].name}</TableRowColumn>
-                  <TableRowColumn style={{textAlign: 'center'}}>{nextProps.unregisteredMembers[j].rank}</TableRowColumn>
-                  <TableRowColumn style={{textAlign: 'center'}}>{joinDate}</TableRowColumn>
+                  <TableRowColumn className="tableColumnToHide" style={{textAlign: 'center'}}>{nextProps.unregisteredMembers[j].rank}</TableRowColumn>
+                  <TableRowColumn className="table tableColumnToHide" style={{textAlign: 'center'}}>{joinDate}</TableRowColumn>
                   <TableRowColumn style={{textAlign: 'center'}}>N/A</TableRowColumn>
                 </TableRow>);
         }
@@ -117,16 +117,17 @@ class MembersTable extends Component {
       </section>
       );
     }
+
+    //<SectionBar additionalClasses="onTeam" title={<div>On team <img className="greenRectIcon" src={greenRect} alt="green highlight" /></div>} />
     return (
       <section className="membersTable">
         <SectionBar title="Guild Members" />
-        <SectionBar additionalClasses="onTeam" title={<div>On team <img className="greenRectIcon" src={greenRect} alt="green highlight" /></div>} />
         <Table selectable={false}>
           <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow>
               <TableHeaderColumn style={{textAlign: 'center'}}>Handle</TableHeaderColumn>
-              <TableHeaderColumn style={{textAlign: 'center'}}>Rank</TableHeaderColumn>
-              <TableHeaderColumn style={{textAlign: 'center'}}>Joined</TableHeaderColumn>
+              <TableHeaderColumn className="tableColumnToHide" style={{textAlign: 'center'}}>Rank</TableHeaderColumn>
+              <TableHeaderColumn className="tableColumnToHide" style={{textAlign: 'center'}}>Joined</TableHeaderColumn>
               <TableHeaderColumn style={{textAlign: 'center'}}>Stats</TableHeaderColumn>
             </TableRow>
           </TableHeader>

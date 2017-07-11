@@ -39,25 +39,7 @@ class GuildMember extends Component {
     this.setProfessionTypeValue = this.setProfessionTypeValue.bind(this);
   }
   componentDidMount(){
-    let charactersWithStats =[];
-    for(let property in this.props.pvpStats.professions){
-      charactersWithStats.push(property.charAt(0).toUpperCase() + property.slice(1));
-    }
-    let charactersWithoutStats = this.props.characters.filter(character => {
-      return (charactersWithStats.indexOf(character.profession) === -1) ? true : false;
-    });
-    charactersWithoutStats = charactersWithoutStats.map(character => {
-      return character.profession;
-    });
-    charactersWithStats.sort(this.sortCharacters);
-    if(this.state.professionTypeValue === ""){
-      this.setProfessionTypeValue(charactersWithStats[0]);
-    }
-    const characterData = Object.keys(this.props.pvpStats.professions[this.state.professionTypeValue.toLowerCase()]).map(stat => {
-      return {value: this.props.pvpStats.professions[this.state.professionTypeValue.toLowerCase()][stat], label: this.props.pvpStats.professions[this.state.professionTypeValue.toLowerCase()][stat]}
-    });
-    this.setState({charactersWithStats: charactersWithStats, charactersWithoutStats: charactersWithoutStats, 
-    characterData: characterData});
+
   }
   componentWillReceiveProps(nextProps){
     if(nextProps.activeGuild !== this.props.activeGuild){
@@ -71,6 +53,30 @@ class GuildMember extends Component {
         nextProps.dispatch(actions.selectMember(selectedMember[0].apiKey, nextProps.registeredMembers));
       }
     }
+    else if(this.state.professionTypeValue === ""){
+      let charactersWithStats =[];
+      for(let property in nextProps.pvpStats.professions){
+        charactersWithStats.push(property.charAt(0).toUpperCase() + property.slice(1));
+      }
+      let charactersWithoutStats = nextProps.characters.filter(character => {
+        return (charactersWithStats.indexOf(character.profession) === -1) ? true : false;
+      });
+      charactersWithoutStats = charactersWithoutStats.map(character => {
+        return character.profession;
+      });
+      charactersWithStats.sort(this.sortCharacters);
+      /*if(this.state.professionTypeValue === ""){
+        this.setProfessionTypeValue(charactersWithStats[0]);
+      }*/
+      const characterData = Object.keys(nextProps.pvpStats.professions[charactersWithStats[0].toLowerCase()]).map(stat => {
+        return {value: nextProps.pvpStats.professions[charactersWithStats[0].toLowerCase()][stat], numberLabel: nextProps.pvpStats.professions[charactersWithStats[0].toLowerCase()][stat], statLabel: stat};
+      });
+      this.setState({professionTypeValue: charactersWithStats[0], charactersWithStats: charactersWithStats, charactersWithoutStats: charactersWithoutStats, 
+      characterData: characterData});
+    }
+  }
+  componentWillUnmount(){
+    this.deselectMember();
   }
   /*componentDidMount(){
     this.setState
@@ -86,7 +92,16 @@ class GuildMember extends Component {
     this.setState({pvpTypeValue: menuItem});
   }
   handleProfessionChange(event, selectedIndex, menuItem){
-    this.setState({professionTypeValue: menuItem});
+    let characterData;
+    if(this.props.pvpStats.professions[menuItem.toLowerCase()]){
+      characterData = Object.keys(this.props.pvpStats.professions[menuItem.toLowerCase()]).map(stat => {
+        return {value: this.props.pvpStats.professions[menuItem.toLowerCase()][stat], numberLabel: this.props.pvpStats.professions[menuItem.toLowerCase()][stat], statLabel: stat};
+      });
+    }
+    else{
+      characterData = null;
+    }
+    this.setState({professionTypeValue: menuItem, characterData: characterData});
   }
   hasStatistics(stats){
     if(stats.wins !== 0 || 
@@ -114,9 +129,7 @@ class GuildMember extends Component {
   setProfessionTypeValue(professionType){
     this.setState({professionTypeValue: professionType});
   }
-  /*componentWillUnmount(){
-    this.deselectMember();
-  }*/
+
   render() {
     /*if(this.props.selectedMember === false)
       return (<Redirect to="/dashboard/members" />);*/

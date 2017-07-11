@@ -110,6 +110,16 @@ a.backButton{
 .LeaderLogin, .RankSelection{
   margin-top: 15px;
 }
+@media screen and (max-width: 634px){
+  .LeaderLogin, .MemberRegistration{
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .stepLabel{
+    font-size: 0 !important;
+  }
+}
 /*.guildCheckbox > input{
   margin-right: 15px !important;
 }*/
