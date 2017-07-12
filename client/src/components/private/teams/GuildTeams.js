@@ -34,11 +34,15 @@ class GuildTeams extends Component {
     this.props.dispatch(actions.resetGuildTeams());
   }
   render() {
+    let guild = this.props.activeUserGuilds.filter(guild => {
+      return guild.id === this.props.activeGuild;
+    });
+    guild = encodeURIComponent(guild[0].name);
     return (
       <section className="guildTeams">
         <Switch>
-          <Route exact path='/dashboard/teams' component={TeamsTable} />
-          <Route exact path='/dashboard/teams/:team' component={GuildTeam} />
+          <Route exact path='/dashboard/channel/:guildName/teams' render={() => <TeamsTable guild={guild} />} />
+          <Route exact path='/dashboard/channel/:guildName/teams/:team' render={() => <GuildTeam guild={guild} />} />
         </Switch>
       </section>
     );
@@ -51,6 +55,7 @@ class GuildTeams extends Component {
 const mapStateToProps = (state, props) => ({
   guildDetails: state.guild.guildDetails,
   activeGuild: state.registrationAndLogin.activeGuild,
+  activeUserGuilds: state.registrationAndLogin.activeUserGuilds,
   refreshTeams: state.teams.refreshTeams,
   selectedTeam: state.teams.selectedTeam,
   selectedTeamInfo: state.teams.selectedTeamInfo

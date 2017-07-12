@@ -84,7 +84,7 @@ class GuildMember extends Component {
   }*/
   deselectMember(){
     this.props.dispatch(actions.deselectMember());
-    this.props.history.push('/dashboard/members');
+    this.props.history.push(`/dashboard/channel/${this.props.guild}/members`);
   }
   refreshMember(){
     this.props.dispatch(actions.refreshMembers());

@@ -42,7 +42,7 @@ class GuildTeam extends Component {
   }
   deselectTeam(){
     this.props.dispatch(actions.deselectTeam());
-    this.props.history.push('/dashboard/teams');
+    this.props.history.push(`/dashboard/channel/${this.props.guild}/teams`);
   }
   refreshTeam(){
     this.props.dispatch(actions.refreshTeams());

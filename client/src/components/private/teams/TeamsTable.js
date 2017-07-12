@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import * as actions from '../../../actions/teamsActions';
 import { Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router';
 import SectionBar from '../SectionBar';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -79,7 +80,7 @@ class TeamsTable extends Component {
     //const options = statsValue.split('|');
     //this.props.dispatch(actions.selectTeam(options[0], this.props.registeredMembers));
     this.props.dispatch(actions.selectTeam(this.props.guildTeams[teamIndex]));
-    this.props.history.push("/dashboard/teams/"+encodeURIComponent((this.props.guildTeams[teamIndex].name).toLowerCase()));
+    this.props.history.push(`/dashboard/channel/${this.props.guild}/teams/${encodeURIComponent((this.props.guildTeams[teamIndex].name).toLowerCase())}`);
   }
   render() {
     /*if(this.props.selectedTeam){
@@ -137,4 +138,4 @@ const mapStateToProps = (state, props) => ({
   //accountInfo: state.members.accountInfo
 });
 
-export default connect(mapStateToProps)(TeamsTable);
+export default withRouter(connect(mapStateToProps)(TeamsTable));

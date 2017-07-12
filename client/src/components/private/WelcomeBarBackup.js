@@ -23,6 +23,7 @@ class WelcomeBar extends Component {
     super(props);
 
     this.state = {
+      guildName: '',
       valueSingle: "",
       fix: false
     };
@@ -33,7 +34,30 @@ class WelcomeBar extends Component {
 
   componentDidMount(){
     window.addEventListener('scroll',this.fixBar);
-    this.setState({valueSingle: this.props.activeGuild});
+    /*if(this.props.)
+    let self = this;
+    let guild = this.props.activeUserGuilds.filter(guild => {
+      return encodeURIComponent(guild.name) === self.props.match.params.guildName;
+    });
+    guild = encodeURIComponent(guild[0].id);*/
+    if(this.props.match.params.guildName){
+      this.setState({valueSingle: this.props.activeUserGuilds[0].id, guildName: this.props.match.params.guildName});
+    }
+    else
+      this.setState({valueSingle: this.props.activeUserGuilds[0].id, guildName: this.props.activeUserGuilds[0].name});
+  }
+  componentWillReceiveProps(nextProps){
+    if(this.props.activeGuild !== nextProps.activeGuild){
+      this.setState({valueSingle: nextProps.activeGuild});
+    }
+    if(this.props.guildName !== '' && (this.props.guildName !== nextProps.match.params.guildName)){
+      this.setState({guildName: nextProps.activeGuild});
+    }
+    /*if(this.props.match.params)
+    let guild = this.props.activeUserGuilds.filter(guild => {
+      return encodeURIComponent(guild.name) === self.props.match.params.guildName;
+    });
+    if(this.props.activeUserGuilds)*/
   }
   componentWillUnmount(){
     window.removeEventListener('scroll',this.fixBar);
@@ -41,13 +65,17 @@ class WelcomeBar extends Component {
 
   handleChangeSingle(event, value){
     //console.log(this.state.valueSingle);
+    console.log(event.target.innerText);
     this.setState({valueSingle: value});
     this.props.dispatch(actions.setActiveGuild(value));
-    if(this.props.location.pathname.startsWith('/dashboard/members') && this.props.location.pathname !== '/dashboard/members'){
-      this.props.history.replace('/dashboard/members');
+    if(this.props.location.pathname.startsWith(`/dashboard/channel/${decodeURIComponent(this.state.guildName)}/members`) && this.props.location.pathname !== `/dashboard/channel/${decodeURIComponent(this.props.guildName)}/members`){
+      this.props.history.replace(`/dashboard/channel/${encodeURIComponent(event.target.innerText)}/members`);
     }
-    else if(this.props.location.pathname.startsWith('/dashboard/teams') && this.props.location.pathname !== '/dashboard/teams'){
-      this.props.history.replace('/dashboard/teams');
+    else if(this.props.location.pathname.startsWith(`/dashboard/channel/${decodeURIComponent(this.props.guildName)}/teams`) && this.props.location.pathname !== `/dashboard/channel/${decodeURIComponent(this.props.guildName)}/teams`){
+      this.props.history.replace(`/dashboard/channel/${encodeURIComponent(event.target.innerText)}/teams`);
+    }
+    else{
+      this.props.history.push(`/dashboard/channel/${encodeURIComponent(event.target.innerText)}/guild`);
     }
   }
   fixBar(){
@@ -62,6 +90,7 @@ class WelcomeBar extends Component {
       openMenu: true
     });
   }
+
   handleOnRequestChange = (value) => {
     this.setState({
       openMenu: value,
@@ -141,6 +170,7 @@ const mapStateToProps = (state, props) => ({
   authorizationChecked: state.registrationAndLogin.authorizationChecked,
   activeUser: state.registrationAndLogin.activeUser*/
   //slideIndex: state.dashboard.slideIndex
+  activeGuild: state.registrationAndLogin.activeGuild,
   activeUserGuilds: state.registrationAndLogin.activeUserGuilds
 });
 

@@ -29,7 +29,8 @@ class Dashboard extends Component {
     super(props);
 
     this.state = {
-      sidePanel: {open: false, section: "Log"}
+      sidePanel: {open: false, section: "Log"},
+      startGuild: ''
     }
 
     this.togglePanel = this.togglePanel.bind(this);
@@ -37,7 +38,19 @@ class Dashboard extends Component {
     this.tabChange = this.tabChange.bind(this);
     this.handleChangeSingle = this.handleChangeSingle.bind(this);
   }
-
+  componentDidMount(){
+  /*    let guild = this.props.activeUserGuilds[0];
+      guild = encodeURIComponent(guild.name);
+      this.setState({startGuild: guild});*/
+  }
+  componentWillReceiveProps(nextProps){
+    /*if(this.state.startGuild === '' && nextProps.activeUserGuilds && (nextProps.activeUserGuilds !== this.props.activeUserGuilds)){
+      let guild = nextProps.activeUserGuilds[0];
+      guild = encodeURIComponent(guild.name);
+      this.setState({startGuild: guild});
+    }*/
+    //else if(this.props.startGuild !== nextProps.)
+  }
   tabChange(routePath){
     //this.props.history.push('routePath');
   }
@@ -62,16 +75,18 @@ class Dashboard extends Component {
 //<TabNavigation currentTab={} />
         //  <SwipeableRoutes></SwipeableRoutes>
   render() {
-
     if(this.props.isAuthenticated){
-      const startGuild = encodeURIComponent(this.props.activeUserGuilds[0].name);
-      const routes = [(<Route path='/dashboard/channel/:guildName/guild' render={() => <Guild activeUser={this.props.activeUser} />} key={0} />),
-                      (<Route path='/dashboard/channel/:guildName/members' render={() => <GuildMembers activeUser={this.props.activeUser} />} key={1} />),
-                      (<Route path='/dashboard/channel/:guildName/teams' render={() => <GuildTeams activeUser={this.props.activeUser} />} key={2} />),
+    /*let guild = this.props.activeUserGuilds.filter(guild => {
+      return guild.id === this.props.activeGuild;
+    });*/
+    const startGuild = encodeURIComponent(this.props.activeUserGuilds[0].name);
+      const routes = [(<Route path={'/dashboard/channel/:guildName/guild'} render={() => <Guild activeUser={this.props.activeUser} />} key={0} />),
+                      (<Route path={'/dashboard/channel/:guildName/members'} render={() => <GuildMembers activeUser={this.props.activeUser} />} key={1} />),
+                      (<Route path={'/dashboard/channel/:guildName/teams'} render={() => <GuildTeams activeUser={this.props.activeUser} />} key={2} />),
                       (<Route exact path='/dashboard' render={() => <Redirect to={`/dashboard/channel/${startGuild}/guild`} />} key={3} />)];
       return (<div className="dashboard">
-        <WelcomeBar user={this.props.activeUser} activeGuild={this.props.activeGuild} logOut={this.logOut} togglePanel={this.togglePanel} />
-          <TabNavigation activeUser={this.props.activeUser} activeGuild={this.props.activeGuild} />
+        <WelcomeBar user={this.props.activeUser} logOut={this.logOut} togglePanel={this.togglePanel} guildName={this.state.startGuild}/>
+          <TabNavigation activeUser={this.props.activeUser} activeGuild={this.props.activeGuild} guildName={this.state.startGuild} />
           <SideBar
             title={this.state.sidePanel.section}
             open={this.state.sidePanel.open}
@@ -97,8 +112,7 @@ const mapStateToProps = (state, props) => ({
   isAuthenticated: state.registrationAndLogin.isAuthenticated,
   authorizationChecked: state.registrationAndLogin.authorizationChecked,
   activeUser: state.registrationAndLogin.activeUser,
-  activeUserGuilds: state.registrationAndLogin.activeUserGuilds,
-  activeGuild: state.registrationAndLogin.activeGuild
+  activeUserGuilds: state.registrationAndLogin.activeUserGuilds
   //sidePanel: state.logAndTasks.sidePanel
   //slideIndex: state.dashboard.slideIndex
 });

@@ -36,7 +36,6 @@ class TabNavigation extends React.Component {
     };
 
     this.handleRefresh = this.handleRefresh.bind(this);
-    this.handleChange = this.handleChange.bind(this);
     this.fixBar = this.fixBar.bind(this);
   }
 
@@ -47,9 +46,9 @@ class TabNavigation extends React.Component {
     this.setState({value: values[values.length-1]});*/
     window.addEventListener('scroll',this.fixBar);
     const pathname = this.props.location.pathname;
-    if(pathname.includes("/members"))
+    if(pathname.includes('/members'))
       this.setState({value: "members"});
-    else if(pathname.includes("/teams"))
+    else if(pathname.includes('/teams'))
       this.setState({value: "teams"});
     else
       this.setState({value: "guild"});
@@ -58,9 +57,8 @@ class TabNavigation extends React.Component {
     console.log(event.target.textContent);
     console.log(event.currentTarget.value);
     const value = (event.target.textContent).toLowerCase();
-
     //if(this.props.location.pathname.startsWith("/dashboard/"+value)){
-      if("/dashboard/"+value === this.props.location.pathname){
+      if(`/dashboard/channel/${this.props.guildName}/${value}` === this.props.location.pathname){
       switch(value){
         case "guild":
           //this.props.dispatch(guildActions.getGuildInfo(this.props.activeGuild, this.props.activeUser.apiKey));
@@ -76,14 +74,14 @@ class TabNavigation extends React.Component {
           break;
       }
     }
-    else if(this.props.location.pathname.startsWith("/dashboard/"+value)){
+    else if(this.props.location.pathname.startsWith(`/dashboard/channel/${this.props.guildName}/${value}`)){
       if(value === 'members')
         this.props.dispatch(membersActions.deselectMember());
       else if(value === 'teams')
         this.props.dispatch(teamsActions.deselectTeam());
-      this.props.history.push('/dashboard/'+value);
+      this.props.history.push(`/dashboard/channel/${this.props.guildName}/${value}`);
     }
-  };
+  }
   componentWillUnmount(){
     window.removeEventListener('scroll',this.fixBar);
   }
@@ -95,34 +93,34 @@ class TabNavigation extends React.Component {
     }
   }
   handleChange = (value) => {
-    console.log(this.props.params);
     console.log(this.props.location.pathname);
-    if("/dashboard/"+value === this.props.location.pathname)
+    if(`/dashboard/channel/${this.props.guildName}/${value}` === this.props.location.pathname)
       return;
-    else if(this.props.location.pathname.startsWith('/dashboard/members') && this.props.location.pathname !== '/dashboard/members'){
+    else if(this.props.location.pathname.startsWith(`/dashboard/channel/${this.props.guildName}/members`) && this.props.location.pathname !== `/dashboard/channel/${this.props.guildName}/members`){
       this.setState({
         value: value,
       });
       this.props.dispatch(membersActions.deselectMember());
-      this.props.history.replace('/dashboard/'+value);
+      this.props.history.replace(`/dashboard/channel/${this.props.guildName}/${value}`);
     }
-    else if(this.props.location.pathname.startsWith('/dashboard/teams') && this.props.location.pathname !== '/dashboard/teams'){
+    else if(this.props.location.pathname.startsWith(`/dashboard/channel/${this.props.guildName}/teams`) && this.props.location.pathname !== `/dashboard/channel/${this.props.guildName}/teams`){
       this.setState({
         value: value,
       });
       this.props.dispatch(teamsActions.deselectTeam());
-      this.props.history.replace('/dashboard/'+value);
+      this.props.history.replace(`/dashboard/channel/${this.props.guildName}/${value}`);
     }
     else{
       this.setState({
           value: value,
       });
-      this.props.history.push('/dashboard/'+value);
+      this.props.history.push(`/dashboard/channel/${this.props.guildName}/${value}`);
     }
     /*else{
       this.setState({
           value: value,
       });
+
       if(value === "guild"){
         //this.props.dispatch(actions.clearRefresh());
         this.props.history.push('/dashboard/guild');
@@ -184,10 +182,10 @@ class TabNavigation extends React.Component {
   }
 }
 
-TabNavigation.propTypes = {
+/*TabNavigation.propTypes = {
     router: PropTypes.object,
     location: PropTypes.object
-};
+};*/
 
 const mapStateToProps = (state, props) => ({
 

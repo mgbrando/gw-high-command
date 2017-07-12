@@ -37,11 +37,19 @@ class GuildMembers extends Component {
   }*/
 
   render() {
+    /*let guild = this.props.activeUserGuilds.filter(guild => {
+      return guild.id === this.props.activeGuild;
+    });
+    guild = encodeURIComponent(guild[0].name);*/
+    let guild = this.props.activeUserGuilds.filter(guild => {
+      return guild.id === this.props.activeGuild;
+    });
+    guild = encodeURIComponent(guild[0].name);
     return (
       <section className="guildMembers">
         <Switch>
-          <Route exact path='/dashboard/members' component={MembersTable} />
-          <Route path='/dashboard/members/:member' component={GuildMember} />
+          <Route exact path={`/dashboard/channel/:guildName/members`} render={() => <MembersTable guild={guild} key={0} />} />
+          <Route path={`/dashboard/channel/:guildName/members/:member`} render={() => <GuildMember guild={guild} key={1} />} />
         </Switch>
       </section>
     );
@@ -54,6 +62,7 @@ class GuildMembers extends Component {
 const mapStateToProps = (state, props) => ({
   guildDetails: state.guild.guildDetails,
   activeGuild: state.registrationAndLogin.activeGuild,
+  activeUserGuilds: state.registrationAndLogin.activeUserGuilds,
   registeredMembers: state.members.registeredMembers,
   refreshMembers: state.members.refreshMembers,
   selectedMember: state.members.selectedMember,

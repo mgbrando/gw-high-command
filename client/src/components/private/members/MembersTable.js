@@ -100,7 +100,7 @@ class MembersTable extends Component {
     console.log(statsValue);
     const options = statsValue.split('|');
     this.props.dispatch(actions.selectMember(options[0], this.props.registeredMembers));
-    this.props.history.push("/dashboard/members/"+encodeURIComponent((this.props.registeredMembers[parseInt(options[1])].name).toLowerCase()));
+    this.props.history.push(`/dashboard/channel/${this.props.guild}/members/${encodeURIComponent((this.props.registeredMembers[parseInt(options[1])].name).toLowerCase())}`);
   }
   render() {
     /*if(this.props.selectedMember){
