@@ -58,9 +58,13 @@ class TabNavigation extends React.Component {
     console.log(event.target.textContent);
     console.log(event.currentTarget.value);
     const value = (event.target.textContent).toLowerCase();
+    const encodedGuild = this.props.guildName;
+    const currentGuild = decodeURIComponent(encodedGuild);
+    /*const encodedGuild = this.props.match.params.guildName;
+    const currentGuild = decodeURIComponent(encodedGuild);*/
 
     //if(this.props.location.pathname.startsWith("/dashboard/"+value)){
-      if("/dashboard/"+value === this.props.location.pathname){
+      if(`/dashboard/channel/${currentGuild}/${value}` === this.props.location.pathname){
       switch(value){
         case "guild":
           //this.props.dispatch(guildActions.getGuildInfo(this.props.activeGuild, this.props.activeUser.apiKey));
@@ -76,12 +80,12 @@ class TabNavigation extends React.Component {
           break;
       }
     }
-    else if(this.props.location.pathname.startsWith("/dashboard/"+value)){
+    else if(this.props.location.pathname.startsWith(`/dashboard/channel/${currentGuild}/${value}`)){
       if(value === 'members')
         this.props.dispatch(membersActions.deselectMember());
       else if(value === 'teams')
         this.props.dispatch(teamsActions.deselectTeam());
-      this.props.history.push('/dashboard/'+value);
+      this.props.history.push(`/dashboard/channel/${currentGuild}/${value}`);
     }
   };
   componentWillUnmount(){
@@ -95,29 +99,34 @@ class TabNavigation extends React.Component {
     }
   }
   handleChange = (value) => {
+    console.log(this.props.guildName);
     console.log(this.props.params);
     console.log(this.props.location.pathname);
-    if("/dashboard/"+value === this.props.location.pathname)
+    /*const encodedGuild = this.props.match.params.guildName;
+    const currentGuild = decodeURIComponent(encodedGuild);*/
+    const encodedGuild = this.props.guildName;
+    const currentGuild = decodeURIComponent(encodedGuild);
+    if(`/dashboard/channel/${currentGuild}/${value}` === this.props.location.pathname)
       return;
-    else if(this.props.location.pathname.startsWith('/dashboard/members') && this.props.location.pathname !== '/dashboard/members'){
+    else if(this.props.location.pathname.startsWith(`/dashboard/channel/${currentGuild}/members`) && this.props.location.pathname !== `/dashboard/channel/${currentGuild}/members`){
       this.setState({
         value: value,
       });
       this.props.dispatch(membersActions.deselectMember());
-      this.props.history.replace('/dashboard/'+value);
+      this.props.history.replace(`/dashboard/channel/${encodedGuild}/${value}`);
     }
-    else if(this.props.location.pathname.startsWith('/dashboard/teams') && this.props.location.pathname !== '/dashboard/teams'){
+    else if(this.props.location.pathname.startsWith(`/dashboard/channel/${currentGuild}/teams`) && this.props.location.pathname !== `/dashboard/channel/${currentGuild}/teams`){
       this.setState({
         value: value,
       });
       this.props.dispatch(teamsActions.deselectTeam());
-      this.props.history.replace('/dashboard/'+value);
+      this.props.history.replace(`/dashboard/channel/${encodedGuild}/${value}`);
     }
     else{
       this.setState({
           value: value,
       });
-      this.props.history.push('/dashboard/'+value);
+      this.props.history.push(`/dashboard/channel/${encodedGuild}/${value}`);
     }
     /*else{
       this.setState({

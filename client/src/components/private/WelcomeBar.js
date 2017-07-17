@@ -23,6 +23,7 @@ class WelcomeBar extends Component {
     super(props);
 
     this.state = {
+      currentGuild: "",
       valueSingle: "",
       fix: false
     };
@@ -33,22 +34,48 @@ class WelcomeBar extends Component {
 
   componentDidMount(){
     window.addEventListener('scroll',this.fixBar);
-    this.setState({valueSingle: this.props.activeGuild});
+    const currentGuild = this.props.activeUserGuilds.filter(guild => {
+      return guild.name === decodeURIComponent(this.props.guildName);
+    });
+    this.setState({valueSingle: currentGuild[0].id, currentGuild: currentGuild[0]});
   }
   componentWillUnmount(){
     window.removeEventListener('scroll',this.fixBar);
   }
+  componentWillReceiveProps(nextProps){
+    if(this.props.guildName !== nextProps.guildName){
+      const encodedGuild = nextProps.guildName;
+      const oldGuild = decodeURIComponent(this.props.guildName);
+      const currentGuild = decodeURIComponent(encodedGuild);
+      if(nextProps.location.pathname.startsWith(`/dashboard/channel/${oldGuild}/members`) && nextProps.location.pathname !== `/dashboard/channel/${oldGuild}/members`){
+        nextProps.history.replace(`/dashboard/channel/${encodedGuild}/members`);
+      }
+      else if(nextProps.location.pathname.startsWith(`/dashboard/channel/${oldGuild}/teams`) && nextProps.location.pathname !== `/dashboard/channel/${oldGuild}/teams`){
+        nextProps.history.replace(`/dashboard/channel/${encodedGuild}/teams`);
+      }
+      else if(nextProps.location.pathname === `/dashboard/channel/${oldGuild}/guild`){
+        nextProps.history.replace(`/dashboard/channel/${encodedGuild}/guild`);
+      }
+      else if(nextProps.location.pathname === `/dashboard/channel/${oldGuild}/members`){
+        nextProps.history.replace(`/dashboard/channel/${encodedGuild}/members`);
+      }
+      else if(nextProps.location.pathname === `/dashboard/channel/${oldGuild}/teams`){
+        nextProps.history.replace(`/dashboard/channel/${encodedGuild}/teams`);
+      }
+      //else if(nextProps.location.pathname.endsWith())
 
+    }
+  }
   handleChangeSingle(event, value){
     //console.log(this.state.valueSingle);
+    console.log(event);
     this.setState({valueSingle: value});
     this.props.dispatch(actions.setActiveGuild(value));
-    if(this.props.location.pathname.startsWith('/dashboard/members') && this.props.location.pathname !== '/dashboard/members'){
-      this.props.history.replace('/dashboard/members');
-    }
-    else if(this.props.location.pathname.startsWith('/dashboard/teams') && this.props.location.pathname !== '/dashboard/teams'){
-      this.props.history.replace('/dashboard/teams');
-    }
+    const currentGuild = this.props.activeUserGuilds.filter(guild => {
+      return guild.id = this.props.activeGuild;
+    });
+    this.props.location.pathname.split('/');
+    this.props.history.replace(`/dashboard/channel/${encodeURIComponent(currentGuild.name)}/`);
   }
   fixBar(){
     if(window.scrollY > 140)
@@ -141,6 +168,7 @@ const mapStateToProps = (state, props) => ({
   authorizationChecked: state.registrationAndLogin.authorizationChecked,
   activeUser: state.registrationAndLogin.activeUser*/
   //slideIndex: state.dashboard.slideIndex
+  activeGuild: state.registrationAndLogin.activeGuild,
   activeUserGuilds: state.registrationAndLogin.activeUserGuilds
 });
 

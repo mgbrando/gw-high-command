@@ -64,14 +64,39 @@ class Dashboard extends Component {
   render() {
 
     if(this.props.isAuthenticated){
-      const startGuild = encodeURIComponent(this.props.activeUserGuilds[0].name);
+      let currentGuild;
+      const pathGuild = this.props.location.pathname.split('/')[3];
+      const activeSetGuild = this.props.activeUserGuilds.filter(guild => {
+        return guild.id === this.props.activeGuild;
+      });
+      if(this.props.location.pathname === '/dashboard' || (activeSetGuild[0].name === pathGuild)){
+        /*currentGuild = this.props.activeUserGuilds.filter((guild) => {
+          return guild.id === this.props.activeGuild;
+        });*/
+        currentGuild = encodeURIComponent(activeSetGuild[0].name);
+      }
+      else{
+        /*const pathArray = this.props.location.pathname.split('/');
+        console.log(pathArray[3]);*/
+        currentGuild = encodeURIComponent(pathGuild);
+      }
+      /*if(this.props.match.params.guildName){
+        currentGuild = this.props.match.params.guildName;
+      }
+      else{
+        currentGuild = this.props.activeUserGuilds.filter((guild) => {
+          return guild.id === this.props.activeGuild;
+        });
+        currentGuild = encodeURIComponent(currentGuild[0].name);
+      }*/
+      console.log(this.props.match.params);
       const routes = [(<Route path='/dashboard/channel/:guildName/guild' render={() => <Guild activeUser={this.props.activeUser} />} key={0} />),
                       (<Route path='/dashboard/channel/:guildName/members' render={() => <GuildMembers activeUser={this.props.activeUser} />} key={1} />),
                       (<Route path='/dashboard/channel/:guildName/teams' render={() => <GuildTeams activeUser={this.props.activeUser} />} key={2} />),
-                      (<Route exact path='/dashboard' render={() => <Redirect to={`/dashboard/channel/${startGuild}/guild`} />} key={3} />)];
+                      (<Route exact path='/dashboard' render={() => <Redirect to={`/dashboard/channel/${currentGuild}/guild`} />} key={3} />)];
       return (<div className="dashboard">
-        <WelcomeBar user={this.props.activeUser} activeGuild={this.props.activeGuild} logOut={this.logOut} togglePanel={this.togglePanel} />
-          <TabNavigation activeUser={this.props.activeUser} activeGuild={this.props.activeGuild} />
+        <WelcomeBar user={this.props.activeUser} activeGuild={this.props.activeGuild} logOut={this.logOut} togglePanel={this.togglePanel} guildName={currentGuild}/>
+          <TabNavigation activeUser={this.props.activeUser} activeGuild={this.props.activeGuild} guildName={currentGuild}/>
           <SideBar
             title={this.state.sidePanel.section}
             open={this.state.sidePanel.open}

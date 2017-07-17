@@ -25,10 +25,10 @@ class GuildTeam extends Component {
     this.refreshTeam = this.refreshTeam.bind(this);
   }
   componentWillReceiveProps(nextProps){
-    if(nextProps.activeGuild !== this.props.activeGuild){
+    /*if(nextProps.activeGuild !== this.props.activeGuild){
       this.deselectTeam();
-    }
-    else if(Object.keys(this.props.selectedTeamInfo).length === 0 && this.props.selectedTeamInfo.constructor === Object){
+    }*/
+    if(Object.keys(this.props.selectedTeamInfo).length === 0 && this.props.selectedTeamInfo.constructor === Object){
       if(this.props.guildTeams !== nextProps.guildTeams){
         const selectedTeam = nextProps.guildTeams.filter(team => {
           return team.name.toLowerCase() === decodeURIComponent(nextProps.match.params.team);
