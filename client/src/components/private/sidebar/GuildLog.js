@@ -6,6 +6,7 @@ import * as actions from '../../../actions/logAndTasksActions';
 import './SideBar.css';
 
 //let logWorker = require("../../workers/logWorker.js");
+let interval;
 
 class GuildLog extends Component {
 
@@ -13,7 +14,8 @@ class GuildLog extends Component {
     super(props);
 
     this.state ={
-      shouldCallInterval: false
+      shouldCallInterval: false,
+      logInterval: null
     }
 
     this.getLog = this.getLog.bind(this);
@@ -31,7 +33,7 @@ class GuildLog extends Component {
     //if(this.props.log.length === 0){
       //this.props.dispatch(actions.clearLog());
       this.getLog();
-      setInterval(this.getLog, 5000);
+      interval = setInterval(this.getLog, 5000);
       /*if()
       setInterval(this.props.dispatch(actions.getNewLogEntries(this.props.activeGuild, this.props.activeUser.apiKey, this.props.log[this.props.log.length-1].id)), 5000);*/
     //}
@@ -44,6 +46,9 @@ class GuildLog extends Component {
     if(this.props.activeGuild !== nextProps.activeGuild){
       nextProps.dispatch(actions.clearLog());
     }
+  }
+  componentWillUnmount(){
+    clearInterval(interval);
   }
   /*componentDidUpdate(){
     if(this.state.shouldCallInterval){

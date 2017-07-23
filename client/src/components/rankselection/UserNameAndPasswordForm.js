@@ -65,26 +65,89 @@ function UserNameAndPasswordForm(props){
        //<button type="submit" disabled={props.credentialsSubmitDisabled}>Submit</button>
     }
     else if(props.type === 'login'){
-        return (
-          <div className="leaderLogin">
-            <h2>Login</h2>
-            <form className="userNameAndPasswordForm" onSubmit={(event) => {event.preventDefault(); props.onSubmit();}}>
-                <TextField
+      let usernameTextField;
+      let passwordTextField;
+      let errorTextField;
+      if(props.errorMessage === "Missing credentials"){
+        errorTextField = (<span className="loginError">{props.errorMessage}</span>);
+
+        usernameTextField = (<TextField
                   floatingLabelText="Username"
                   floatingLabelFixed={true}
-                  errorText={props.usernameErrorMessage}
                   onChange={props.getUsernameInput}
                   value={props.usernameValue}
-                />
-                <TextField
+                />);
+
+        passwordTextField = (<TextField
                   type="password"
                   floatingLabelText="Password"
                   floatingLabelFixed={true}
-                  errorText={props.passwordErrorMessage}
                   onChange={props.getPasswordInput}
                   disabled={props.passwordDisabled}
                   value={props.passwordValue}
-                />
+                />);
+      }
+      else if(props.errorMessage === "Incorrect username"){
+        usernameTextField = (<TextField
+                  floatingLabelText="Username"
+                  floatingLabelFixed={true}
+                  errorText={props.errorMessage}
+                  onChange={props.getUsernameInput}
+                  value={props.usernameValue}
+                />);
+
+        passwordTextField = (<TextField
+                  type="password"
+                  floatingLabelText="Password"
+                  floatingLabelFixed={true}
+                  onChange={props.getPasswordInput}
+                  disabled={props.passwordDisabled}
+                  value={props.passwordValue}
+                />);
+      }
+      else if(props.errorMessage === "Incorrect password"){
+        usernameTextField = (<TextField
+                  floatingLabelText="Username"
+                  floatingLabelFixed={true}
+                  onChange={props.getUsernameInput}
+                  value={props.usernameValue}
+                />);
+
+        passwordTextField = (<TextField
+                  type="password"
+                  floatingLabelText="Password"
+                  floatingLabelFixed={true}
+                  errorText={props.errorMessage}
+                  onChange={props.getPasswordInput}
+                  disabled={props.passwordDisabled}
+                  value={props.passwordValue}
+                />);
+      }
+      else{
+        usernameTextField = (<TextField
+                  floatingLabelText="Username"
+                  floatingLabelFixed={true}
+                  onChange={props.getUsernameInput}
+                  value={props.usernameValue}
+                />);
+
+        passwordTextField = (<TextField
+                  type="password"
+                  floatingLabelText="Password"
+                  floatingLabelFixed={true}
+                  onChange={props.getPasswordInput}
+                  disabled={props.passwordDisabled}
+                  value={props.passwordValue}
+                />);
+      }
+
+        return (
+          <div className="leaderLogin">
+            <h2>Login</h2>
+            {errorTextField}
+            <form className="userNameAndPasswordForm" onSubmit={(event) => {event.preventDefault(); props.onSubmit();}}>
+                {usernameTextField}
+                {passwordTextField}
               <RaisedButton className="loginButton" type="submit" primary={true} label="Submit" />
             </form>
           </div>

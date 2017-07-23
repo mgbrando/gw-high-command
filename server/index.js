@@ -30,14 +30,26 @@ passport.use(new LocalStrategy(
     Leader.findOne({ username: username }, function (err, user) {
       if (err) { return done(err); }
       if (!user) {
-        return done(null, false, { message: 'Incorrect username.' });
+        return done(null, false, { message: 'Incorrect username' });
       }
-      if (!user.validatePassword(password)) {
+      /*user.validatePassword(password)
+      .then(response => {console.log(response);});*/
+      return user.validatePassword(password)
+      .then(validated => {
+        if(validated){
+          return done(null, user);
+        }
+        else{
+          return done(null, false, { message: 'Incorrect password' });
+        }
+      });
+      /*if (!(user.validatePassword(password))) {
+        console.log('Did not validate');
         return done(null, false, { message: 'Incorrect password.' });
       }
       console.log('User: '+user);
       console.log('Repr: '+user);
-      return done(null, user);
+      return done(null, user);*/
     });
   }
 ));
