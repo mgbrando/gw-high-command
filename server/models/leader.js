@@ -35,6 +35,8 @@ LeaderSchema.methods.apiRepr = function() {
 LeaderSchema.methods.validatePassword = function(password) {
   console.log('IS IT TRUE?');
   const answer = bcrypt.compare(password, this.password)
+    .then(isValid => isValid);
+    console.log(answer);
   return answer;
 }
 
@@ -42,7 +44,7 @@ LeaderSchema.statics.hashPassword = function(password) {
   const pw = bcrypt.hash(password, 10);
   console.log('PASSWORD');
   console.log(pw);
-  return pw;
+  return pw.then(hash => hash);
     //.then(hash => hash);
 }
 
