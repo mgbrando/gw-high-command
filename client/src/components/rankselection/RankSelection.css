@@ -110,6 +110,12 @@ a.backButton{
 .LeaderLogin, .RankSelection{
   margin-top: 15px;
 }
+.LeaderLogin{
+  padding-bottom: 10px;
+}
+.loginError{
+  color: red;
+}
 @media screen and (max-width: 634px){
   .LeaderLogin, .MemberRegistration{
     width: 100%;

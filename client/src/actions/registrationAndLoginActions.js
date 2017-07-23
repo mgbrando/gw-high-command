@@ -46,6 +46,25 @@ export const getMemberRank = rank => {
   }
 };
 
+export const RESET_LOGIN_STATE = 'RESET_LOGIN_STATE';
+export const resetLoginState = () => ({
+  type: RESET_LOGIN_STATE
+});
+
+//User Name Input
+export const LOGIN_USERNAME_INPUT = 'LOGIN_USERNAME_INPUT';
+export const getLoginUsernameInput = usernameInput => ({
+  type: LOGIN_USERNAME_INPUT,
+  usernameInput
+});
+
+//Password Input
+export const LOGIN_PASSWORD_INPUT = 'LOGIN_PASSWORD_INPUT';
+export const getLoginPasswordInput = passwordInput => ({
+  type: LOGIN_PASSWORD_INPUT,
+  passwordInput
+});
+
 //User Name Input
 export const USERNAME_INPUT = 'USERNAME_INPUT';
 export const getUsernameInput = (usernameInput, invalidMessage = "", passwordDisabled = true, confirmPasswordDisabled = true, credentialsSubmitDisabled = true) => ({
@@ -324,7 +343,10 @@ export const loginGuildLeader = (username, password) => {
 
     $.ajax(settings)
     .done((_response) => {
-      console.log(_response.user);
+      if(!_response.success){
+        //throw new Error(_response.message);
+        return dispatch(authenticationFailed(_response.message));
+      }
       let currentUserKey = _response.user.apiKey;
       let queryString = '?';
       for(let j=0; j < _response.user.guildIds.length; j++){

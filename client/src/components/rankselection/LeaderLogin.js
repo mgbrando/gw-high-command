@@ -17,7 +17,9 @@ class LeaderLogin extends Component {
     //this.registerGuildLeader = this.registerGuildLeader.bind(this);
     this.authorizeGuildLeader = this.authorizeGuildLeader.bind(this);
   }
-
+  componentWillUnmount(){
+    this.props.dispatch(actions.resetLoginState());
+  }
   checkAPIKey(APIKey){
     /*action to check for an account with the apiKey and the store the api key
     in the database if you get back an account and that account is in the guild 
@@ -26,10 +28,10 @@ class LeaderLogin extends Component {
 
   }
   getUsernameInput(event){
-    this.props.dispatch(actions.getUsernameInput(event.target.value));
+    this.props.dispatch(actions.getLoginUsernameInput(event.target.value));
   }
   getPasswordInput(event){
-    this.props.dispatch(actions.getPasswordInput(event.target.value));
+    this.props.dispatch(actions.getLoginPasswordInput(event.target.value));
   }
   authorizeGuildLeader(){
     this.props.dispatch(actions.loginGuildLeader(this.props.usernameInput, this.props.passwordInput));
@@ -50,12 +52,17 @@ class LeaderLogin extends Component {
       return (<Redirect to="/dashboard" push />);
     }
     else{
+    /*let errorDisplay;
+    if(this.props.authorizationErrorMessage !=="")
+      errorDisplay = (<div>{this.props.authorizationErrorMessage}</div>);*/
+
     return (
       <div className="LeaderLogin">
         <UserNameAndPasswordForm
             type="login"
             getUsernameInput = {this.getUsernameInput}
             getPasswordInput = {this.getPasswordInput}
+            errorMessage = {this.props.authorizationErrorMessage}
             onSubmit = {this.authorizeGuildLeader}
         />
         <Link to="/registration/leader" className="leaderRegistrationButton">Register Leader</Link>
@@ -69,7 +76,8 @@ const mapStateToProps = (state, props) => ({
     isAuthenticated: state.registrationAndLogin.isAuthenticated,
     guilds: state.registrationAndLogin.memberGuilds,
     usernameInput: state.registrationAndLogin.usernameInput,
-    passwordInput: state.registrationAndLogin.passwordInput
+    passwordInput: state.registrationAndLogin.passwordInput,
+    authorizationErrorMessage: state.registrationAndLogin.authorizationErrorMessage
 });
 
 export default connect(mapStateToProps)(LeaderLogin);

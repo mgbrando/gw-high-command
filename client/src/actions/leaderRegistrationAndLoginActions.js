@@ -195,7 +195,10 @@ export const loginGuildLeader = (userName, password) => {
       })
     })
     .then(response => response.json())
-    .then(() => {
+    .then((loginResponse) => {
+      if(Object.keys(loginResponse).length ===1){
+        throw new Error(loginResponse.message);
+      }
     	return dispatch(registerGuildLeaderSuccess('Successfully registered as a guild leader.'));
     })
     .catch(error => dispatch(registerGuildLeaderFailure(error)))

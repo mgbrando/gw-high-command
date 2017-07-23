@@ -44,6 +44,15 @@ const registrationAndLogin = (state=initialRepositoryState, action) => {
 		return Object.assign({}, state, {usernameInput: action.usernameInput, usernameErrorMessage: action.invalidMessage,
 		 passwordDisabled: action.passwordDisabled, passwordInput: "", confirmPasswordInput: "", confirmPasswordDisabled: true, nextButtonDisabled: true});
 	}
+	else if(action.type === actions.RESET_LOGIN_STATE){
+		return Object.assign({}, state, {usernameInput: '', passwordInput: '', authorizationErrorMessage: ''});
+	}
+	else if(action.type === actions.LOGIN_USERNAME_INPUT){
+		return Object.assign({}, state, {usernameInput: action.usernameInput});
+	}
+	else if(action.type === actions.LOGIN_PASSWORD_INPUT){
+		return Object.assign({}, state, {passwordInput: action.passwordInput});
+	}
 	else if(action.type === actions.SET_RANK){
 		return Object.assign({}, state, {isLeader: action.isLeader});
 	}
