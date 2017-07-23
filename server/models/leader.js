@@ -1,4 +1,4 @@
-//const bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
@@ -33,11 +33,16 @@ LeaderSchema.methods.apiRepr = function() {
 }
 
 LeaderSchema.methods.validatePassword = function(password) {
-  return true;
+  console.log('IS IT TRUE?');
+  const answer = bcrypt.compare(password, this.password)
+  return answer;
 }
 
 LeaderSchema.statics.hashPassword = function(password) {
-  return password;
+  const pw = bcrypt.hash(password, 10);
+  console.log('PASSWORD');
+  console.log(pw);
+  return pw;
     //.then(hash => hash);
 }
 
