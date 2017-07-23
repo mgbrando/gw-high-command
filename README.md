@@ -1,4 +1,4 @@
-# Thinkful Full Stack Template
+# Thinkful Full Stack Template 
 
 A template for developing and deploying full stack JavaScript apps.
 
