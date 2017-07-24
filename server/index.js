@@ -144,7 +144,7 @@ let server;
 
 function runServer(databaseUrl=DATABASE_URL, port=3001){
     return new Promise((resolve, reject) => {
-        mongoose.connect(databaseUrl, err => {
+        mongoose.connect(databaseUrl, {useMongoClient: true}, err => {
             if(err){
                 return reject(err);
             }
