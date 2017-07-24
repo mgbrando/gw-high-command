@@ -143,9 +143,9 @@ app.get(/^(?!\/api(\/|$))/, (req, res) => {
 let server;
 
 function runServer(databaseUrl=DATABASE_URL, port=3001){
-    console.log(databaseUrl);
+    console.log('THIS IS DBURL'+databaseUrl);
     return new Promise((resolve, reject) => {
-        mongoose.connect(databaseUrl, {useMongoClient: true}, err => {
+        mongoose.connect('mongodb://mgbrando:aidynmb9@ds149030.mlab.com:49030/gwhighcommand', {useMongoClient: true}, err => {
             if(err){
                 return reject(err);
             }
