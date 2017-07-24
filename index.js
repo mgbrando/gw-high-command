@@ -1,6 +1,6 @@
 const express = require('express');
 const proxy = require('http-proxy-middleware');
-
+const {DATABASE_URL, PORT} = require('./config');
 const app = express();
 
 if (process.env.NODE_ENV === 'production') {
@@ -9,9 +9,9 @@ if (process.env.NODE_ENV === 'production') {
     // Only require inside the if block so we don't run the server code twice
     // in development
     console.log('MADE IT IN HERE!');
-    const runServer = require('./server').runServer;
+    const {runServer} = require('./index');
     // Just run the server
-    runServer(null, process.env.PORT || 8080);
+    runServer(DATABASE_URL, PORT || 8080);
 }
 else {
     const app = express();
