@@ -1,11 +1,6 @@
 import React from 'react';
-import AppBar from 'material-ui/AppBar';
-import IconButton from 'material-ui/IconButton';
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
-import FlatButton from 'material-ui/FlatButton';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
 import CircularProgress from 'material-ui/CircularProgress';
-import {List, ListItem, makeSelectable} from 'material-ui/List';
+import {List, ListItem} from 'material-ui/List';
 import Paper from 'material-ui/Paper';
 import './GuildTeams.css';
 
@@ -15,19 +10,11 @@ function TeamRecentMatches(props){
   let count = 0; 
   const recentMatchListItems = props.matches.map(match => {
     teamColor = match.team.toLowerCase();
-    if(teamColor = "blue"){
-      opponentColor = "red"
+    if(teamColor === "blue"){
+      opponentColor = "red";
     }
     else
       opponentColor = "blue";
-    /*let resultClass ='';
-    switch(match.result.toLowerCase()){
-      case 'defeat':
-        resultClass = 'defeat';
-        break;
-      case 'forfeit':
-        resultClass = 'forfeit'
-    }*/
 
     return (<ListItem 
               primaryText={
@@ -87,14 +74,6 @@ function TeamRecentMatches(props){
       </div>
     );    
   }
-  //<FlatButton label="Log Out" onClick={props.logOut}/>
 }
 
-/*      <AppBar
-        title={<span>{props.title}</span>}
-        iconElementLeft={<span></span>}
-        iconElementRight={<FloatingActionButton style={style}>
-                            <ContentAdd />
-                          </FloatingActionButton>}
-      />*/
 export default TeamRecentMatches; 

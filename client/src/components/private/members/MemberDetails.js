@@ -1,13 +1,7 @@
 import React from 'react';
-import AppBar from 'material-ui/AppBar';
-import IconButton from 'material-ui/IconButton';
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
-import FlatButton from 'material-ui/FlatButton';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
-import Subheader from 'material-ui/Subheader';
-import {List, ListItem, makeSelectable} from 'material-ui/List';
+import {List, ListItem} from 'material-ui/List';
 import './GuildMembers.css';
 
 function MemberDetails(props){
@@ -21,11 +15,6 @@ function MemberDetails(props){
     );
   }
   else if(props.display){
-  /*  let isCommander;
-    if(props.accountInfo.commander)
-      isCommander = "Yes";
-    else
-      isCommander = "No";*/
     let count = 0;
     const memberCharacters = props.characters.map(character => {
       return <ListItem secondaryText={`${character.name}: Level ${character.level} ${character.profession}`} disabled={true} key={count++} />;
@@ -56,15 +45,7 @@ function MemberDetails(props){
 }
 else{
   return false;
-  //<FlatButton label="Log Out" onClick={props.logOut}/>
 }
 }
 
-/*      <AppBar
-        title={<span>{props.title}</span>}
-        iconElementLeft={<span></span>}
-        iconElementRight={<FloatingActionButton style={style}>
-                            <ContentAdd />
-                          </FloatingActionButton>}
-      />*/
 export default MemberDetails; 

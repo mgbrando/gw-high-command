@@ -16,10 +16,7 @@ import GuildTeams from './private/teams/GuildTeams';
 import Authorization from './Authorization';
 import { instanceOf } from 'prop-types';
 import { CookiesProvider, withCookies, Cookies } from 'react-cookie';
-//import {ConnectedRouter} from 'react-router-redux';
-//import {withRouter} from 'react-router';
 
-//{ /* ConnectedRouter will use the store from Provider automatically */ }
 const Root = ({store, history}) => (
   <Provider store={store}>
     <MuiThemeProvider>
@@ -38,13 +35,10 @@ const Root = ({store, history}) => (
     </MuiThemeProvider>
   </Provider>
 );
-/*<Route path="/leader-registration" component={LeaderRegistration}></Route>*/
-/*              <Route path="/apikey-submission" component={KeySubmissionForm}></Route>
-              <Route path="/guilds-selection" component={KeySubmissionForm}></Route>*/
+
 Root.propTypes = {
   store: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired
-  //cookies: instanceOf(Cookies).isRequired
 };
 
 export default Root;

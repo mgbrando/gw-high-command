@@ -3,8 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
-/*const bodyParser = require('body-parser');
-const jsonParser = bodyParser.json();*/
+
 const jsonParser = require('body-parser').json();
 const {Guild} = require('../models/guild');
 const {Leader} = require('../models/leader');
@@ -25,11 +24,9 @@ router.get('/', jsonParser, (req, res) => {
 		const memberName = req.query.membername;
 		console.log(guildIds+' '+memberName);
 		Guild
-			//.find({id: {$in: { guildIds }}, members: { $elemMatch: {handleName: {$in: guildIds}}}})
 			.find({
 					id: {$in: guildIds}, 
 					'members.handleName': {$ne: memberName}
-					//members: { $elemMatch: {handleName: {$ne: memberName}}}
 				},
 				{
     				"id": 1,
@@ -90,19 +87,6 @@ router.put('/:id/tasks', jsonParser, (req, res) => {
 			console.log(err);
 			res.status(500).json({message: err.message})
 		});
-	/*Guild
-		.update({id: req.params.id}, {$push: {tasks: {description: req.body.description, importance: req.body.importance}}})
-		.exec()
-		.then(guild => {
-			console.log('PUT COMPLETE');
-			console.log(guild.task);
-			res.json(guild.task);
-		})
-		.catch(err => {
-			console.log('PUT ERROR');
-			console.log(err);
-			res.status(500).json({message: err.message})
-		});*/
 });
 
 router.put('/:id/tasks/bulk-delete', jsonParser, (req, res) => {

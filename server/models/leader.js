@@ -33,20 +33,11 @@ LeaderSchema.methods.apiRepr = function() {
 }
 
 LeaderSchema.methods.validatePassword = function(password) {
-  /*console.log('GIVEN password'+password);
-  console.log('Actual password'+this.password);
-  bcrypt
-    .compare(password, this.password)
-    .then(isValid => {console.log('BCRYPT VALUE'+isValid)});*/
-    //const passed = await bcrypt.compare(password, this.password);
-    //console.log('INSIDE VALIDATION');
-    //console.log(passed);
   return bcrypt.compare(password, this.password);
 }
 
 LeaderSchema.statics.hashPassword = function(password) {
   return bcrypt.hash(password, 10);
-    //.then(hash => hash);
 }
 
 const Leader = mongoose.model('Leader', LeaderSchema);

@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-//import GuildDetails from './GuildDetails';
-//import GuildUpgrades from './GuildUpgrades';
 import * as actions from '../../../actions/membersActions';
 import { Route, withRouter } from 'react-router-dom';
 import { Switch } from 'react-router';
@@ -14,10 +12,8 @@ class GuildMembers extends Component {
   constructor(props) {
     super(props);
 
-    //this.displayPage = this.displayPage.bind(this);
   }
   componentDidMount(){
-    //if()
     this.props.dispatch(actions.getGuildMembers(this.props.activeGuild, this.props.activeUser.apiKey));
   }
   componentWillReceiveProps(nextProps) {
@@ -26,15 +22,10 @@ class GuildMembers extends Component {
     else if(nextProps.refreshMembers){
       this.props.dispatch(actions.getGuildMembers(nextProps.activeGuild, nextProps.activeUser.apiKey, this.props.selectedMember, this.props.selectedMemberAPIKey));
     }
-    /*else if(nextProps.refreshMember && !nextProps.refreshMembers && selectedMember)
-      this.props.dispatch(actions.selectMember(this.props.selectedMemberAPIKey, this.props.registeredMembers));*/
   }
   componentWillUnmount(){
     this.props.dispatch(actions.resetGuildMembers());
   }
-  /*componentDidMount(){
-    //this.props.dispatch(actions.getMembersInfo(this.props.activeUser.apiKey));
-  }*/
 
   render() {
     return (
@@ -47,9 +38,6 @@ class GuildMembers extends Component {
     );
   }
 }
-
-//        <GuildDetails details={this.props.details} />
-//        <GuildUpgrades upgrades={this.props.upgrades} />
 
 const mapStateToProps = (state, props) => ({
   guildDetails: state.guild.guildDetails,

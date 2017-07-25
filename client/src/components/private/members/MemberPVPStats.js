@@ -1,14 +1,8 @@
 import React from 'react';
-import AppBar from 'material-ui/AppBar';
-import IconButton from 'material-ui/IconButton';
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
-import FlatButton from 'material-ui/FlatButton';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
-import {List, ListItem, makeSelectable} from 'material-ui/List';
+import {List, ListItem} from 'material-ui/List';
 import Piechart from '../piechart/Piechart';
-import SimplePieChart from 'react-simple-pie-chart';
 import BarChart from 'react-bar-chart';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
@@ -65,13 +59,11 @@ function MemberPVPStats(props){
   //let colorCount = 0;
   //let barChartHeader='';
   let stats;
-  let barChart;
   switch(props.pvpTypeValue){
     case 1:
       //barChartHeader = 'Aggregate';
       if(props.hasStatistics(props.pvpStats.aggregate)){
         stats = Object.keys(props.pvpStats.aggregate).map((stat) => {
-          console.log(props.pvpStats.aggregate[stat]);
           return {value: props.pvpStats.aggregate[stat], text: stat.charAt(0).toUpperCase()};
         });
       }
@@ -195,27 +187,14 @@ function MemberPVPStats(props){
   }
 
   console.log(characterPieChart);
-  const allCharacters=[...props.charactersWithStats, ...props.charactersWithoutStats];
+  let allCharacters=[...props.charactersWithStats, ...props.charactersWithoutStats];
   //allCharacters.sort(props.sortCharacters);
   let allCharactersCount = 1;
   allCharacters = allCharacters.map(character => {
     console.log(character);
     return (<MenuItem key={allCharactersCount++} value={character} primaryText={character} />);
   });
-
-           /*   <Piechart 
-                x={100}
-                y={100}
-                outerRadius={100}
-                innerRadius={50}
-                data={aggregatePVPStats}
-              />*/
-          /*              <SimplePieChart 
-                className="memberChart"
-                size={50}
-                style={{width: '50px', height: '50px'}}
-                slices={aggregatePVPStats}
-              />*/           
+          
   return (
       <div className="memberPVPStats">
         <Paper className="infoSection" zDepth={2}>
@@ -263,32 +242,7 @@ function MemberPVPStats(props){
 }
 else{
   return false;
-  //<FlatButton label="Log Out" onClick={props.logOut}/>
 }
 }
-/*          <div className="left50">
-              <h3>Ranked</h3>
-              <BarChart
-                  width={500}
-                  height={200}
-                  margin={margin}
-                  data={rankedPVPStats}
-              />
-            </div>
-            <div className="right50">
-              <h3>Unranked</h3>
-              <BarChart
-                  width={500}
-                  height={200}
-                  margin={margin}
-                  data={unrankedPVPStats}
-              />
-            </div>*/
-/*      <AppBar
-        title={<span>{props.title}</span>}
-        iconElementLeft={<span></span>}
-        iconElementRight={<FloatingActionButton style={style}>
-                            <ContentAdd />
-                          </FloatingActionButton>}
-      />*/
+
 export default MemberPVPStats; 

@@ -120,19 +120,19 @@ class Guild extends Component {
   getIncompletePagination(){
     return (<Pagination
           className="pagination"
-          total = { this.state.incompleteUpgradesPagination.total }
-          current = { this.state.incompleteUpgradesPagination.number }
-          display = { this.state.incompleteUpgradesPagination.display }
-          onChange = { number => this.selectIncompletePage(number) }
+          total={ this.state.incompleteUpgradesPagination.total }
+          current={ this.state.incompleteUpgradesPagination.number }
+          display={ this.state.incompleteUpgradesPagination.display }
+          onChange={ number => this.selectIncompletePage(number) }
         />)
   }
   getCompletePagination(){
     return (<Pagination
           className="pagination"
-          total = { this.state.completeUpgradesPagination.total }
-          current = { this.state.completeUpgradesPagination.number }
-          display = { this.state.completeUpgradesPagination.display }
-          onChange = { number => this.selectCompletePage(number) }
+          total={ this.state.completeUpgradesPagination.total }
+          current={ this.state.completeUpgradesPagination.number }
+          display={ this.state.completeUpgradesPagination.display }
+          onChange={ number => this.selectCompletePage(number) }
         />);
   }
   selectIncompletePage(number){

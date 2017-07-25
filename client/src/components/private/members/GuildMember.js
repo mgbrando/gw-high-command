@@ -1,19 +1,12 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-//import GuildDetails from './GuildDetails';
-//import GuildUpgrades from './GuildUpgrades';
 import * as actions from '../../../actions/membersActions';
-import NavigationArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
 import Refresh from 'material-ui/svg-icons/navigation/refresh';
 import SectionBar from '../SectionBar';
 import MemberDetails from './MemberDetails';
 import MemberPVPStats from './MemberPVPStats';
 import MemberPVEStats from './MemberPVEStats';
 import CircularProgress from 'material-ui/CircularProgress';
-/*import {
-  BrowserRouter as Router, Route, Link, Switch
-} from 'react-router-dom';*/
-import {Link, Redirect} from 'react-router-dom';
 //import './GuildMembers.css';
 
 class GuildMember extends Component {
@@ -132,8 +125,6 @@ class GuildMember extends Component {
   }
 
   render() {
-    /*if(this.props.selectedMember === false)
-      return (<Redirect to="/dashboard/members" />);*/
 
     if(this.props.memberDetailsLoading || this.props.memberPVPStatsLoading || this.props.memberPVEStatsLoading){
       return (
@@ -168,9 +159,9 @@ class GuildMember extends Component {
           wvwRank={this.props.accountInfo.wvw_rank}
           display={this.props.displayMemberPVPStats} 
           pvpTypeValue={this.state.pvpTypeValue}
-          handlePVPTypeChange = {this.handlePVPTypeChange}
-          professionTypeValue = {this.state.professionTypeValue}
-          handleProfessionChange = {this.handleProfessionChange}
+          handlePVPTypeChange={this.handlePVPTypeChange}
+          professionTypeValue={this.state.professionTypeValue}
+          handleProfessionChange={this.handleProfessionChange}
           hasStatistics={this.hasStatistics}
           charactersWithStats={this.state.charactersWithStats}
           charactersWithoutStats={this.state.charactersWithoutStats}

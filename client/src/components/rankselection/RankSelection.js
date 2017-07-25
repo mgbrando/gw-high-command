@@ -1,9 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {Link} from 'react-router-dom';
-/*import {connect} from 'react-redux';
-import GuildDetails from './GuildDetails';
-import GuildUpgrades from './GuildUpgrades';
-import '/Guild.css';*/
 
 function RankSelection(props){
     return (

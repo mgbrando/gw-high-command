@@ -12,31 +12,6 @@ export const setGuilds = guilds => ({
     guilds
 });
 
-export const getGuildInfo = (guildID, access_token) => {
-   /* let accountInfo;
-    let guildDetails;
-    let guildUpgrades;*/
-    return dispatch => {
-  /*      fetch('https://api.guildwars2.com/v2/account?access_token='+access_token)
-        .then(response => response.json())
-        .then(_accountInfo => {
-            console.log(_accountInfo.guilds);*/
-        let promises = [];
-        promises.push(dispatch(getGuildDetails(guildID, access_token)));
-        promises.push(dispatch(getGuildCoins(guildID, access_token)));
-        promises.push(dispatch(getGuildUpgrades(guildID, access_token)));
-        Promise.all(promises)
-        .then(() => {
-            return dispatch(resetGuildRefresh());
-        });
-        //});
-        /*.then(() => dispatch);
-        await dispatch(getGuildDetails(accountInfo.guilds[0]));
-        await dispatch(getGuildUpgrades(accountInfo.guilds[0], access_token));
-        return;*/
-    };
-};
-
 export const REFRESH_GUILD = 'REFRESH_GUILD';
 export const refreshGuild = () => ({
   type: REFRESH_GUILD
@@ -128,8 +103,6 @@ export const getGuildUpgradesFailure = (error) => ({
 
 export const getGuildUpgrades = (guildID, access_token) => {
   return dispatch => {
-  	//let completedUpgrades=[];
-  	//let inProgressUpgrades=[];
   	const upgradesPromise = fetch('https://api.guildwars2.com/v2/guild/upgrades')
                             .then(response => response.json())
                             .then(upgradesArray => {
@@ -138,12 +111,8 @@ export const getGuildUpgrades = (guildID, access_token) => {
                                 let i,j,temparray,chunk = 200;
                                 for (i=0,j=upgradesArray.length; i<j; i+=chunk) {
                                     temparray = upgradesArray.slice(i,i+chunk);
-                                    // do whatever
                                     upgradePromises.push(fetch('https://api.guildwars2.com/v2/guild/upgrades?ids='+temparray.join())
                                     .then(response => response.json()));
-                                    /*.then(upgradesChunk => {
-                                        upgrades = [...upgrades, ...upgradesChunk];
-                                    });*/
                                 }
                                 return Promise.all(upgradePromises)
                                 .then(promiseArray => {
@@ -153,34 +122,14 @@ export const getGuildUpgrades = (guildID, access_token) => {
                                     }
                                     return upgrades;
                                 });
-                                //Promise.resolve(upgrades);
                             });
-    /*.then(response => response.json())
-    .then(upgrades => dispatch(getGuildUpgradesSuccess(upgrades)))
-    .catch(error => dispatch(getGuildUpgradesFailure(error)));*/
-    /*const guildUpgradesPromise = fetch('https://api.guildwars2.com/v2/guild/${guildID}/upgrades?access_token=${access_token}')
-    							 .then(guildUpgrades => {
-    							 	let ids = '';
-    							 	for(let i = 0; i <guildUpgrades.length; i++)
-    							 		ids+=guildUpgrades[i]+',';
 
-    							 	return fetch('https://api.guildwars2.com/v2/guild/upgrades?ids=${ids}');
-    							 });*/
     const guildUpgradesPromise = fetch('https://api.guildwars2.com/v2/guild/'+guildID+'/upgrades?access_token='+access_token)
                                  .then(response => response.json())
                                  .then(upgradesArray => {
                                     return fetch('https://api.guildwars2.com/v2/guild/upgrades?ids='+upgradesArray.join())
                                     .then(response => response.json());
                                  });
-    //.then(response => response.json())
-    /*.then(upgrades => {
-    	for(i = 0; i < upgrades.length; i++)
-    		completedUpgrades.push(upgrades[i]);*/
-    	/*if(Object.keys(reponseObject) ===1)
-    		dispatch(validateMemberKeyError(responseObject));
-    	else
-    		dispatch(validateMemberKeySuccess(responseObject));*/
-    //})
 
     Promise.all([upgradesPromise, guildUpgradesPromise])
     .then(promiseArray => {
@@ -193,12 +142,22 @@ export const getGuildUpgrades = (guildID, access_token) => {
             }
             return !completed;
         });
-        /*let upgrades = [];
-        for(let i=0; i < promiseArray.length-1; i++){
-            upgrades = [...upgrades, ...promiseArray[i]];
-        }*/
+
     	return dispatch(getGuildUpgradesSuccess(incompleteUpgrades, completedUpgrades));
     })
     .catch(error => dispatch(getGuildUpgradesFailure(error.text)));
   }	
+};
+
+export const getGuildInfo = (guildID, access_token) => {
+    return dispatch => {
+        let promises = [];
+        promises.push(dispatch(getGuildDetails(guildID, access_token)));
+        promises.push(dispatch(getGuildCoins(guildID, access_token)));
+        promises.push(dispatch(getGuildUpgrades(guildID, access_token)));
+        Promise.all(promises)
+        .then(() => {
+            return dispatch(resetGuildRefresh());
+        });
+    };
 };

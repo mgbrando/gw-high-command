@@ -138,27 +138,17 @@ const registrationAndLogin = (state=initialRepositoryState, action) => {
 		return Object.assign({}, state, {stepIndex: 2, nextButtonDisabled: true, guilds: []});
 	}
 	else if(action.type === actions.GET_MEMBER_KEY_INPUT){
-		//console.log(action.apiKey);
 		return Object.assign({}, state, {memberApiKeyInput: action.apiKey});
 	}
 	else if(action.type === actions.GET_GUILD_SUCCESS){
-		//console.log(action.apiKey);
 		return Object.assign({}, state, {guilds: [...state.guilds, action.guild]});
 	}
 	else if(action.type === actions.GET_GUILD_FAILURE){
-		//console.log(action.apiKey);
 		return Object.assign({}, state, {getGuildErrorMessage: action.errorMessage});
 	}
 	else if(action.type === actions.CHANGE_SELECTED_GUILDS){
-		//console.log(action.apiKey);
 		return Object.assign({}, state, {selectedMemberGuilds: action.selectedGuilds, nextButtonDisabled: action.nextArrowDisabled});
 	}
-	/*else if(action.type=== actions.LOGIN_GUILD_LEADER_SUCCESS){
-		return Object.assign({}, state, {selectedMemberGuilds: action.selectedGuilds, nextButtonDisabled: action.nextArrowDisabled});
-	}
-	else if(action.type=== actions.LOGIN_GUILD_LEADER_FAILURE){
-		return Object.assign({}, state, {selectedMemberGuilds: action.selectedGuilds, nextButtonDisabled: action.nextArrowDisabled});
-	}*/
 	else if(action.type=== actions.AUTHENTICATION_CLEARED){
 		return Object.assign({}, state, {isAuthenticated: true, authorizationChecked: true, activeUser: action.user, activeUserGuilds: action.guilds, activeGuild: action.activeGuild});
 	}

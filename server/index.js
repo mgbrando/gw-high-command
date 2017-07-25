@@ -8,16 +8,11 @@ const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 const {Leader} = require('./models/leader');
 const guildsRouter = require('./routers/guildsRouter');
-const membersRouter = require('./routers/membersRouter');
-const teamsRouter = require('./routers/teamsRouter');
 const leadersRouter = require('./routers/leadersRouter');
-const loginRouter = require('./routers/loginRouter');
-const logoutRouter = require('./routers/logoutRouter');
 const authorizationRouter = require('./routers/authorizationRouter');
 const memberRegistrationRouter = require('./routers/memberRegistrationRouter');
 const leaderRegistrationRouter = require('./routers/leaderRegistrationRouter');
 const registrationRouter = require('./routers/registrationRouter');
-const tasksRouter = require('./routers/tasksRouter');
 const {DATABASE_URL, PORT} = require('./config');
 const mongoose = require('mongoose');
 
@@ -32,8 +27,6 @@ passport.use(new LocalStrategy(
       if (!user) {
         return done(null, false, { message: 'Incorrect username' });
       }
-      /*user.validatePassword(password)
-      .then(response => {console.log(response);});*/
       return user.validatePassword(password)
       .then(validated => {
         if(validated){
@@ -43,13 +36,6 @@ passport.use(new LocalStrategy(
           return done(null, false, { message: 'Incorrect password' });
         }
       });
-      /*if (!(user.validatePassword(password))) {
-        console.log('Did not validate');
-        return done(null, false, { message: 'Incorrect password.' });
-      }
-      console.log('User: '+user);
-      console.log('Repr: '+user);
-      return done(null, user);*/
     });
   }
 ));
@@ -81,9 +67,6 @@ app.use(jsonParser);
 // API endpoints go here!
 app.use('/api/member-registration', memberRegistrationRouter);
 app.use('/api/leader-registration', leaderRegistrationRouter);
-//app.use('/api/authorization', authorizationRouter(passport));
-//app.use('/api/login', loginRouter(passport));
-//app.use('/api/logout', logoutRouter);
 app.use('/api/leaders', leadersRouter);
 app.use('/api/guilds', guildsRouter);
 app.use('/api/register', registrationRouter);
@@ -95,7 +78,6 @@ const isAuthenticated = (req, res, next) => {
   // if they aren't redirect them to the login page
   else {
     res.json({authenticated: false});
-    //res.json({message: 'User not authenticated'})
   }
 }
 
@@ -143,7 +125,6 @@ app.get(/^(?!\/api(\/|$))/, (req, res) => {
 let server;
 
 function runServer(databaseUrl=DATABASE_URL, port=3001){
-    //console.log('THIS IS DBURL'+databaseUrl);
     return new Promise((resolve, reject) => {
         mongoose.connect('mongodb://mgbrando:aidynmb9@ds149030.mlab.com:49030/gwhighcommand', {useMongoClient: true}, err => {
             if(err){

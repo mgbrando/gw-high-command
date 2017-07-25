@@ -9,22 +9,8 @@ import * as membersActions from '../../actions/membersActions';
 import * as teamsActions from '../../actions/teamsActions';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
-import SwipeableRoutes from "react-swipeable-routes";
-import { Switch } from 'react-router';
 import 'string.prototype.startswith';
 import './Dashboard.css';
-
-const styles = {
-  headline: {
-    fontSize: 24,
-    paddingTop: 16,
-    marginBottom: 12,
-    fontWeight: 400,
-  },
-  slide: {
-    padding: 10,
-  },
-};
 
 class TabNavigation extends React.Component {
 
@@ -71,6 +57,8 @@ class TabNavigation extends React.Component {
         case "teams":
           //this.props.dispatch(teamsActions.getGuildTeams(this.props.activeGuild, this.props.activeUser.apiKey));
           this.props.dispatch(teamsActions.refreshTeams());
+          break;
+        default:
           break;
       }
     }

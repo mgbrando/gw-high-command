@@ -1,20 +1,9 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import AppBar from 'material-ui/AppBar';
-import IconButton from 'material-ui/IconButton';
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
-import FlatButton from 'material-ui/FlatButton';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
+import React from 'react';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
-import {List, ListItem, makeSelectable} from 'material-ui/List';
+import {ListItem} from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
-import Subheader from 'material-ui/Subheader';
-import Divider from 'material-ui/Divider';
 import SelectableList from '../SelectableList';
-import UpgradeAvatar from './UpgradeAvatar';
-import Photo from 'material-ui/svg-icons/image/photo';
-//import DragonHead from '../../assets/
 import './Guild.css';
 
 /*let SelectableList = List;
@@ -51,24 +40,6 @@ function wrapState(ComposedComponent) {
   };
 }
 SelectableList = wrapState(SelectableList);*/
-
-function avatarLoaded(){
-
-}
-
-
-const style = {
-  height: 100,
-  width: 100,
-  margin: 20,
-  textAlign: 'center',
-  display: 'inline-block',
-};
-const upgradeStyle = {
-  //display: 'inline-block'
-  position: 'relative',
-  top: 0
-};
 
 function GuildUpgrades(props){
   if(props.loading && props.display){

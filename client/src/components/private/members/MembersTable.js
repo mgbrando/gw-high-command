@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import * as actions from '../../../actions/membersActions';
-import { Redirect, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import SectionBar from '../SectionBar';
-import greenRect from '../../assets/green-rectangle.png';
+//import greenRect from '../../assets/green-rectangle.png';
 import pieChart from '../../assets/pie-chart.png';
 import CircularProgress from 'material-ui/CircularProgress';
 import {
@@ -14,15 +14,13 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
-//import GuildDetails from './GuildDetails';
-//import GuildUpgrades from './GuildUpgrades';
 import './GuildMembers.css';
 
 class MembersTable extends Component {
 
   constructor(props) {
     super(props);
-    //this.displayPage = this.displayPage.bind(this);
+
     this.state = {
       rows: []
     };
@@ -40,7 +38,7 @@ class MembersTable extends Component {
                   <TableRowColumn style={{textAlign: 'center'}}>{this.props.registeredMembers[i].name}</TableRowColumn>
                   <TableRowColumn className="tableColumnToHide" style={{textAlign: 'center'}}>{this.props.registeredMembers[i].rank}</TableRowColumn>
                   <TableRowColumn className="tableColumnToHide" style={{textAlign: 'center'}}>{joinDate}</TableRowColumn>
-                  <TableRowColumn style={{textAlign: 'center'}}><button className="statsButton" type="button" name="statsButton" value={apiKey+"|"+i} onClick={this.statsClick}><img className="statsImage" src={pieChart} /></button></TableRowColumn>
+                  <TableRowColumn style={{textAlign: 'center'}}><button className="statsButton" type="button" name="statsButton" value={apiKey+"|"+i} onClick={this.statsClick}><img className="statsImage" src={pieChart} alt="stats icon" /></button></TableRowColumn>
                 </TableRow>);
     }
       let secondCount = rows.length;
@@ -73,7 +71,7 @@ class MembersTable extends Component {
                   <TableRowColumn style={{textAlign: 'center'}}>{nextProps.registeredMembers[i].name}</TableRowColumn>
                   <TableRowColumn className="tableColumnToHide" style={{textAlign: 'center'}}>{nextProps.registeredMembers[i].rank}</TableRowColumn>
                   <TableRowColumn className="tableColumnToHide" style={{textAlign: 'center'}}>{joinDate}</TableRowColumn>
-                  <TableRowColumn style={{textAlign: 'center', padding: 0}}><button className="statsButton" type="button" name="statsButton" value={apiKey+"|"+i} onClick={this.statsClick}><img className="statsImage" src={pieChart} /></button></TableRowColumn>
+                  <TableRowColumn style={{textAlign: 'center', padding: 0}}><button className="statsButton" type="button" name="statsButton" value={apiKey+"|"+i} onClick={this.statsClick}><img className="statsImage" src={pieChart} alt="stats icon" /></button></TableRowColumn>
                 </TableRow>);
         }
       let secondCount = rows.length;
@@ -103,13 +101,7 @@ class MembersTable extends Component {
     this.props.history.push("/dashboard/members/"+encodeURIComponent((this.props.registeredMembers[parseInt(options[1])].name).toLowerCase()));
   }
   render() {
-    /*if(this.props.selectedMember){
-      const url="/dashboard/members/"+encodeURIComponent((this.props.accountInfo.name).toLowerCase());
-      return (
-        <Redirect to={url} />
-      );
-    }
-    else{*/
+
     if(this.props.membersLoading){
       return (
       <section className="membersLoadingScreen">
@@ -137,7 +129,6 @@ class MembersTable extends Component {
         </Table>
       </section>
     );
-    //}
   }
 }
 

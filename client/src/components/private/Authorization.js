@@ -1,10 +1,7 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import {connect} from 'react-redux';
 //import { Router, Route, IndexRoute, browserHistory, Redirect } from 'react-router';
 import * as actions from '../../actions/registrationAndLoginActions';
-import Subheader from 'material-ui/Subheader';
-import {List, ListItem} from 'material-ui/List';
-import Checkbox from 'material-ui/Checkbox';
 import 'typeface-roboto';
 
 

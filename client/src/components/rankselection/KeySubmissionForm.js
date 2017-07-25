@@ -1,5 +1,4 @@
 import React from 'react';
-import IconButton from 'material-ui/IconButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
 function KeySubmissionForm(props){

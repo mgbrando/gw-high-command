@@ -113,9 +113,9 @@ export const getNewLogEntriesSuccess = logEntries => ({
   logEntries
 });
 
-export const GET_NEW_LOG_ENTRIES_FAILURE = 'GET_LOG_ENTRIES_FAILURE';
+export const GET_NEW_LOG_ENTRIES_FAILURE = 'GET_NEW_LOG_ENTRIES_FAILURE';
 export const getNewLogEntriesFailure = error => ({
-  type: GET_LOG_ENTRIES_FAILURE,
+  type: GET_NEW_LOG_ENTRIES_FAILURE,
   error
 }); 
 
@@ -159,14 +159,14 @@ export const getLogEntriesFailure = error => ({
 	type: GET_LOG_ENTRIES_FAILURE,
 	error
 });
-const compareLogEntries = (logEntryA, logEntryB) => {
+/*const compareLogEntries = (logEntryA, logEntryB) => {
   if(logEntryA > logEntryB)
     return -1;
   else if(logEntryA < logEntryB)
     return 1;
   else
     return 0;
-};
+};*/
 export const getLogEntries = (guildID, access_token, logEntries) => {
   return dispatch => {
     let endpoint;
