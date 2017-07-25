@@ -2,7 +2,7 @@
 
 ## Screens
 ### *Front Page:*
-![Front Page](screens/front-page.png)
+![Front Page](screens/front-page2.png)
 ### *Registration:*
 ![Registration](screens/registration.png)
 ### *Login:*
