@@ -1,58 +1,47 @@
-# Thinkful Full Stack Template 
+# GW2 High Command 
 
-A template for developing and deploying full stack JavaScript apps.
+## Screens
+### *Front Page:*
+![Front Page] (screens/front-page.png)
+### *Registration:*
+![Registration] (screens/registration.png)
+### *Login:*
+![Login] (screens/login.png)
+### *Guild Log:*
+![Guild Log] (screens/log.png)
+### *Task List:*
+![Task List] (screens/tasks.png)
+### *Teams:*
+![Teams] (screens/teams-table.png)
+### *Team:*
+![Team] (screens/team-stats.png)
+### *Members:*
+![Members] (screens/members-table.png)
+### *Member:*
+![Member] (screens/member-stats.png)
+### *Guild:*
+![Guild] (screens/guild-details.png)
 
-## Getting started
 
-### Setting up a project
+## Summary
+The GW2 High Command app is a application meant for guild leaders who play Guild Wars 2 and need a way to manager their guild better than what Guild Wars 2 already provides in game. Using this app you can register as a leader of a guild or as a member of a guild by inputting an API Key that you create on the Guild Wars 2 official website. 
 
-* Move into your projects directory: `cd ~/YOUR_PROJECTS_DIRECTORY`
-* Clone this repository: `git clone https://github.com/Thinkful-Ed/full-stack-template YOUR_PROJECT_NAME`
-* Move into the project directory: `cd YOUR_PROJECT_NAME`
-* Install the dependencies: `npm install`
-* Create a new repo on GitHub: https://github.com/new
-    * Make sure the "Initialize this repository with a README" option is left **un**checked
-* Update the remote to point to your GitHub repository: `git remote set-url origin https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPOSITORY_NAME`
+Leaders can do the following once logged in:  
 
-### Working on the project
+* Check on guild status and upgrades
+* Check certain details/stats of each guild member (select account details, pvp stats, pve completed raids)
+* Check certain details/stats of each guild team (members, pvp stats, recent games)
+* View the in game guild log
+* Create a task list by importance to be done when in game
 
-* Move into the project directory: `cd ~/YOUR_PROJECTS_DIRECTORY/YOUR_PROJECT_NAME`
-* Run the development task: `npm run dev`
-    * Starts a server running at http://localhost:8080
-    * Automatically rebuilds when any of your files change
-
-## Proxying
-
-In development, the full stack template works by proxying requests from port 8080 to the server or the client.  Any requests to routes which start with `/api/`, (for example, `/api/foo`, or `/api/foo/bar`) will be sent to the server.  All other requests, will serve the client.
-
-*tl;dr* Make sure your API endpoints start with `/api`.
-
-## Installing dependencies
-
-Client-side dependencies should be installed into the `client` directory:
-
-```
-cd ~/YOUR_PROJECTS_DIRECTORY/YOUR_PROJECT_NAME/client
-npm install --save dependency-name
-```
-
-Server-side dependencies should be installed into the `server` directory:
-
-```
-cd ~/YOUR_PROJECTS_DIRECTORY/YOUR_PROJECT_NAME/server
-npm install --save dependency-name
-```
-
-## Deployment
-
-Requires the [Heroku CLI client](https://devcenter.heroku.com/articles/heroku-command-line).
-
-### Setting up the project on Heroku
-
-* Move into the project directory: `cd ~/YOUR_PROJECTS_DIRECTORY/YOUR_PROJECT_NAME`
-* Create the Heroku app: `heroku create PROJECT_NAME`
-
-### Deploying to Heroku
-
-* Push your code to Heroku: `git push heroku master`
+## Technology
+* Built using HTML5, CSS3, Javascript, jQuery, Nodejs, express, React and Redux
+* Material-UI was the CSS library used for this app
+* Fetch API was used for asynchronous requests
+* The [Guild Wars 2 API](https://wiki.guildwars2.com/wiki/API:Main) was used to obtain player information
+* MongoDB and Mongoose were used for storing, retrieving and mutating local data.
+* Passport.js was used for user authentication
+* D3.js was used to make data created pie charts for stats
+* Express was used for routing on the back end
+* React-Router was used for front end routing
 
