@@ -44,6 +44,11 @@ class LeaderLogin extends Component {
             onSubmit={this.authorizeGuildLeader}
         />
         <Link to="/registration/leader" className="leaderRegistrationButton">Register Leader</Link>
+        <div className="demoText">
+          <header>Demo Credentials</header>
+          <div>username: freeze123456</div>
+          <div>password: Now123456</div>
+        </div>
       </div>
     );
   }

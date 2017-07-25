@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import AboutDialog from './AboutDialog';
 
 function RankSelection(props){
     return (
@@ -12,6 +13,9 @@ function RankSelection(props){
           <Link to='/registration/member' className="memberButtonContainer">
             <button>Guild Member</button>
           </Link>
+        </div>
+        <div className="frontPageDialog">
+          <AboutDialog />
         </div>
       </div>
     );
