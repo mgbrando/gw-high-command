@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import {Link} from 'react-router';
 import * as actions from '../../actions/registrationAndLoginActions';
 import RegistrationSuccess from './RegistrationSuccess';
 import KeySubmissionForm from './KeySubmissionForm';
-import GuildSelectionForm from './GuildSelectionForm';
-import SectionNavigation from './SectionNavigation';
 import GuildList from './GuildList';
-import LeaderLoginCredentials from './LeaderLoginCredentials';
 import UserNameAndPasswordForm from './UserNameAndPasswordForm';
-import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
 import {
   Step,
   Stepper,
@@ -18,25 +13,14 @@ import {
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import ExpandTransition from 'material-ui/internal/ExpandTransition';
-//import IconButton from 'material-ui/IconButton';
-import FontIcon from 'material-ui/FontIcon';
 import './RankSelection.css';
-
-const previousIconButton = <FontIcon className="material-icons">Previous</FontIcon>;
-const nextIconButton = <FontIcon className="material-icons">Next</FontIcon>;
-//const usernameRegex = "[a-zA-Z0-9]{8,}";
-//const passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$";
-//const passwordRegex = "^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$";
 
 class MemberRegistration extends Component {
 
   constructor(props) {
     super(props);
 
-    //remember you have the method getPage as a prop
     this.validateAPIKey = this.validateAPIKey.bind(this);
-    //this.addMemberToGuilds = this.addMemberToGuilds.bind(this);
-    //this.showGuilds = this.showGuilds.bind(this);
     this.getUsernameInput = this.getUsernameInput.bind(this);
     this.getPasswordInput = this.getPasswordInput.bind(this);
     this.getConfirmPasswordInput = this.getConfirmPasswordInput.bind(this);
@@ -57,17 +41,15 @@ class MemberRegistration extends Component {
     in the database if you get back an account and that account is in the guild 
     Saves the account name and the API Key*/
     /*Validate the user and that he is in a guild that is registered with the app*/
-    console.log(this.props.memberApiKeyInput);
     const apiKey = this.props.memberApiKeyInput.trim();
     if(this.props.isLeader)
       this.props.dispatch(actions.validateLeaderAPIKey(apiKey));
     else
       this.props.dispatch(actions.validateMemberAPIKey(apiKey));
   }
-  //New 3 things
+
   getUsernameInput(event){ 
     if (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(event.target.value)) {
-      //this.setState({ errorText: '' })
       this.props.dispatch(actions.getUsernameInput(event.target.value, "", false, false, false));
     } 
     else {
@@ -90,41 +72,20 @@ class MemberRegistration extends Component {
       this.props.dispatch(actions.getConfirmPasswordInput(event.target.value, 'Confirm password does not currently match the password field.'));
     }
   }
-  //passwordClick
-  /*showGuilds(){
-    if(this.props.isValidMember){
-      this.props.dispatch(actions.memberGuildChoices(this.props.memberGuildIds))
-        .then( () =>
-             (
-              <div>
 
-              </div>
-            ));
-            //api call for the guilds`
-    }
-  }*/
   getAPIKeyInput(event){
-  //  console.log(event.target.value);
-  //  console.log(this.props.memberApiKeyInput);
     this.props.dispatch(actions.getAPIKeyInput(event.target.value));
   }
 
   changeSection(section){
-    //this.props.dispatch(actions.changeMemberRegistrationSection(this.props.memberRegistrationSection, section));
     if(section === "registrationSuccess"){
       if(!this.props.isLeader){
         this.props.dispatch(actions.completeMemberRegistration(this.props.memberName, this.props.memberApiKey, this.props.selectedMemberGuilds));
       }
       else{
         this.props.dispatch(actions.registerGuildLeader(this.props.usernameInput, this.props.passwordInput, this.props.confirmPasswordInput,
-        this.props.memberName, this.props.memberApiKey, this.props.selectedMemberGuilds));
-        /*this.props.dispatch(actions.completeLeaderRegistration(this.props.username, this.props.password, this.props.memberName, 
-                                                                          this.props.memberApiKey, this.props.selectedMemberGuilds));*/  
+        this.props.memberName, this.props.memberApiKey, this.props.selectedMemberGuilds)); 
       }
-      /*else{
-     
-      }*/
-      //this.props.dispatch(actions.changeMemberRegistrationSection(section, true));
     }
     else
       this.props.dispatch(actions.changeMemberRegistrationSection(section));
@@ -134,23 +95,11 @@ class MemberRegistration extends Component {
     this.props.dispatch(actions.registerGuildLeader(this.props.usernameInput, this.props.passwordInput, this.props.confirmPasswordInput,
         this.props.memberName, this.props.memberApiKey, this.props.selectedMemberGuilds));
   }
-  /*backToMain(){
-    this.props.dispatch(actions.backToMain());
-  }*/
   goBack(){
-    //Action to set isValidMember to false and memberGuilds to []
     this.props.getPage('rankSelection');
   }
   handleNext = () => {
     const {stepIndex, isLeader} = this.props;
-    /*const {stepIndex} = this.state;
-    if (!this.state.loading) {
-      this.dummyAsync(() => this.setState({
-        loading: false,
-        stepIndex: stepIndex + 1,
-        finished: stepIndex >= 2,
-      }));
-    }*/
     if((stepIndex >= 1 && !isLeader)){
       this.props.dispatch(actions.completeMemberRegistration(this.props.memberName, this.props.memberApiKey, this.props.selectedMemberGuilds));
     } 
@@ -163,13 +112,6 @@ class MemberRegistration extends Component {
   };
 
   handlePrev = () => {
-    /*const {stepIndex} = this.state;
-    if (!this.state.loading) {
-      this.dummyAsync(() => this.setState({
-        loading: false,
-        stepIndex: stepIndex - 1,
-      }));
-    }*/
     this.props.dispatch(actions.changeSection(this.props.stepIndex-1));
   };
   getStepContent(stepIndex) {
@@ -209,9 +151,9 @@ class MemberRegistration extends Component {
               </div>
               <UserNameAndPasswordForm 
                 type="loginCredentials"
-                getUsernameInput = {this.getUsernameInput}
-                getPasswordInput = {this.getPasswordInput}
-                getConfirmPasswordInput = {this.getConfirmPasswordInput}
+                getUsernameInput={this.getUsernameInput}
+                getPasswordInput={this.getPasswordInput}
+                getConfirmPasswordInput={this.getConfirmPasswordInput}
                 usernameErrorMessage={this.props.usernameErrorMessage}
                 passwordErrorMessage={this.props.passwordErrorMessage}
                 confirmPasswordErrorMessage={this.props.confirmPasswordErrorMessage}
@@ -233,7 +175,6 @@ class MemberRegistration extends Component {
 
   renderContent() {
     const {finished, stepIndex} = this.props;
-    const contentStyle = {margin: '0 16px', overflow: 'hidden'};
 
     if (finished) {
       return(
@@ -307,24 +248,19 @@ class MemberRegistration extends Component {
 }
 
 const mapStateToProps = (state, props) => ({
-    //isValidMember: state.isValidMember,
     isLeader: state.registrationAndLogin.isLeader,
     memberRegistrationSection: state.registrationAndLogin.memberRegistrationSection,
-    memberGuildChoices: state.registrationAndLogin.memberGuildChoices, //Object with name and id
+    memberGuildChoices: state.registrationAndLogin.memberGuildChoices,
     selectedMemberGuilds: state.registrationAndLogin.selectedMemberGuilds,
     memberApiKey: state.registrationAndLogin.memberApiKey,
     memberApiKeyInput: state.registrationAndLogin.memberApiKeyInput,
-    //memberRegistrationComplete: state.memberRegistrationComplete,
-    nextButtonDisabled: state.registrationAndLogin.nextButtonDisabled,
     usernameInput: state.registrationAndLogin.usernameInput,
     passwordInput: state.registrationAndLogin.passwordInput,
     confirmPasswordInput: state.registrationAndLogin.confirmPasswordInput,
     memberName: state.registrationAndLogin.memberName,
     guilds: state.registrationAndLogin.guilds,
     memberValidationMessage: state.registrationAndLogin.memberValidationMessage,
-    //credentialsSubmitDisabled: state.registrationAndLogin.credentialsSubmitDisabled,
     validationErrors: state.registrationAndLogin.validationErrors,
-    //previousButtonDisabled: state.previousButtonDisabled
     passwordDisabled: state.registrationAndLogin.passwordDisabled,
     confirmPasswordDisabled: state.registrationAndLogin.confirmPasswordDisabled,
     credentialsSubmitDisabled: state.registrationAndLogin.credentialsSubmitDisabled,
@@ -336,7 +272,6 @@ const mapStateToProps = (state, props) => ({
     stepIndex: state.registrationAndLogin.stepIndex,
     backButtonDisabled: state.registrationAndLogin.backButtonDisabled,
     nextButtonDisabled: state.registrationAndLogin.nextButtonDisabled
-    //passwordValue: state.registrationAndLogin.passwordValue
 });
 
 export default connect(mapStateToProps)(MemberRegistration);

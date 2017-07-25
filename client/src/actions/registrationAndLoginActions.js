@@ -1,11 +1,28 @@
 //import 'whatwg-fetch';
 import 'isomorphic-fetch';
 import $ from 'jquery';
-import { getCookie, setCookie, expireCookie, removeCookie } from 'redux-cookie';
 
 export const RESET_REGISTRATION = 'RESET_REGISTRATION';
 export const registrationReset = () => ({
     type: RESET_REGISTRATION
+});
+
+export const SWITCH_TO_REGISTRATION_SUCCESS = 'SWITCH_TO_REGISTRATION_SUCCESS';
+export const switchToRegistrationSuccessSection = () => ({
+  type: SWITCH_TO_REGISTRATION_SUCCESS
+});
+export const SWITCH_TO_GUILD_SELECTION = 'SWITCH_TO_GUILD_SELECTION';
+export const switchToGuildSelectionSection = () => ({
+  type: SWITCH_TO_GUILD_SELECTION
+});
+export const SWITCH_TO_KEY_SUBMISSION = 'SWITCH_TO_KEY_SUBMISSION';
+export const switchToKeySubmissionSection = () => ({
+  type: SWITCH_TO_KEY_SUBMISSION
+});
+
+export const SWITCH_TO_LOGIN_CREDENTIALS = 'SWITCH_TO_LOGIN_CREDENTIALS';
+export const switchToLoginCredentialsSection = () => ({
+  type: SWITCH_TO_LOGIN_CREDENTIALS
 });
 
 export const changeSection = (stepIndex, isLeader=false) => {
@@ -276,7 +293,7 @@ export const addMemberToGuilds = (member, guilds) => {
     .then(() => {
     	let successMessage = 'Successfully added member to';
     	for(let i=0; i < guilds.length; i++){
-    		successMessage+=' ${guilds[i].name}';
+    		successMessage+=` ${guilds[i].name}`;
     	}
     	return dispatch(addMemberSuccess(successMessage));
     })	
@@ -324,6 +341,20 @@ export const loginGuildLeaderSuccess = user => ({
 export const LOGIN_GUILD_LEADER_FAILURE = 'REGISTER_GUILD_LEADER_FAILURE';
 export const loginGuildLeaderFailure = errorMessage => ({
 	type: LOGIN_GUILD_LEADER_FAILURE,
+  errorMessage
+});
+
+export const AUTHENTICATION_CLEARED = 'AUTHENTICATION_CLEARED';
+export const authenticationCleared = (user, guilds, activeGuild) => ({
+  type: AUTHENTICATION_CLEARED,
+  user,
+  guilds,
+  activeGuild
+});
+
+export const AUTHENTICATION_FAILED = 'AUTHENTICATION_FAILED';
+export const authenticationFailed = (errorMessage) => ({
+  type: AUTHENTICATION_FAILED,
   errorMessage
 });
 
@@ -378,20 +409,6 @@ export const loginGuildLeader = (username, password) => {
   };	
 };
 
-export const AUTHENTICATION_CLEARED = 'AUTHENTICATION_CLEARED';
-export const authenticationCleared = (user, guilds, activeGuild) => ({
-  type: AUTHENTICATION_CLEARED,
-  user,
-  guilds,
-  activeGuild
-});
-
-export const AUTHENTICATION_FAILED = 'AUTHENTICATION_FAILED';
-export const authenticationFailed = (errorMessage) => ({
-  type: AUTHENTICATION_FAILED,
-  errorMessage
-});
-
 export const checkAuthentication = () => {
   return dispatch => {
     const settings = {
@@ -429,24 +446,6 @@ export const checkAuthentication = () => {
     });
   }
 };
-
-export const SWITCH_TO_REGISTRATION_SUCCESS = 'SWITCH_TO_REGISTRATION_SUCCESS';
-export const switchToRegistrationSuccessSection = () => ({
-	type: SWITCH_TO_REGISTRATION_SUCCESS
-});
-export const SWITCH_TO_GUILD_SELECTION = 'SWITCH_TO_GUILD_SELECTION';
-export const switchToGuildSelectionSection = () => ({
-	type: SWITCH_TO_GUILD_SELECTION
-});
-export const SWITCH_TO_KEY_SUBMISSION = 'SWITCH_TO_KEY_SUBMISSION';
-export const switchToKeySubmissionSection = () => ({
-	type: SWITCH_TO_KEY_SUBMISSION
-});
-
-export const SWITCH_TO_LOGIN_CREDENTIALS = 'SWITCH_TO_LOGIN_CREDENTIALS';
-export const switchToLoginCredentialsSection = () => ({
-  type: SWITCH_TO_LOGIN_CREDENTIALS
-});
 
 export const completeLeaderRegistration = (userName, password, leaderName, apiKey, guilds) => {
 
@@ -541,7 +540,6 @@ export const toggleGuild = (selectedGuilds, guilds, guildId) => {
           return dispatch(changeSelectedGuilds(selectedGuilds, true));
         else
           return dispatch(changeSelectedGuilds(selectedGuilds, false));
-        break;
       }
     }
     let guild;

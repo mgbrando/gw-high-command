@@ -5,8 +5,6 @@ import TeamDetails from './TeamDetails';
 import TeamPVPStats from './TeamPVPStats';
 import * as actions from '../../../actions/teamsActions';
 import TeamRecentMatches from './TeamRecentMatches';
-import NavigationArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
-import {Link, Redirect} from 'react-router-dom';
 import Refresh from 'material-ui/svg-icons/navigation/refresh';
 import CircularProgress from 'material-ui/CircularProgress';
 import './GuildTeams.css';
@@ -102,7 +100,7 @@ class GuildTeam extends Component {
             <TeamPVPStats 
               loading={this.props.teamPVPStatsLoading} 
               display={this.props.displayTeamPVPStats}
-              unrankedPVPStats = {unrankedPVPStats}
+              unrankedPVPStats={unrankedPVPStats}
               rankedPVPStats={rankedPVPStats}
               seasonPVPStats={seasonPVPStats}
               aggregatePVPStats={aggregatePVPStats}

@@ -2,25 +2,25 @@
 
 ## Screens
 ### *Front Page:*
-![Front Page] (screens/front-page.png)
+![Front Page](screens/front-page.png)
 ### *Registration:*
-![Registration] (screens/registration.png)
+![Registration](screens/registration.png)
 ### *Login:*
-![Login] (screens/login.png)
+![Login](screens/login.png)
 ### *Guild Log:*
-![Guild Log] (screens/log.png)
+![Guild Log](screens/log.png)
 ### *Task List:*
-![Task List] (screens/tasks.png)
+![Task List](screens/tasks.png)
 ### *Teams:*
-![Teams] (screens/teams-table.png)
+![Teams](screens/teams-table.png)
 ### *Team:*
-![Team] (screens/team-stats.png)
+![Team](screens/team-stats.png)
 ### *Members:*
-![Members] (screens/members-table.png)
+![Members](screens/members-table.png)
 ### *Member:*
-![Member] (screens/member-stats.png)
+![Member](screens/member-stats.png)
 ### *Guild:*
-![Guild] (screens/guild-details.png)
+![Guild](screens/guild-details.png)
 
 
 ## Summary

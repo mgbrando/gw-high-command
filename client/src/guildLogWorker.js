@@ -1,1 +1,0 @@
-fetch('https://api.guildwars2.com/v2/guild/${guildID}/log')

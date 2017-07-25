@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {List, ListItem, makeSelectable} from 'material-ui/List';
+import {List} from 'material-ui/List';
 
 let SelectableList = List;
 

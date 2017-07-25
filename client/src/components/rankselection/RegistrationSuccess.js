@@ -2,7 +2,7 @@ import React from 'react';
 //import React, { Component } from 'react';
 //import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
-import {List, ListItem, makeSelectable} from 'material-ui/List';
+import {List, ListItem} from 'material-ui/List';
 //import * as actions from '../../actions/registrationAndLoginActions';
 import './RankSelection.css';
 

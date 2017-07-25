@@ -30,9 +30,6 @@ const members = (state=initialRepositoryState, action) => {
 	if(action.type === actions.GET_GUILD_MEMBERS_SUCCESS){
 		return Object.assign({}, state, {registeredMembers: action.registeredMembers, unregisteredMembers: action.unregisteredMembers, membersLoading: false, refreshMembers: false});
 	}
-	/*else if(action.type === actions.SET_SELECTED_MEMBER_SUCCESS){
-		return Object.assign({}, state, {accountInfo: action.accountInfo, joined: action.joined, characters: action.characters, pvpStats: action.pvpStats, pvpStandings: action.pvpStandings, raids: action.raids, selectedMember: true});
-	}*/
   else if(action.type === actions.SET_SELECTED_MEMBER_SUCCESS){
     return Object.assign({}, state, {selectedMember: action.selectedMember, memberDetailsLoading: false, memberPVPStatsLoading: false, memberPVEStatsLoading: false, membersLoading: true, selectedMemberAPIKey: action.selectedMemberAPIKey, refreshMember: false});
   }

@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import AppBar from 'material-ui/AppBar';
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import FlatButton from 'material-ui/FlatButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import NavigationArrowDropDown from 'material-ui/svg-icons/navigation/arrow-drop-down';
-import ActionNoteAdd from 'material-ui/svg-icons/action/note-add';
 import ActionList from 'material-ui/svg-icons/action/list';
-import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 import * as actions from '../../actions/registrationAndLoginActions';
 import { withRouter } from 'react-router';
 import './Dashboard.css';

@@ -2,7 +2,6 @@ import * as actions from '../actions/guildActions';
 
 const initialRepositoryState = {
 	activeUserGuilds: [],
-	//activeGuild: "",
     guildDetails: {},
     guildDetailsFailureMessage: "",
     guildUpgrades: [],
@@ -45,9 +44,7 @@ const guild = (state=initialRepositoryState, action) => {
 	else if(action.type === actions.RESET_GUILD_REFRESH){
 		return Object.assign({}, state, {refreshGuild: false});
 	}
-	/*else if(action.type === actions.SET_ACTIVE_GUILD){
-		return Object.assign({}, state, {activeGuild: action.guild});
-	}*/
+	
 	return state;
 };
 

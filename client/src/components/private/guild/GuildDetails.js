@@ -1,15 +1,7 @@
 import React from 'react';
-import AppBar from 'material-ui/AppBar';
-import IconButton from 'material-ui/IconButton';
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
-import FlatButton from 'material-ui/FlatButton';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Paper from 'material-ui/Paper';
-import CircularProgress from 'material-ui/CircularProgress';
-import Subheader from 'material-ui/Subheader';
-import {List, ListItem, makeSelectable} from 'material-ui/List';
+import {List, ListItem} from 'material-ui/List';
 
-//{props.guildDetails.guildName}
 function GuildDetails(props){
 
   if(props.display){
@@ -64,13 +56,5 @@ function GuildDetails(props){
     return false;
   }
 }
-  //<FlatButton label="Log Out" onClick={props.logOut}/>
 
-/*      <AppBar
-        title={<span>{props.title}</span>}
-        iconElementLeft={<span></span>}
-        iconElementRight={<FloatingActionButton style={style}>
-                            <ContentAdd />
-                          </FloatingActionButton>}
-      />*/
 export default GuildDetails; 

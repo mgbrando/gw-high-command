@@ -3,8 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
-/*const bodyParser = require('body-parser');
-const jsonParser = bodyParser.json();*/
+
 const jsonParser = require('body-parser').json();
 const {Guild} = require('../models/guild');
 const {Leader} = require('../models/leader');
@@ -12,37 +11,6 @@ const {Leader} = require('../models/leader');
 
 router.use(jsonParser);
 
-//new stuff
-/*const basicStrategy = new BasicStrategy(function(username, password, callback) {
-  let leader;
-  Leader
-    .findOne({username: username})
-    .exec()
-    .then(_leader => {
-      leader = _leader;
-      if (!leader) {
-        return callback(null, false, {message: 'Incorrect username'});
-      }
-      return leader.validatePassword(password);
-    })
-    .then(isValid => {
-      if (!isValid) {
-        return callback(null, false, {message: 'Incorrect password'});
-      }
-      else {
-        return callback(null, leader);
-      }
-    });
-});
-
-
-passport.use(basicStrategy);
-router.use(passport.initialize());*/
-
-/*router.get('/',
-  passport.authenticate('basic', {session: true}), //changed to true
-  (req, res) => res.json({leader: req.leader.apiRepr()})
-);*/
 router.post('/', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) {
@@ -95,16 +63,13 @@ router.get('/', jsonParser, (req, res) => {
 					res.json({guilds: leader.guildIds || []});
 				else
 					res.json({guilds: []});
-				//console.log(leader["guildIds"]);
 			})
 			.catch(error => res.status(500).json({message: 'Internal server error - '+error}));
 	}
 	else if(req.query.username){
 		Leader
-			//.find({id: {$in: { guildIds }}, members: { $elemMatch: {handleName: {$in: guildIds}}}})
 			.findOne({
 					username: req.query.username
-					//members: { $elemMatch: {handleName: {$ne: memberName}}}
 				},
 				{
     				"username": 1,
@@ -112,14 +77,11 @@ router.get('/', jsonParser, (req, res) => {
 				})
 			.exec()
 			.then(result => {
-				//console.log(leader);
 				if(result){
 					res.json({unique: false});
-					//res.json({message: `Username ${req.query.username} is valid`});
 				}
 				else
 					res.json({unique: true});
-					//res.json({leader: req.query.username || []});
 			})
 			.catch(error => res.status(500).json({message: 'Internal server error - '+error}));
 	}

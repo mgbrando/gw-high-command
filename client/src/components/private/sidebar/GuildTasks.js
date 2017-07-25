@@ -1,27 +1,20 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import * as actions from '../../../actions/logAndTasksActions';
-import {List, ListItem, makeSelectable} from 'material-ui/List';
-import CircularProgress from 'material-ui/CircularProgress';
+import {List, ListItem} from 'material-ui/List';
+//import CircularProgress from 'material-ui/CircularProgress';
 import IconButton from 'material-ui/IconButton';
 import ActionNoteAdd from 'material-ui/svg-icons/action/note-add';
-import ContentCreate from 'material-ui/svg-icons/content/create';
 import ContentDeleteSweep from 'material-ui/svg-icons/content/delete-sweep';
 import ContentRemove from 'material-ui/svg-icons/content/remove';
-import ContentClear from 'material-ui/svg-icons/content/clear';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import Snackbar from 'material-ui/Snackbar';
 import Slider from 'material-ui/Slider';
 import Divider from 'material-ui/Divider';
 import TextField from 'material-ui/TextField';
-import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+import {Toolbar, ToolbarGroup} from 'material-ui/Toolbar';
 import './SideBar.css';
-
-//let logWorker = require("../../workers/logWorker.js");
-const listItemsStyle = {
-
-} 
 
 class GuildTasks extends Component {
 

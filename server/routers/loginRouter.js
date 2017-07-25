@@ -1,8 +1,6 @@
-//const {BasicStrategy} = require('passport-http');
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-//const passport = require('passport');
 
 mongoose.Promise = global.Promise;
 const bodyParser = require('body-parser');
@@ -39,5 +37,3 @@ catch(error){
   throw error;
 }
 }
-
-//module.exports = router;

@@ -68,19 +68,7 @@ router.post('/', (req, res) => {
   	if (password === '') {
     	return res.status(422).json({message: 'Incorrect field length: password'});
   	}
-	/*if(!(req.params.id && req.body.id && req.params.id === req.body.id)){
-		const message = `Request path id (${req.params.id}) and request body id (${req.body.id}) must match`;
-		console.error(message);
-		return res.status(400).json({message: message});
- 	}
- 	const toUpdate = {};
- 	const updatableFields = ['formationId', 'playerPositions', 'description', 'notes', 'lastModified'];
- 	updatableFields.forEach(field => {
- 		if(field in req.body)
- 			toUpdate[field] = req.body[field];
- 	});
- 	if(!toUpdate['lastModified'])
- 		toUpdate['lastModified'] = new Date().toDateString();*/
+
  	let leader = null;
  	let guilds = [];
   	return Leader
@@ -94,7 +82,6 @@ router.post('/', (req, res) => {
           			message: 'username already taken'
         		});
       		}
-      	// if no existing user, hash password
       		return Leader.hashPassword(password)
     	})
     	.then(hash => {
@@ -108,7 +95,6 @@ router.post('/', (req, res) => {
         		})
     	})
     	.then(_leader => {
-      		//return res.status(201).json(leader.apiRepr());
       		leader=_leader.apiRepr();
       		for(let i = 0; i < guildIds.length; i++){
       			guilds.push({id: guildIds[i], tasks: [], members: [{handleName: leader.handleName, apiKey: leader.apiKey}]});
