@@ -1,44 +1,55 @@
-import React, { Component } from 'react';
-import {connect} from 'react-redux';
+import React, { Component } from "react";
+import { connect } from "react-redux";
 //import GuildDetails from './GuildDetails';
 //import GuildUpgrades from './GuildUpgrades';
-import * as actions from '../../../actions/teamsActions';
-import { Route, withRouter } from 'react-router-dom';
-import { Switch } from 'react-router';
-import TeamsTable from './TeamsTable';
-import GuildTeam from './GuildTeam';
-import './GuildTeams.css';
+import * as actions from "../../../actions/teamsActions";
+import { Route, withRouter } from "react-router-dom";
+import { Switch } from "react-router";
+import TeamsTable from "./TeamsTable";
+import GuildTeam from "./GuildTeam";
+import "./GuildTeams.css";
 
 class GuildTeams extends Component {
-
-  constructor(props) {
-    super(props);
-
-    //this.displayPage = this.displayPage.bind(this);
-  }
-  componentDidMount(){
+  componentDidMount() {
     //if()
-    this.props.dispatch(actions.getGuildTeams(this.props.activeGuild, this.props.activeUser.apiKey));
+    this.props.dispatch(
+      actions.getGuildTeams(
+        this.props.activeGuild,
+        this.props.activeUser.apiKey
+      )
+    );
   }
   componentWillReceiveProps(nextProps) {
-    if(nextProps.activeGuild !== this.props.activeGuild)
-      this.props.dispatch(actions.getGuildTeams(nextProps.activeGuild, nextProps.activeUser.apiKey));
-    else if(nextProps.refreshTeams)
-      this.props.dispatch(actions.getGuildTeams(nextProps.activeGuild, nextProps.activeUser.apiKey, this.props.selectedTeam, this.props.selectedTeamInfo.id));
-     //if(nextProps.selectedMember === true)
+    if (nextProps.activeGuild !== this.props.activeGuild)
+      this.props.dispatch(
+        actions.getGuildTeams(
+          nextProps.activeGuild,
+          nextProps.activeUser.apiKey
+        )
+      );
+    else if (nextProps.refreshTeams)
+      this.props.dispatch(
+        actions.getGuildTeams(
+          nextProps.activeGuild,
+          nextProps.activeUser.apiKey,
+          this.props.selectedTeam,
+          this.props.selectedTeamInfo.id
+        )
+      );
+    //if(nextProps.selectedMember === true)
   }
   /*componentDidMount(){
     //this.props.dispatch(actions.getMembersInfo(this.props.activeUser.apiKey));
   }*/
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.props.dispatch(actions.resetGuildTeams());
   }
   render() {
     return (
       <section className="guildTeams">
         <Switch>
-          <Route exact path='/dashboard/teams' component={TeamsTable} />
-          <Route exact path='/dashboard/teams/:team' component={GuildTeam} />
+          <Route exact path="/dashboard/teams" component={TeamsTable} />
+          <Route exact path="/dashboard/teams/:team" component={GuildTeam} />
         </Switch>
       </section>
     );
