@@ -1,41 +1,29 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import * as actions from "../../../actions/membersActions";
-import { Route, withRouter } from "react-router-dom";
-import { Switch } from "react-router";
-import MembersTable from "./MembersTable";
-import GuildMember from "./GuildMember";
-import "./GuildMembers.css";
+import React, { Component } from 'react';
+import {connect} from 'react-redux';
+import * as actions from '../../../actions/membersActions';
+import { Route, withRouter } from 'react-router-dom';
+import { Switch } from 'react-router';
+import MembersTable from './MembersTable';
+import GuildMember from './GuildMember';
+import './GuildMembers.css';
 
 class GuildMembers extends Component {
-  componentDidMount() {
-    this.props.dispatch(
-      actions.getGuildMembers(
-        this.props.activeGuild,
-        this.props.activeUser.apiKey
-      )
-    );
+
+  constructor(props) {
+    super(props);
+
+  }
+  componentDidMount(){
+    this.props.dispatch(actions.getGuildMembers(this.props.activeGuild, this.props.activeUser.apiKey));
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.activeGuild !== this.props.activeGuild)
-      this.props.dispatch(
-        actions.getGuildMembers(
-          nextProps.activeGuild,
-          nextProps.activeUser.apiKey
-        )
-      );
-    else if (nextProps.refreshMembers) {
-      this.props.dispatch(
-        actions.getGuildMembers(
-          nextProps.activeGuild,
-          nextProps.activeUser.apiKey,
-          this.props.selectedMember,
-          this.props.selectedMemberAPIKey
-        )
-      );
+    if(nextProps.activeGuild !== this.props.activeGuild)
+      this.props.dispatch(actions.getGuildMembers(nextProps.activeGuild, nextProps.activeUser.apiKey));
+    else if(nextProps.refreshMembers){
+      this.props.dispatch(actions.getGuildMembers(nextProps.activeGuild, nextProps.activeUser.apiKey, this.props.selectedMember, this.props.selectedMemberAPIKey));
     }
   }
-  componentWillUnmount() {
+  componentWillUnmount(){
     this.props.dispatch(actions.resetGuildMembers());
   }
 
@@ -43,8 +31,8 @@ class GuildMembers extends Component {
     return (
       <section className="guildMembers">
         <Switch>
-          <Route exact path="/dashboard/members" component={MembersTable} />
-          <Route path="/dashboard/members/:member" component={GuildMember} />
+          <Route exact path='/dashboard/members' component={MembersTable} />
+          <Route path='/dashboard/members/:member' component={GuildMember} />
         </Switch>
       </section>
     );

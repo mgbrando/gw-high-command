@@ -1,22 +1,23 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import * as actions from "../../../actions/membersActions";
-import { withRouter } from "react-router-dom";
-import SectionBar from "../SectionBar";
+import React, { Component } from 'react';
+import {connect} from 'react-redux';
+import * as actions from '../../../actions/membersActions';
+import { withRouter } from 'react-router-dom';
+import SectionBar from '../SectionBar';
 //import greenRect from '../../assets/green-rectangle.png';
-import pieChart from "../../assets/pie-chart.png";
-import CircularProgress from "material-ui/CircularProgress";
+import pieChart from '../../assets/pie-chart.png';
+import CircularProgress from 'material-ui/CircularProgress';
 import {
   Table,
   TableBody,
   TableHeader,
   TableHeaderColumn,
   TableRow,
-  TableRowColumn
-} from "material-ui/Table";
-import "./GuildMembers.css";
+  TableRowColumn,
+} from 'material-ui/Table';
+import './GuildMembers.css';
 
 class MembersTable extends Component {
+
   constructor(props) {
     super(props);
 
@@ -27,173 +28,85 @@ class MembersTable extends Component {
     this.getAPIKey = this.getAPIKey.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount(){
     let rows = [];
-    for (let i = 0; i < this.props.registeredMembers.length; i++) {
+    for(let i=0; i < this.props.registeredMembers.length; i++){
       const apiKey = this.getAPIKey(this.props, i);
       let date = new Date(this.props.registeredMembers[i].joined);
-      const joinDate =
-        date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear();
-      rows.push(
-        <TableRow className="memberRow" key={i}>
-          <TableRowColumn style={{ textAlign: "center" }}>
-            {this.props.registeredMembers[i].name}
-          </TableRowColumn>
-          <TableRowColumn
-            className="tableColumnToHide"
-            style={{ textAlign: "center" }}
-          >
-            {this.props.registeredMembers[i].rank}
-          </TableRowColumn>
-          <TableRowColumn
-            className="tableColumnToHide"
-            style={{ textAlign: "center" }}
-          >
-            {joinDate}
-          </TableRowColumn>
-          <TableRowColumn style={{ textAlign: "center" }}>
-            <button
-              className="statsButton"
-              type="button"
-              name="statsButton"
-              value={apiKey + "|" + i}
-              onClick={this.statsClick}
-            >
-              <img className="statsImage" src={pieChart} alt="stats icon" />
-            </button>
-          </TableRowColumn>
-        </TableRow>
-      );
+      const joinDate = (date.getMonth()+1)+'/'+date.getDate()+'/'+date.getFullYear();
+      rows.push(<TableRow className="memberRow" key={i}>
+                  <TableRowColumn style={{textAlign: 'center'}}>{this.props.registeredMembers[i].name}</TableRowColumn>
+                  <TableRowColumn className="tableColumnToHide" style={{textAlign: 'center'}}>{this.props.registeredMembers[i].rank}</TableRowColumn>
+                  <TableRowColumn className="tableColumnToHide" style={{textAlign: 'center'}}>{joinDate}</TableRowColumn>
+                  <TableRowColumn style={{textAlign: 'center'}}><button className="statsButton" type="button" name="statsButton" value={apiKey+"|"+i} onClick={this.statsClick}><img className="statsImage" src={pieChart} alt="stats icon" /></button></TableRowColumn>
+                </TableRow>);
     }
-    let secondCount = rows.length;
-    for (let j = 0; j < this.props.unregisteredMembers.length; j++) {
-      let date = new Date(this.props.unregisteredMembers[j].joined);
-      const joinDate =
-        date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear();
-      rows.push(
-        <TableRow className="memberRow" key={secondCount++}>
-          <TableRowColumn style={{ textAlign: "center" }}>
-            {this.props.unregisteredMembers[j].name}
-          </TableRowColumn>
-          <TableRowColumn
-            className="tableColumnToHide"
-            style={{ textAlign: "center" }}
-          >
-            {this.props.unregisteredMembers[j].rank}
-          </TableRowColumn>
-          <TableRowColumn
-            className="tableColumnToHide"
-            style={{ textAlign: "center" }}
-          >
-            {joinDate}
-          </TableRowColumn>
-          <TableRowColumn style={{ textAlign: "center" }}>N/A</TableRowColumn>
-        </TableRow>
-      );
-    }
+      let secondCount = rows.length;
+      for(let j=0; j < this.props.unregisteredMembers.length; j++){
+        let date = new Date(this.props.unregisteredMembers[j].joined);
+        const joinDate = (date.getMonth()+1)+'/'+date.getDate()+'/'+date.getFullYear();
+        rows.push(<TableRow className="memberRow" key={secondCount++}>
+                  <TableRowColumn style={{textAlign: 'center'}}>{this.props.unregisteredMembers[j].name}</TableRowColumn>
+                  <TableRowColumn className="tableColumnToHide" style={{textAlign: 'center'}}>{this.props.unregisteredMembers[j].rank}</TableRowColumn>
+                  <TableRowColumn className="tableColumnToHide" style={{textAlign: 'center'}}>{joinDate}</TableRowColumn>
+                  <TableRowColumn style={{textAlign: 'center'}}>N/A</TableRowColumn>
+                </TableRow>);
+        }
     this.setState({ rows: rows });
     console.log(this.state.rows);
     console.log(rows);
     //this.props.dispatch(actions.getMembersInfo(this.props.activeUser.apiKey));
   }
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps){
     /*if(nextProps.selectedMember){
       nextProps.history.push("/dashboard/members/"+nextProps.accountInfo.name.toLowerCase());
     }*/
-    if (this.props.registeredMembers !== nextProps.registeredMembers) {
+    if(this.props.registeredMembers !== nextProps.registeredMembers){
       let rows = [];
-      for (let i = 0; i < nextProps.registeredMembers.length; i++) {
+      for(let i=0; i < nextProps.registeredMembers.length; i++){
         const apiKey = this.getAPIKey(nextProps, i);
         let date = new Date(nextProps.registeredMembers[i].joined);
-        const joinDate =
-          date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear();
-        rows.push(
-          <TableRow className="memberRow" key={i}>
-            <TableRowColumn style={{ textAlign: "center" }}>
-              {nextProps.registeredMembers[i].name}
-            </TableRowColumn>
-            <TableRowColumn
-              className="tableColumnToHide"
-              style={{ textAlign: "center" }}
-            >
-              {nextProps.registeredMembers[i].rank}
-            </TableRowColumn>
-            <TableRowColumn
-              className="tableColumnToHide"
-              style={{ textAlign: "center" }}
-            >
-              {joinDate}
-            </TableRowColumn>
-            <TableRowColumn style={{ textAlign: "center", padding: 0 }}>
-              <button
-                className="statsButton"
-                type="button"
-                name="statsButton"
-                value={apiKey + "|" + i}
-                onClick={this.statsClick}
-              >
-                <img className="statsImage" src={pieChart} alt="stats icon" />
-              </button>
-            </TableRowColumn>
-          </TableRow>
-        );
-      }
+        const joinDate = (date.getMonth()+1)+'/'+date.getDate()+'/'+date.getFullYear();
+        rows.push(<TableRow className="memberRow" key={i}>
+                  <TableRowColumn style={{textAlign: 'center'}}>{nextProps.registeredMembers[i].name}</TableRowColumn>
+                  <TableRowColumn className="tableColumnToHide" style={{textAlign: 'center'}}>{nextProps.registeredMembers[i].rank}</TableRowColumn>
+                  <TableRowColumn className="tableColumnToHide" style={{textAlign: 'center'}}>{joinDate}</TableRowColumn>
+                  <TableRowColumn style={{textAlign: 'center', padding: 0}}><button className="statsButton" type="button" name="statsButton" value={apiKey+"|"+i} onClick={this.statsClick}><img className="statsImage" src={pieChart} alt="stats icon" /></button></TableRowColumn>
+                </TableRow>);
+        }
       let secondCount = rows.length;
-      for (let j = 0; j < nextProps.unregisteredMembers.length; j++) {
+      for(let j=0; j < nextProps.unregisteredMembers.length; j++){
         let date = new Date(nextProps.unregisteredMembers[j].joined);
-        const joinDate =
-          date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear();
-        rows.push(
-          <TableRow className="memberRow" key={secondCount++}>
-            <TableRowColumn style={{ textAlign: "center" }}>
-              {nextProps.unregisteredMembers[j].name}
-            </TableRowColumn>
-            <TableRowColumn
-              className="tableColumnToHide"
-              style={{ textAlign: "center" }}
-            >
-              {nextProps.unregisteredMembers[j].rank}
-            </TableRowColumn>
-            <TableRowColumn
-              className="table tableColumnToHide"
-              style={{ textAlign: "center" }}
-            >
-              {joinDate}
-            </TableRowColumn>
-            <TableRowColumn style={{ textAlign: "center" }}>N/A</TableRowColumn>
-          </TableRow>
-        );
-      }
+        const joinDate = (date.getMonth()+1)+'/'+date.getDate()+'/'+date.getFullYear();
+        rows.push(<TableRow className="memberRow" key={secondCount++}>
+                  <TableRowColumn style={{textAlign: 'center'}}>{nextProps.unregisteredMembers[j].name}</TableRowColumn>
+                  <TableRowColumn className="tableColumnToHide" style={{textAlign: 'center'}}>{nextProps.unregisteredMembers[j].rank}</TableRowColumn>
+                  <TableRowColumn className="table tableColumnToHide" style={{textAlign: 'center'}}>{joinDate}</TableRowColumn>
+                  <TableRowColumn style={{textAlign: 'center'}}>N/A</TableRowColumn>
+                </TableRow>);
+        }
       this.setState({ rows: rows });
       console.log(this.state.rows);
-      console.log(rows);
+      console.log(rows);  
     }
   }
-  getAPIKey(props, memberIndex) {
+  getAPIKey(props, memberIndex){
     return props.registeredMembers[memberIndex].apiKey;
   }
-  statsClick(event) {
+  statsClick(event){
     const statsValue = event.currentTarget.value;
     console.log(statsValue);
-    const options = statsValue.split("|");
-    this.props.dispatch(
-      actions.selectMember(options[0], this.props.registeredMembers)
-    );
-    this.props.history.push(
-      "/dashboard/members/" +
-        encodeURIComponent(
-          this.props.registeredMembers[
-            parseInt(options[1], 10)
-          ].name.toLowerCase()
-        )
-    );
+    const options = statsValue.split('|');
+    this.props.dispatch(actions.selectMember(options[0], this.props.registeredMembers));
+    this.props.history.push("/dashboard/members/"+encodeURIComponent((this.props.registeredMembers[parseInt(options[1])].name).toLowerCase()));
   }
   render() {
-    if (this.props.membersLoading) {
+
+    if(this.props.membersLoading){
       return (
-        <section className="membersLoadingScreen">
+      <section className="membersLoadingScreen">
           <CircularProgress size={80} thickness={5} />
-        </section>
+      </section>
       );
     }
 
@@ -204,32 +117,21 @@ class MembersTable extends Component {
         <Table selectable={false}>
           <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow>
-              <TableHeaderColumn style={{ textAlign: "center" }}>
-                Handle
-              </TableHeaderColumn>
-              <TableHeaderColumn
-                className="tableColumnToHide"
-                style={{ textAlign: "center" }}
-              >
-                Rank
-              </TableHeaderColumn>
-              <TableHeaderColumn
-                className="tableColumnToHide"
-                style={{ textAlign: "center" }}
-              >
-                Joined
-              </TableHeaderColumn>
-              <TableHeaderColumn style={{ textAlign: "center" }}>
-                Stats
-              </TableHeaderColumn>
+              <TableHeaderColumn style={{textAlign: 'center'}}>Handle</TableHeaderColumn>
+              <TableHeaderColumn className="tableColumnToHide" style={{textAlign: 'center'}}>Rank</TableHeaderColumn>
+              <TableHeaderColumn className="tableColumnToHide" style={{textAlign: 'center'}}>Joined</TableHeaderColumn>
+              <TableHeaderColumn style={{textAlign: 'center'}}>Stats</TableHeaderColumn>
             </TableRow>
           </TableHeader>
-          <TableBody displayRowCheckbox={false}>{this.state.rows}</TableBody>
+          <TableBody displayRowCheckbox={false}> 
+            {this.state.rows}
+          </TableBody>
         </Table>
       </section>
     );
   }
 }
+
 
 const mapStateToProps = (state, props) => ({
   unregisteredMembers: state.members.unregisteredMembers,
