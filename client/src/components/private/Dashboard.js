@@ -1,27 +1,27 @@
-import React, { Component } from 'react';
-import {connect} from 'react-redux';
-import { Route, Redirect} from 'react-router-dom';
-import {userLogOut} from '../../actions/registrationAndLoginActions';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Route, Redirect } from "react-router-dom";
+import { userLogOut } from "../../actions/registrationAndLoginActions";
 //import SwipeableRoutes from "react-swipeable-routes";
-import Guild from './guild/Guild';
-import GuildMembers from './members/GuildMembers';
-import GuildTeams from './teams/GuildTeams';
-import Authorization from './Authorization';
-import WelcomeBar from './WelcomeBar';
-import TabNavigation from './TabNavigation';
-import { withRouter } from 'react-router-dom';
-import SideBar from './sidebar/SideBar'; 
+import Guilds from "./Guilds";
+/*import Guild from "./guild/Guild";
+import GuildMembers from "./members/GuildMembers";
+import GuildTeams from "./teams/GuildTeams";*/
+import Authorization from "./Authorization";
+import WelcomeBar from "./WelcomeBar";
+import TabNavigation from "./TabNavigation";
+import { withRouter } from "react-router-dom";
+import SideBar from "./sidebar/SideBar";
 //import {Tabs, Tab} from 'material-ui/Tabs';
-import './Dashboard.css';
+import "./Dashboard.css";
 
-class Dashboard extends Component {
-
+class Guilds extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      sidePanel: {open: false, section: "Log"}
-    }
+      sidePanel: { open: false, section: "Log" }
+    };
 
     this.togglePanel = this.togglePanel.bind(this);
     this.logOut = this.logOut.bind(this);
@@ -29,56 +29,63 @@ class Dashboard extends Component {
     this.handleChangeSingle = this.handleChangeSingle.bind(this);
   }
 
-  tabChange(routePath){
+  tabChange(routePath) {
     //this.props.history.push('routePath');
   }
-  handleChangeSingle(event, value){
+  handleChangeSingle(event, value) {
     //console.log(this.state.valueSingle);
-    this.setState({sidePanel: Object.assign({}, this.state.sidePanel, {section: value})});
+    this.setState({
+      sidePanel: Object.assign({}, this.state.sidePanel, { section: value })
+    });
   }
-  logOut(){
+  logOut() {
     this.props.dispatch(userLogOut());
   }
-  togglePanel(){
-    if(this.state.sidePanel.open){
-      this.setState({sidePanel: Object.assign({}, this.state.sidePanel, {open: false})});
+  togglePanel() {
+    if (this.state.sidePanel.open) {
+      this.setState({
+        sidePanel: Object.assign({}, this.state.sidePanel, { open: false })
+      });
+    } else {
+      this.setState({
+        sidePanel: Object.assign({}, this.state.sidePanel, { open: true })
+      });
     }
-    else{
-      this.setState({sidePanel: Object.assign({}, this.state.sidePanel, {open: true})});
-    }  
   }
-/*  componentDidMount(){
+  /*  componentDidMount(){
     if(this)
   }*/
-//<TabNavigation currentTab={} />
-        //  <SwipeableRoutes></SwipeableRoutes>
+  //<TabNavigation currentTab={} />
+  //  <SwipeableRoutes></SwipeableRoutes>
+  /* const routes = [(<Route path='/dashboard/guild' render={() => <Guild activeUser={this.props.activeUser} />} key={0} />),
+        (<Route path='/dashboard/members' render={() => <GuildMembers activeUser={this.props.activeUser} />} key={1} />),
+        (<Route path='/dashboard/teams' render={() => <GuildTeams activeUser={this.props.activeUser} />} key={2} />),
+        (<Route exact path='/dashboard' render={() => <Redirect to="/guilds" />} key={3} />)];*/
   render() {
-
-    if(this.props.isAuthenticated){
-      const routes = [(<Route path='/dashboard/guild' render={() => <Guild activeUser={this.props.activeUser} />} key={0} />),
-                      (<Route path='/dashboard/members' render={() => <GuildMembers activeUser={this.props.activeUser} />} key={1} />),
-                      (<Route path='/dashboard/teams' render={() => <GuildTeams activeUser={this.props.activeUser} />} key={2} />),
-                      (<Route exact path='/dashboard' render={() => <Redirect to="/dashboard/guild" />} key={3} />)];
-      return (<div className="dashboard">
-        <WelcomeBar user={this.props.activeUser} activeGuild={this.props.activeGuild} logOut={this.logOut} togglePanel={this.togglePanel} />
-          <TabNavigation activeUser={this.props.activeUser} activeGuild={this.props.activeGuild} />
+    if (this.props.isAuthenticated) {
+      return (
+        <div className="dashboard">
+          <WelcomeBar
+            user={this.props.activeUser}
+            activeGuild={this.props.activeGuild}
+            logOut={this.logOut}
+            togglePanel={this.togglePanel}
+          />
           <SideBar
             title={this.state.sidePanel.section}
             open={this.state.sidePanel.open}
             togglePanel={this.togglePanel}
             handleChangeSingle={this.handleChangeSingle}
-         />
-        <main className="main-content">
-          {routes}
-        </main>
-      </div>
+          />
+          <main className="main-content">
+            <Guilds />
+          </main>
+        </div>
       );
-    }
-    else if(!this.props.authorizationChecked){
-      return (<Authorization />);
-    }
-    else{
-      return (<Redirect to="/login" />);
+    } else if (!this.props.authorizationChecked) {
+      return <Authorization />;
+    } else {
+      return <Redirect to="/login" />;
     }
   }
 }
